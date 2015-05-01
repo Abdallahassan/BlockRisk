@@ -6,8 +6,8 @@ import org.lwjgl.opengl.DisplayMode;
 
 public class Main {
 	
-	private static final int HEIGHT = 480;
-	private static final int WIDTH  = 640;
+	private static final int HEIGHT = 500;
+	private static final int WIDTH  = 700;
 	private static final int FPS    = 5;
 	int niter;                              // Numbers of iterations since the start.
 	
