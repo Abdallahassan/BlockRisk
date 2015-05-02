@@ -10,5 +10,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/abd/git/BlockRisk/.git/BlockRisk/lib/jars/lwjgl-2.9.3/jar/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="/home/abd/git/BlockRisk/.git/BlockRisk/lib/jars/lwjgl-2.9.3/jar/slick-util.jar"/>
+	<classpathentry kind="lib" path="/home/abd/Downloads/slick (1)/lib/jinput.jar"/>
+	<classpathentry kind="lib" path="/home/abd/Downloads/slick (1)/lib/slick.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
