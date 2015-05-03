@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -30,6 +31,9 @@ public class Game extends BasicGameState {
 			ycords.add(y);
 		}
 	}
+	
+	int mousex;
+	int mousey;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -48,7 +52,8 @@ public class Game extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		mousey = Main.HEIGHT - Mouse.getY() - 1;
+		mousex = Mouse.getX();                    // Get coordinates of the mouse pointer
 		
 	}
 

@@ -10,7 +10,7 @@ public class Main extends StateBasedGame {
     public static final int MAINMENU     = 1;
     public static final int GAME         = 2;
 	
-	private static final int HEIGHT = 500;
+	public static final int HEIGHT = 500;
 	private static final int WIDTH  = 800;
 	private static final int FPS    = 5;
 

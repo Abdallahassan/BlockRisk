@@ -1,3 +1,4 @@
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.state.BasicGameState;
@@ -7,6 +8,8 @@ public class MainMenu extends BasicGameState {
 	
 	Polygon poly;
 	int time;
+	int mousey;
+	int mousex;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -32,6 +35,9 @@ public class MainMenu extends BasicGameState {
 		if (time > 3000) {     // After 3 seconds.
 			sbg.enterState(2);
 		}
+		
+		mousey = Main.HEIGHT - Mouse.getY() - 1;
+		mousex = Mouse.getX();                    // Get coordinates of the mouse pointer
 		
 	}
 
