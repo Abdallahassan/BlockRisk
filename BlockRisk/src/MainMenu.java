@@ -1,27 +1,37 @@
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class MainMenu extends BasicGameState {
+	
+	Polygon poly;
+	int time;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		float[] cords = {0, 0, 50, 0, 100, 50, 75, 75, 50, 25};
+		poly = new Polygon(cords);
 		
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		g.setColor(Color.red);
+		g.draw(poly);
 		
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		time += delta;
+		
+		if (time > 3000) {     // After 3 seconds.
+			sbg.enterState(2);
+		}
 		
 	}
 
