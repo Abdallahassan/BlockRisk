@@ -9,10 +9,14 @@ public class Main extends StateBasedGame {
 	public static final int SPLASHSCREEN = 0;
     public static final int MAINMENU     = 1;
     public static final int GAME         = 2;
+    public static final int MAPCREATER   = 3;
 	
 	public static final int  HEIGHT = 500;
 	public static final int WIDTH  = 800;
-	private static final int FPS    = 4;
+	private static final int FPS    = 3;
+	
+	public static final IntPair UPPER_LEFT_CORNER = new IntPair(0, 50);
+	public static final IntPair LOWER_RIGHT_CORNER = new IntPair(Main.WIDTH, Main.HEIGHT-50);
 
 	public Main(String name) {
 		super(name);
@@ -36,7 +40,8 @@ public class Main extends StateBasedGame {
 		this.addState(new SplashScreen());
 		this.addState(new MainMenu());
 		this.addState(new Game());
-		this.enterState(SPLASHSCREEN);
+		this.addState(new MapCreater());
+		this.enterState(MAPCREATER);
 	}
 
 }
