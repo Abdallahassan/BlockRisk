@@ -1,6 +1,6 @@
 /**
  * Int Pair class...
- * @author Arsalan
+ * @author Abdallah
  *
  */
 public class IntPair {
@@ -10,6 +10,10 @@ public class IntPair {
 	public IntPair(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public IntPair add(int x, int y) {
+		return new IntPair(x+this.x, y+this.y);
 	}
 
 }
