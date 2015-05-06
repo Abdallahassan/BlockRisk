@@ -14,8 +14,13 @@ public class Unit {
 	int evasive; //more agile units are more likely to avoid enemy attack
 	
 	public Unit(UnitType unitType){
+		this.type=unitType;
 		isAlive=true;
-		switch(unitType)
+		switch(unitType){
+		case INFANTRY:
+			waterTravel=false;
+		break;
+		}
 		
 	}
 	
