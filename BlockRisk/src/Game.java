@@ -42,7 +42,7 @@ public class Game extends BasicGameState {
 	 * @param to
 	 */
 	private void attack(Territory from, Territory to) {
-		while(from.getUnits()<=0||to.getUnits()<=0){
+		while(from.getUnits()>=0||to.getUnits()>=0){
 			int k=5; //constant determining how many units are lost
 			int diceFrom=random.nextInt(6)+1; //1 to 6
 			int diceTo=random.nextInt(6)+1; //1 to 6
@@ -59,6 +59,21 @@ public class Game extends BasicGameState {
 		if(to.getUnits()<=0){ //if attack is succesful
 			to.changeOwner();
 		}
+	}
+	
+	/**
+	 * Generates units for the player (non-AI) depending on amount of territories
+	 * captured and their value. 
+	 */
+	private int genUnitsPlayer(){ //need method like this for the AI
+		Territory[] terr=map.getAllTerritories();
+		int unitSum=0;
+		for(int i=0;i<terr.length;i++){
+			if (!terr[i].ownedbyAI()){ //if owned by player
+				unitSum+=terr[i].getUnitVal();
+			}
+		}
+		return unitSum;
 	}
 
 	@Override

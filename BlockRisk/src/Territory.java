@@ -9,7 +9,8 @@ public class Territory {
 	private Polygon poly;
 	private boolean highlighted;
 	private boolean owner; // true if it's owned by the AI.
-	private int units;
+	private int units; //amount of units in this territory
+	private int unitVal; //amount of units this territory generates each turn 
 	
 	public Territory(boolean owner) {
 		this.owner = owner;
@@ -45,6 +46,10 @@ public class Territory {
 	
 	public void setUnits(int remove){
 		units-=remove;
+	}
+
+	public int getUnitVal() {
+		return unitVal;
 	}
 
 }
