@@ -2,7 +2,7 @@
  * Represents the units that the player can use for attacking and defending
  * territories
  * @author Arsalan
- *jhiuiuhiujiijiooiiii
+ *jhiuiuhiujiijiooiiiim
  */
 public class Unit {
 	UnitType type;
