@@ -1,4 +1,8 @@
-
+/**
+ * Int Pair class...
+ * @author Arsalan
+ *
+ */
 public class IntPair {
 	public int x;
 	public int y;
