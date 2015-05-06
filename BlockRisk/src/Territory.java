@@ -5,8 +5,14 @@ import org.newdawn.slick.geom.Polygon;
 
 public class Territory {
 	private Polygon poly;
-private boolean highlighted;
+	private boolean highlighted;
 	private boolean owner; // true if it's owned by the AI.
+	
+	public Territory(boolean owner) {
+		this.owner = owner;
+		highlighted = false;
+		poly = new Polygon();
+	}
 	
 	public void draw(Graphics g) {
 		if (highlighted)
@@ -16,10 +22,18 @@ private boolean highlighted;
 		g.draw(poly);
 		
 		if (owner)
-		g.setColor(Color.blue);
+			g.setColor(Color.blue);
 		else
 			g.setColor(Color.red);
 		g.fill(poly);
+	}
+	
+	public boolean ownedbyAI() {
+		return owner;
+	}
+	
+	public void changeOwner() {
+		owner = !owner;
 	}
 
 }

@@ -11,12 +11,11 @@ public class Main extends StateBasedGame {
     public static final int GAME         = 2;
 	
 	public static final int  HEIGHT = 500;
-	private static final int WIDTH  = 800;
+	public static final int WIDTH  = 800;
 	private static final int FPS    = 4;
 
 	public Main(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {

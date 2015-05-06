@@ -5,21 +5,24 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Game extends BasicGameState {
 	
-	MouseInput mouseinput;
-	boolean AIsturn;        // true if it's the Ai's turn to play.
+	private MouseInput mouseinput;
+	private boolean AIsturn;        // true if it's the Ai's turn to play.
+	private Map map;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		mouseinput = new MouseInput();
 		AIsturn = false;
+		map = new Map();
+		map.load();
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		
+		for (Territory t: map.getAllTerritories())
+			t.draw(g);
 	}
 
 	@Override
