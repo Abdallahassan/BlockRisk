@@ -26,9 +26,6 @@ public class Unit {
 		case VEHICLE:
 			waterTravel=false;
 		break;
-		case SHIP:
-			waterTravel=true;
-		break;
 		case AIRCRAFT:
 			waterTravel=true;
 		break;
