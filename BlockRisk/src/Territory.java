@@ -3,9 +3,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
 
 
-
-
 public class Territory {
+	
 	private Polygon poly;
 	private boolean highlighted;
 	private boolean owner; // true if it's owned by the AI.
