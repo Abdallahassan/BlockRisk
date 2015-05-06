@@ -65,7 +65,7 @@ public class Game extends BasicGameState {
 	 * Generates units for the player (non-AI) depending on amount of territories
 	 * captured and their value. 
 	 */
-	private int genUnitsPlayer(){ //need method like this for the AI
+	private int genUnitsPlayer(){ //need method like this for the AI too
 		Territory[] terr=map.getAllTerritories();
 		int unitSum=0;
 		for(int i=0;i<terr.length;i++){
