@@ -9,15 +9,14 @@ public class Unit {
 	boolean waterTravel;
 	Territory territory;
 	boolean isAlive;
+	int attack;
+	int defence; //more sturdy units can take more damage
+	int evasive; //more agile units are more likely to avoid enemy attack
 	
 	public Unit(UnitType unitType){
 		isAlive=true;
-		if(unitType==UnitType.SHIP||unitType==UnitType.AIRCRAFT){
-			waterTravel=true;
-		}
-		else{
-			waterTravel=false;
-		}
+		switch(unitType)
+		
 	}
 	
 	public void destroy(){
