@@ -81,4 +81,3 @@ public class Game extends BasicGameState {
 		return 2;
 	}
 	
-}
