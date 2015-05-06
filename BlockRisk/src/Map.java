@@ -1,9 +1,6 @@
 
 public class Map {
 	
-	private static final IntPair UPPER_LEFT_CORNER = new IntPair(0, 50);
-	private static final IntPair LOWER_RIGHT_CORNER = new IntPair(Main.WIDTH, Main.HEIGHT);
-	
 	private Territory[] territories;
 	
 	public Map() {
