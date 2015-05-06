@@ -1,4 +1,3 @@
 
-public enum UnitType {
-	INFANTRY, VEHICLE, SHIP, AIRCRAFT
-}
+public enum UnitType {INFANTRY, VEHICLE, SHIP, AIRCRAFT}
+

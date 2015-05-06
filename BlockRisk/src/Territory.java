@@ -3,10 +3,13 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
 
 
+
+
 public class Territory {
 	private Polygon poly;
 	private boolean highlighted;
 	private boolean owner; // true if it's owned by the AI.
+	private int units;
 	
 	public Territory(boolean owner) {
 		this.owner = owner;
@@ -34,6 +37,14 @@ public class Territory {
 	
 	public void changeOwner() {
 		owner = !owner;
+	}
+	
+	public int getUnits(){
+		return units;
+	}
+	
+	public void setUnits(int remove){
+		units-=remove;
 	}
 
 }

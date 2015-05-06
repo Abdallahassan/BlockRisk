@@ -2,12 +2,14 @@
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import java.util.Random;
 
 public class Game extends BasicGameState {
 	
 	private MouseInput mouseinput;
 	private boolean AIsturn;        // true if it's the Ai's turn to play.
 	private Map map;
+	private Random random;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -32,13 +34,36 @@ public class Game extends BasicGameState {
 		
 	}
 	
+	/**
+	 * Basic combat system where you take difference of roll*units 
+	 * for both players. Then divide by k and remove that many units from 
+	 * the loser.
+	 * @param from
+	 * @param to
+	 */
 	private void attack(Territory from, Territory to) {
-		
+		while(from.getUnits()<=0||to.getUnits()<=0){
+			int k=5; //constant determining how many units are lost
+			int diceFrom=random.nextInt(6)+1; //1 to 6
+			int diceTo=random.nextInt(6)+1; //1 to 6
+			int fromVal=diceFrom*from.getUnits();
+			int toVal=diceFrom*to.getUnits();
+			int diff=fromVal-toVal;
+			if(diff>0){ //if attacker (from) wins battle
+				to.setUnits(diff/k); //remove diff/k amount of units in To territory
+			}
+			else{
+				from.setUnits(diff/k);
+			}			
+		}
+		if(to.getUnits()<=0){ //if attack is succesful
+			to.changeOwner();
+		}
 	}
 
 	@Override
 	public int getID() {
 		return 2;
 	}
-
+	
 }
