@@ -23,7 +23,7 @@ public class MainMenu extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		g.setColor(Color.red);
-		g.draw(poly);
+		g.fill(poly);
 		
 	}
 
