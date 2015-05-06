@@ -1,8 +1,8 @@
 /**
  * Represents the units that the player can use for attacking and defending
- * territories
+ * territories. Vehicles travel on land only (such as tanks and jeeps).
  * @author Arsalan
- *jhiuiuhiujiiji
+ *
  */
 public class Unit {
 	UnitType type;
@@ -10,8 +10,12 @@ public class Unit {
 	Territory territory;
 	boolean isAlive;
 	int attack;
-	int defence; //more sturdy units can take more damage
+	int defence; //more sturdy units like vehicles can take more damage
 	int evasive; //more agile units are more likely to avoid enemy attack
+	
+	/* Infantry have low attack and defense and have moderate evasion but are cheap to produce.
+	 * 
+	 */
 	
 	public Unit(UnitType unitType){
 		this.type=unitType;
