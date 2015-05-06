@@ -1,3 +1,4 @@
+
 /**
  * Represents the units that the player can use for attacking and defending
  * territories. Vehicles travel on land only (such as tanks and jeeps).
@@ -7,7 +8,6 @@
 public class Unit {
 	
 	private UnitType type;
-	private boolean waterTravel;
 	private Territory territory;
 	private boolean isAlive;
 	private int attack;
@@ -19,17 +19,6 @@ public class Unit {
 		this.type=unitType;
 		isAlive=true;
 		this.territory=territory;
-		switch(unitType){
-		case INFANTRY:
-			waterTravel=false;
-		break;
-		case VEHICLE:
-			waterTravel=false;
-		break;
-		case AIRCRAFT:
-			waterTravel=true;
-		break;
-		}
 		
 	}
 	
@@ -40,12 +29,5 @@ public class Unit {
 	public void changeTerritory(Territory newTerritory){
 		this.territory=newTerritory;
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 }
