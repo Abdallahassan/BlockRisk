@@ -1,1 +1,3 @@
 /bin/
+syntax: glob
+.classpath
