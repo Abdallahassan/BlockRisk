@@ -11,10 +11,10 @@ public class Territory {
 	private int units; //amount of units in this territory
 	private int unitVal; //amount of units this territory generates each turn 
 	
-	public Territory(boolean owner) {
+	public Territory(boolean owner, Polygon poly) {
 		this.owner = owner;
 		highlighted = false;
-		poly = new Polygon();
+		this.poly = poly;
 	}
 	
 	public void draw(Graphics g) {
