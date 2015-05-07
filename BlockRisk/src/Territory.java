@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
@@ -5,30 +8,33 @@ import org.newdawn.slick.geom.Polygon;
 
 public class Territory {
 	
-	private Polygon poly;
+	private List<Square> squares;
 	private boolean highlighted;
 	private boolean owner; // true if it's owned by the AI.
 	private int units; //amount of units in this territory
 	private int unitVal; //amount of units this territory generates each turn 
 	
-	public Territory(boolean owner, Polygon poly) {
+	
+	public Territory(boolean owner) {
 		this.owner = owner;
-		highlighted = false;
-		this.poly = poly;
+		squares = new ArrayList<Square>();
 	}
 	
-	public void draw(Graphics g) {
-		if (highlighted)
-			g.setColor(Color.yellow);
-		else
-			g.setColor(Color.black);
-		g.draw(poly);
-		
+	public void draw(Graphics g, Color temp) {
 		if (owner)
 			g.setColor(Color.blue);
 		else
 			g.setColor(Color.red);
-		g.fill(poly);
+		
+		for (Square s: squares)
+			if (s.boundaryStatus()) {
+				if (highlighted)
+					s.draw(Color.yellow, g);
+				else
+					s.draw(Color.black, g);
+			} else {
+				s.draw(temp, g);
+			}
 	}
 	
 	public boolean ownedbyAI() {
