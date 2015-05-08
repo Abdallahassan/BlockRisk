@@ -79,9 +79,6 @@ public class Game extends BasicGameState {
 	 */
 	private void attackNew(Territory from, Territory to){
 		Random rand = new Random();
-		int k0=rand.nextInt(to.numUnits());
-		int k1=rand.nextInt(to.numUnits());
-		int k2=rand.nextInt(to.numUnits());
 		int[] unitsFrom=from.getUnits();
 		int[] unitsTo=from.getUnits();
 		int sumA=from.sumAttack();
@@ -90,9 +87,9 @@ public class Game extends BasicGameState {
 		int k=1; //change later ???
 		int avgE=to.averageEvasion();
 		int removeSize=(sumA*r)/(sumD*avgE*k);
-		to.removeUnits(0,removeUnits/k0);
-		to.removeUnits(1,removeUnits/k1);
-		to.removeUnits(2,removeUnits/k2);
+		to.removeUnits(0,removeUnits/3);
+		to.removeUnits(1,removeUnits/3);
+		to.removeUnits(2,removeUnits/3);
 	}
 	
 	/**
@@ -162,6 +159,12 @@ public class Game extends BasicGameState {
 	public void aiAttackPhase(){
 		Territory[] fromTo=planAttack();
 		attackNew(fromTo[0],fromTo[1]);
+	}
+	/**
+	 * Keeps running until player loses
+	 */
+	public void play(){
+		//Needs to get info from user bout attacks.
 	}
 }
 	
