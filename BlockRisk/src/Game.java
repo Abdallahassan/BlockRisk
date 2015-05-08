@@ -10,9 +10,7 @@ public class Game extends BasicGameState {
 	private boolean AIsturn;        // true if it's the Ai's turn to play.
 	private Map map;
 	private Random random;
-	private final int[] attStats={10, 60, 40, 80}; //change later ??
-	private final int[] defStats={5, 70, 45, 30};
-	private final int[] evStat={30,10,40,60};
+
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
