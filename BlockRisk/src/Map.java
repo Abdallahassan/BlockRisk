@@ -15,6 +15,9 @@ public class Map {
 		territories = new Territory[12]; // 12 territories
 		neighboors = new ArrayList<IntPair>();
 		squares = new Square[80][40];
+		for (int i = 0; i < 80; i++)
+			for (int j = 0; j < 40; j++)
+				squares[i][j] = new Square(new IntPair(i*10, (j*10)+50));
 	}
 	
 	public void changeOwner(IntPair coord, int id) {
