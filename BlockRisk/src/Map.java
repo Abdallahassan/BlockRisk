@@ -63,7 +63,7 @@ public class Map {
 	public void load() {
  
 	  SAXBuilder builder = new SAXBuilder();
-	  File xmlFile = new File("c:\\file.xml");
+	  File xmlFile = new File("res/mapSave.xml");
  
 	  try {
  
