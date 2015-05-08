@@ -10,6 +10,7 @@ public class Game extends BasicGameState {
 	private boolean AIsturn;        // true if it's the Ai's turn to play.
 	private Map map;
 	private Random random;
+	private Territory[] aiOwned;
 
 
 	@Override
@@ -107,4 +108,56 @@ public class Game extends BasicGameState {
 	public int getID() {
 		return 2;
 	}
+	
+	//AI methods below
+	/**
+	 * Find the weakest neighbour to Territory terr
+	 * @param i Represents index in owned
+	 * @return Index of weakest neighbour to i
+	 */
+	private Territory weakestNeigbour(Territory terr){
+		Territory[] neighbours = terr.getNeighbours();
+		int lowestSum=Integer.MAX_VALUE;
+		int weakestTerr=-1; //an index
+		for(int i=0;i<neighbours.length;i++){
+			if(neighbours[i].numUnits()<lowestSum){
+				lowestSum=neighbours[i].numUnits();
+				weakestTerr=i;
+			}
+		}
+		return neighbours[weakestTerr];
+	}
+	
+	/**
+	 * AI chooses an owned territory at random and
+	 * finds the weakest neighbour to the chosen
+	 * territory. 
+	 * @return The territories it wants to attack 
+	 * and where it will attack from
+	 */
+	private Territory[] planAttack(){
+		Territory[] fromTo = new Territory[2];
+		int randIndex=random.nextInt(numOwned()); //used for choosing owned territory
+		fromTo[0]=aiOwned[randIndex];
+		fromTo[1]=weakestNeigbour(fromTo[0]);		
+		return fromTo;
+	}
+	
+	private int numOwned(){
+		int sum=0;
+		for(int i=0;i<map.getAllTerritories().length;i++){
+			if(map.getAllTerritories()[i].isOwner()){
+				sum++;
+			}
+		}
+		return sum;
+	}
+	
+	public void aiAttackPhase(){
+		Territory[] fromTo=planAttack();
+		attackNew(fromTo[0],fromTo[1]);
+	}
+}
+	
+	
 	
