@@ -77,8 +77,11 @@ public class Game extends BasicGameState {
 	 * @param from
 	 * @param to
 	 */
-	private int attackNew(Territory from, Territory to){
+	private void attackNew(Territory from, Territory to){
 		Random rand = new Random();
+		int k0=rand.nextInt(to.numUnits());
+		int k1=rand.nextInt(to.numUnits());
+		int k2=rand.nextInt(to.numUnits());
 		int[] unitsFrom=from.getUnits();
 		int[] unitsTo=from.getUnits();
 		int sumA=from.sumAttack();
@@ -86,7 +89,10 @@ public class Game extends BasicGameState {
 		int r=rand.nextInt(10)+1; //1<=r<=10
 		int k=1; //change later ???
 		int avgE=to.averageEvasion();
-		return (sumA*r)/(sumD*avgE*k);
+		int removeSize=(sumA*r)/(sumD*avgE*k);
+		to.removeUnits(0,removeUnits/k0);
+		to.removeUnits(1,removeUnits/k1);
+		to.removeUnits(2,removeUnits/k2);
 	}
 	
 	/**
