@@ -39,7 +39,9 @@ public class MapCreater extends BasicGameState {
 	}
 	
 	private void makeSquare(int id, IntPair from, IntPair to) {
-		
+		for (int i = from.x; i <= to.x; i+=10)
+			for (int j = from.y; j <= to.y; j+=10)
+				map.changeOwner(new IntPair(i, j-50), id);
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class MapCreater extends BasicGameState {
 			throws SlickException {
 		g.setColor(Color.white);
 		g.fillRect(Main.UPPER_LEFT_CORNER.x, Main.UPPER_LEFT_CORNER.y, Main.LOWER_RIGHT_CORNER.x - Main.UPPER_LEFT_CORNER.x, Main.LOWER_RIGHT_CORNER.y - Main.UPPER_LEFT_CORNER.y);
-		
+		map.draw(g);
 	}
 
 	@Override
