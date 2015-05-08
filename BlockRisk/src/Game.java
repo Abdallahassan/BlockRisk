@@ -10,6 +10,9 @@ public class Game extends BasicGameState {
 	private boolean AIsturn;        // true if it's the Ai's turn to play.
 	private Map map;
 	private Random random;
+	private final int[] attStats={10, 60, 40, 80}; //change later ??
+	private final int[] defStats={5, 70, 45, 30};
+	private final int[] evStat={30,10,40,60};
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -62,18 +65,44 @@ public class Game extends BasicGameState {
 	}
 	
 	/**
+	 * Updated territory attack system. The amount of units lost for the opponents
+	 * will be U=(sum(A)*R)/(sum(D)*avg(E)*K). 
+	 * sum(A)=sum of attack stat for owned units in territory
+	 * sum(D)=sum of defence stat for enemy units in territory
+	 * avg(E)=the average evasion for enemy units in territory
+	 * R=a random integer between 1 and 10
+	 * K=a constant that affects amount of units lost.
+	 * This method is used when player/AI attack a territory. Defender reduces attackers
+	 * units with this method. This returns amount of units that defender loses. Reduce
+	 * this amount later from the territory using territory class' removeUnits() method
+	 * @param from
+	 * @param to
+	 */
+	private int attackNew(Territory from, Territory to){
+		Random rand = new Random();
+		int[] unitsFrom=from.getUnits();
+		int[] unitsTo=from.getUnits();
+		int sumA=from.sumAttack();
+		int sumD=to.sumDefence();
+		int r=rand.nextInt(10)+1; //1<=r<=10
+		int k=1; //change later ???
+		int avgE=to.averageEvasion();
+		return (sumA*r)/(sumD*avgE*k);
+	}
+	
+	/**
 	 * Generates units for the player (non-AI) depending on amount of territories
 	 * captured and their value. 
 	 */
 	private int genUnitsPlayer(){ //need method like this for the AI too
 		Territory[] terr=map.getAllTerritories();
-		int unitSum=0;
+		int resourceSum=0;
 		for(int i=0;i<terr.length;i++){
 			if (!terr[i].ownedbyAI()){ //if owned by player
-				unitSum+=terr[i].getUnitVal();
+				resourceSum+=terr[i].getResourceVal();
 			}
 		}
-		return unitSum;
+		return resourceSum;
 	}
 
 	@Override
