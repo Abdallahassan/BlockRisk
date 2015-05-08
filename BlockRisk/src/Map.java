@@ -61,8 +61,36 @@ public class Map {
 	
 	// Load and already saved game from file.
 	public void load() {
-		//TODO
+ 
+	  SAXBuilder builder = new SAXBuilder();
+	  File xmlFile = new File("c:\\file.xml");
+ 
+	  try {
+ 
+		Document document = (Document) builder.build(xmlFile); //builds xml file
+		Element rootNode = document.getRootElement(); //gets  a root
+		List list = rootNode.getChildren("staff"); //gets a list of all children of root
+ 
+		//iterate over all children to root
+		for (int i = 0; i < list.size(); i++) {
+ 
+		   Element node = (Element) list.get(i);
+ 
+		   System.out.println("First Name : " + node.getChildText("firstname"));
+		   System.out.println("Last Name : " + node.getChildText("lastname"));
+		   System.out.println("Nick Name : " + node.getChildText("nickname"));
+		   System.out.println("Salary : " + node.getChildText("salary"));
+ 
+		}
+
+ 		//erro handling
+	  } catch (IOException io) { 
+		System.out.println(io.getMessage());
+	  } catch (JDOMException jdomex) {
+		System.out.println(jdomex.getMessage());
+	  }
 	}
+
 	
 	// Save this map to save file.
 	public void save() {
