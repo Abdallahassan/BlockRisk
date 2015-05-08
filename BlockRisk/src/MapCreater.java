@@ -12,7 +12,6 @@ public class MapCreater extends BasicGameState {
 	
 	private MouseInput mouseinput;
 	private Map map;
-	private Territory[] regions;
 	private boolean inputMode;
 	private IntPair coord;
 
@@ -21,7 +20,6 @@ public class MapCreater extends BasicGameState {
 			throws SlickException {
 		mouseinput = new MouseInput();
 		map = new Map();
-		regions = new Territory[12];
 		
 		makeSquare(0, new IntPair(0, 50), new IntPair(190, 140));
 		makeSquare(1, new IntPair(0, 150), new IntPair(190, 290));
@@ -41,7 +39,7 @@ public class MapCreater extends BasicGameState {
 	}
 	
 	private void makeSquare(int id, IntPair from, IntPair to) {
-		//TODO
+		
 	}
 
 	@Override
@@ -49,25 +47,7 @@ public class MapCreater extends BasicGameState {
 			throws SlickException {
 		g.setColor(Color.white);
 		g.fillRect(Main.UPPER_LEFT_CORNER.x, Main.UPPER_LEFT_CORNER.y, Main.LOWER_RIGHT_CORNER.x - Main.UPPER_LEFT_CORNER.x, Main.LOWER_RIGHT_CORNER.y - Main.UPPER_LEFT_CORNER.y);
-		Color tmp;
-		for (int i = 0; i < 12; i++) {
-			if (i == 0 || i == 6)
-				tmp = Color.blue;
-			else if (i == 1 || i == 7)
-				tmp = Color.cyan;
-			else if (i == 2 || i == 8)
-				tmp = Color.green;
-			else if (i == 3 || i == 9)
-				tmp = Color.red;
-			else if (i == 4 || i == 10)
-				tmp = Color.yellow;
-			else if (i == 5 || i == 11)
-				tmp = Color.orange;
-			else
-				tmp = Color.pink;
-			
-			regions[i].draw(g, tmp);
-		}
+		
 	}
 
 	@Override
