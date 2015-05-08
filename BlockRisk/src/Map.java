@@ -3,6 +3,14 @@ import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+//need to import jDOM here for map load and save
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 
 public class Map {
