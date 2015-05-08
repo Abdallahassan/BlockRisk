@@ -6,6 +6,7 @@ public class Square {
 	
 	private IntPair coord;
 	private boolean isBoundary;
+	private int belongsTo;
 	
 	private static final int SIDE = 10;
 	
@@ -23,6 +24,14 @@ public class Square {
 	
 	public void draw(Color color, Graphics g) {
 		g.fillRect(coord.x, coord.y, SIDE, SIDE);
+	}
+	
+	public void setOwnership(int t) {
+		belongsTo = t;
+	}
+	
+	public int getOwnership() {
+		return belongsTo;
 	}
 
 }
