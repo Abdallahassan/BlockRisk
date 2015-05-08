@@ -6,6 +6,9 @@ public class Territory {
 	private int[] units; //amount of units in this territory
 	private int resourceVal; //amount of resources this territory generates each turn 
 	private Territory[] neighbours; 
+	private final int[] attStats={10, 60, 40, 80}; //change later ??
+	private final int[] defStats={5, 70, 45, 30};
+	private final int[] evStat={30,10,40,60};
 	
 	public Territory(boolean owner) {
 		this.owner = owner;
