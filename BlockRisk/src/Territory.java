@@ -41,6 +41,17 @@ public class Territory {
 	public void removeUnits(int index,int remove){
 		units[index]-=remove;
 	}
+	
+	/**
+	 * Adds certain type of units from territory. 
+	 * index 0,1,2 = infantry,vehicles,aircraft
+	 * 
+	 * @param index
+	 * @param remove
+	 */
+	public void addUnits(int index,int add){
+		units[index]+=add;
+	}
 
 	
 	public int sumAttack(){

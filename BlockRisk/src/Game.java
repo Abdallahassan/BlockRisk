@@ -11,6 +11,10 @@ public class Game extends BasicGameState {
 	private Map map;
 	private Random random;
 	private Territory[] aiOwned;
+	private int[] unitsNotPlaced; //units the player can place in territories (non-AI)
+	private int res; //player resources
+	private int resAI;
+	private int[] cost={10,100,250};
 
 
 	@Override
@@ -34,34 +38,62 @@ public class Game extends BasicGameState {
 		mouseinput.update();
 		
 	}
-	
-	/**
-	 * Basic combat system where you take difference of roll*units 
-	 * for both players. Then divide by k and remove that many units from 
-	 * the loser.
-	 * @param from
-	 * @param to
-	 */
-	private void attack(Territory from, Territory to) {
-		while(from.getUnits()>=0||to.getUnits()>=0){
-			int k=5; //constant determining how many units are lost
-			int diceFrom=random.nextInt(6)+1; //1 to 6
-			int diceTo=random.nextInt(6)+1; //1 to 6
-			int fromVal=diceFrom*from.getUnits();
-			int toVal=diceFrom*to.getUnits();
-			int diff=fromVal-toVal;
-			if(diff>0){ //if attacker (from) wins battle
-				to.setUnits(diff/k); //remove diff/k amount of units in To territory
-			}
-			else{
-				from.setUnits(diff/k);
-			}			
-		}
-		if(to.getUnits()<=0){ //if attack is succesful
-			to.changeOwner();
-		}
+
+	@Override
+	public int getID() {
+		return 2;
 	}
 	
+	
+	//Game Logic Section Below
+	/*
+	 * There are four stages to each players turn. 
+	 * 1)Buying Units (after gaining resources)
+	 * 2)Placing Units
+	 * 3)Attacking territories
+	 * 4)Reinforcing a territory (move units from one owned terr to another)
+	 */
+	
+	//0) Gaining resources
+	/**
+	 * Generates resources for the player (non-AI) depending on resource value of territories. 
+	 */
+	private int genResPlayer(){ //need method like this for the AI too
+		Territory[] terr=map.getAllTerritories();
+		int resourceSum=0;
+		for(int i=0;i<terr.length;i++){
+			if (!terr[i].ownedbyAI()){ //if owned by player
+				resourceSum+=terr[i].getResourceVal();
+			}
+		}
+		return resourceSum;
+	}
+	
+	//1) Buying Units
+	
+	/**
+	 * Need error handling here (buy too much, res=0)
+	 * @param i
+	 */
+	private void buyUnits(int i,int amount){
+		res-=cost[i]*amount;
+		unitsNotPlaced[i]+=amount;
+	}
+	
+	//2)Placing Units
+	/**
+	 * Error handling needed !!
+	 * @param i
+	 * @param amount
+	 * @param terr
+	 */
+	private void placeUnits(int i,int amount,Territory terr){
+		unitsNotPlaced[i]-=amount;
+		terr.addUnits(i,amount);
+	}
+	
+	//3)Attacking
+		
 	/**
 	 * Updated territory attack system. The amount of units lost for the opponents
 	 * will be U=(sum(A)*R)/(sum(D)*avg(E)*K). 
@@ -77,39 +109,59 @@ public class Game extends BasicGameState {
 	 * @param to
 	 */
 	private void attackNew(Territory from, Territory to){
-		Random rand = new Random();
 		int[] unitsFrom=from.getUnits();
 		int[] unitsTo=from.getUnits();
 		int sumA=from.sumAttack();
 		int sumD=to.sumDefence();
-		int r=rand.nextInt(10)+1; //1<=r<=10
+		int r=random.nextInt(10)+1; //1<=r<=10
 		int k=1; //change later ???
 		int avgE=to.averageEvasion();
 		int removeSize=(sumA*r)/(sumD*avgE*k);
-		to.removeUnits(0,removeUnits/3);
-		to.removeUnits(1,removeUnits/3);
-		to.removeUnits(2,removeUnits/3);
+		to.removeUnits(0,removeSize/3);
+		to.removeUnits(1,removeSize/3);
+		to.removeUnits(2,removeSize/3);
+	}
+	//4) Reinforce
+	/**
+	 * 
+	 * @param from
+	 * @param to
+	 * @param i
+	 * @param amount
+	 */
+	private void reinforce(Territory from,Territory to,int i,int amount){
+		from.removeUnits(i,amount);
+		to.addUnits(i, amount);
 	}
 	
-	/**
-	 * Generates units for the player (non-AI) depending on amount of territories
-	 * captured and their value. 
-	 */
-	private int genUnitsPlayer(){ //need method like this for the AI too
-		Territory[] terr=map.getAllTerritories();
-		int resourceSum=0;
-		for(int i=0;i<terr.length;i++){
-			if (!terr[i].ownedbyAI()){ //if owned by player
-				resourceSum+=terr[i].getResourceVal();
-			}
-		}
-		return resourceSum;
-	}
 
-	@Override
-	public int getID() {
-		return 2;
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 	//AI methods below
 	/**
