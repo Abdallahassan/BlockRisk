@@ -12,8 +12,9 @@ public class MapCreater extends BasicGameState {
 	
 	private MouseInput mouseinput;
 	private Map map;
-	private boolean inputMode;
+	private boolean boundary;
 	private IntPair coord;
+	int changeTo;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -34,14 +35,13 @@ public class MapCreater extends BasicGameState {
 		makeSquare(10, new IntPair(550, 300), new IntPair(790, 390));
 		makeSquare(11, new IntPair(700, 50), new IntPair(790, 290));
 		
-		inputMode = false;
 		coord = new IntPair(0, 0);
 	}
 	
 	private void makeSquare(int id, IntPair from, IntPair to) {
-		for (int i = from.x; i <= to.x; i+=10)
-			for (int j = from.y; j <= to.y; j+=10)
-				map.changeOwner(new IntPair(i, j-50), id);
+		for (int i = from.x; i <= to.x; i+=5)
+			for (int j = from.y; j <= to.y; j+=5)
+				map.changeOwner(new IntPair(i, j), id);
 	}
 
 	@Override
@@ -58,12 +58,53 @@ public class MapCreater extends BasicGameState {
 		mouseinput.update();
 		
 			if (Keyboard.getEventKey() == Keyboard.KEY_F) {
-				inputMode = false;
+				boundary = false;
 			} else if (Keyboard.getEventKey() == Keyboard.KEY_T) {
-				inputMode = true;
+				boundary = true;
 			}
 			
-						
+			changeTo = getKeyboardInput();
+			
+			System.out.println("boundary: " + boundary + " changeTo: " + changeTo);
+			
+			coord = mouseinput.getCoordinates();
+			if (coord.x >= 0 && coord.y >= 50 && coord.x < 800 && coord.y < 450 && mouseinput.leftClick()) {
+				if (boundary)
+					map.setBound(coord, true);
+				else
+					map.changeOwner(coord, changeTo);
+			}
+	}
+	
+	private int getKeyboardInput() {
+		switch(Keyboard.getEventKey()) {
+		case Keyboard.KEY_0:
+			return 0;
+		case Keyboard.KEY_1:
+			return 1;
+		case Keyboard.KEY_2:
+			return 2;
+		case Keyboard.KEY_3:
+			return 3;
+		case Keyboard.KEY_4:
+			return 4;
+		case Keyboard.KEY_5:
+			return 5;
+		case Keyboard.KEY_6:
+			return 6;
+		case Keyboard.KEY_7:
+			return 7;
+		case Keyboard.KEY_8:
+			return 8;
+		case Keyboard.KEY_9:
+			return 9;
+		case Keyboard.KEY_A:
+			return 10;
+		case Keyboard.KEY_B:
+			return 11;
+		default:
+			return changeTo;
+		}
 	}
 
 	@Override
