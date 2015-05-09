@@ -49,7 +49,7 @@ public class Map {
 						tmp = Color.pink;
 					
 				if (s.boundaryStatus())
-					tmp = Color.black;
+					tmp = tmp.darker();
 				s.draw(tmp, g);
 			}
 	}
