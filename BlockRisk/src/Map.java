@@ -8,12 +8,10 @@ import org.newdawn.slick.Graphics;
 public class Map {
 	
 	private Territory[] territories;
-	private List<IntPair> neighboors;
 	private Square[][] squares;
 	
 	public Map() {
 		territories = new Territory[12]; // 12 territories
-		neighboors = new ArrayList<IntPair>();
 		squares = new Square[160][80];
 		for (int i = 0; i < 160; i++)
 			for (int j = 0; j < 80; j++)
@@ -70,10 +68,6 @@ public class Map {
 	
 	public Territory[] getAllTerritories() {
 		return territories;
-	}
-	
-	public boolean adjacent(int id1, int id2) {
-		return neighboors.contains(new IntPair(Math.min(id1, id2), Math.max(id1, id2)));
 	}
 
 }
