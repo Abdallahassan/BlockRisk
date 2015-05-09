@@ -89,8 +89,8 @@ public class Game extends BasicGameState {
 	 * @param amount
 	 * @param terr
 	 */
-	private void placeUnits(int i,int amount,Territory terr){
-		unitsNotPlaced[i]-=amount;
+	private void placeUnits(int i,int amount,Territory terr,int[] units){
+		units[i]-=amount;
 		terr.addUnits(i,amount);
 	}
 	
@@ -177,6 +177,16 @@ public class Game extends BasicGameState {
 	
 	private void borderPatrol(int amount){}
 	
+	/**
+	 * Places all allocated units in one territory
+	 * @param amount
+	 * @param terr
+	 */
+	private void blob(int amount,Territory terr){
+		placeUnits(0,amount/3,terr,unitsNotPlacedAI);
+		placeUnits(1,amount/3,terr,unitsNotPlacedAI);
+		placeUnits(2,amount/3,terr,unitsNotPlacedAI);
+	}
 	//3) Attack Strategies
 	/**
 	 * Attacks weakest neighbour of given Territory terr
@@ -194,6 +204,29 @@ public class Game extends BasicGameState {
 		}
 		Territory toAttack=neighbours[weakestTerr];
 		attack(terr,toAttack);
+	}
+	
+	private void aiTurn(){
+		int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
+		//maybe save between 0 and 20 percent randomly???
+		int j=random.nextInt(3); 
+		switch(j){	//selects strategy randomly
+		
+		case 0:
+			equalist(allocatedRes);
+		break;
+		
+		case 1:
+			int i=random.nextInt(3); //0<=i<3
+			highAllocation(allocatedRes,i); //purchases inf,veh or aircraft at random
+		break;
+			
+		case 2:
+			highOffence(allocatedRes);
+		break;
+		}
+		
+		
 	}
 	
 	

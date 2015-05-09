@@ -14,6 +14,7 @@ public class Territory {
 		this.owner = owner;
 	}
 	
+	
 	public boolean ownedbyAI() {
 		return owner;
 	}
