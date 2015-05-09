@@ -24,13 +24,5 @@ public class MouseInput {
 	public IntPair getCoordinates() {
 		return coordinates;
 	}
-	
-	/**
-	 * @param poly
-	 * @return true if the mouse is hovering above the given region.
-	 */
-	public boolean insideRegion(Polygon poly) {
-		return poly.contains(coordinates.x, coordinates.y);
-	}
 
 }
