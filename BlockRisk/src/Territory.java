@@ -9,9 +9,11 @@ public class Territory {
 	private final int[] attStats={10, 60, 40, 80}; //change later ??
 	private final int[] defStats={5, 70, 45, 30};
 	private final int[] evStat={30,10,40,60};
+	private int startingRes=10000;
 	
 	public Territory(boolean owner) {
 		this.owner = owner;
+		this.resourceVal=startingRes;
 	}
 	
 	
