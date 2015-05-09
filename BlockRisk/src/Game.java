@@ -25,8 +25,7 @@ public class Game extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		for (Territory t: map.getAllTerritories())
-			t.draw(g);
+		map.draw(g);
 	}
 
 	@Override
