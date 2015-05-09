@@ -145,6 +145,10 @@ public class Game extends BasicGameState {
 		return fromTo;
 	}
 	
+	/**
+	 * Testing
+	 * @return
+	 */
 	private int numOwned(){
 		int sum=0;
 		for(int i=0;i<map.getAllTerritories().length;i++){
