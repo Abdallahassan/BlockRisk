@@ -8,7 +8,7 @@ public class Square {
 	private boolean isBoundary;
 	private int belongsTo;
 	
-	private static final int SIDE = 10;
+	public static final int SIDE = 5;
 	
 	public Square(IntPair coord) {
 		this.coord = coord;
@@ -23,6 +23,7 @@ public class Square {
 	}
 	
 	public void draw(Color color, Graphics g) {
+		g.setColor(color);
 		g.fillRect(coord.x, coord.y, SIDE, SIDE);
 	}
 	
