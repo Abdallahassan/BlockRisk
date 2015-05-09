@@ -155,6 +155,9 @@ public class Game extends BasicGameState {
 		return sum;
 	}
 	
+	/**
+	 * 
+	 */
 	public void aiAttackPhase(){
 		Territory[] fromTo=planAttack();
 		attackNew(fromTo[0],fromTo[1]);
