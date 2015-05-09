@@ -12,8 +12,9 @@ public class Game extends BasicGameState {
 	private Random random;
 	private Territory[] aiOwned;
 	private int[] unitsNotPlaced; //units the player can place in territories (non-AI)
+	private int[] unitsNotPlacedAI;
 	private int res; //player resources
-	private int resAI;
+	private int resAI; //AI resources
 	private int[] cost={10,100,250};
 
 
@@ -74,10 +75,11 @@ public class Game extends BasicGameState {
 	/**
 	 * Need error handling here (buy too much, res=0)
 	 * @param i
+	 * @param units Player or AI units 
 	 */
-	private void buyUnits(int i,int amount){
+	private void buyUnits(int i,int amount,int[] units){
 		res-=cost[i]*amount;
-		unitsNotPlaced[i]+=amount;
+		units[i]+=amount;
 	}
 	
 	//2)Placing Units
@@ -108,7 +110,7 @@ public class Game extends BasicGameState {
 	 * @param from
 	 * @param to
 	 */
-	private void attackNew(Territory from, Territory to){
+	private void attack(Territory from, Territory to){
 		int[] unitsFrom=from.getUnits();
 		int[] unitsTo=from.getUnits();
 		int sumA=from.sumAttack();
@@ -123,7 +125,7 @@ public class Game extends BasicGameState {
 	}
 	//4) Reinforce
 	/**
-	 * 
+	 * Only one reinforcement allowed per turn
 	 * @param from
 	 * @param to
 	 * @param i
@@ -134,42 +136,53 @@ public class Game extends BasicGameState {
 		to.addUnits(i, amount);
 	}
 	
-
+	//AI Logic and Methods Below.
 	
+	//1) Purchasing Strategies
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	//AI methods below
+	//1a) How to divide given resources among units
+	private void equalist(int resources){
+		//calc available amount somehow
+		int amount=resources/(cost[0]+cost[1]+cost[2]);
+		buyUnits(0,amount/3,unitsNotPlacedAI);
+		buyUnits(1,amount/3,unitsNotPlacedAI);
+		buyUnits(2,amount/3,unitsNotPlacedAI);
+	}
 	/**
-	 * Find the weakest neighbour to Territory terr
-	 * @param i Represents index in owned
-	 * @return Index of weakest neighbour to i
+	 * Allocates all to unit[i]
+	 * @param resources
 	 */
-	private Territory weakestNeigbour(Territory terr){
+	private void highAllocation(int resources,int i){
+		int amount=resources/cost[i];
+		buyUnits(i,amount,unitsNotPlacedAI);
+	}
+	
+	/**
+	 * Splits 50/50 between tanks and aircraft,
+	 * no infantry purchased
+	 */
+	private void highOffence(int resources){
+		int amount=resources/(cost[1]+cost[2]);
+		buyUnits(1,amount/2,unitsNotPlacedAI);
+		buyUnits(2,amount/2,unitsNotPlacedAI);
+	}
+	
+	//1)b) How much resources to use
+	
+	private int resourcesToUse(int amountRes){
+		
+	}
+	
+	//2) Placing Strategies
+	
+	private void borderPatrol(int amount){}
+	
+	//3) Attack Strategies
+	/**
+	 * Attacks weakest neighbour of given Territory terr
+	 * @param terr
+	 */
+	private void attackWeakestNeighbour(Territory terr){
 		Territory[] neighbours = terr.getNeighbours();
 		int lowestSum=Integer.MAX_VALUE;
 		int weakestTerr=-1; //an index
@@ -179,51 +192,12 @@ public class Game extends BasicGameState {
 				weakestTerr=i;
 			}
 		}
-		return neighbours[weakestTerr];
+		Territory toAttack=neighbours[weakestTerr];
+		attack(terr,toAttack);
 	}
 	
-	/**
-	 * AI chooses an owned territory at random and
-	 * finds the weakest neighbour to the chosen
-	 * territory. 
-	 * @return The territories it wants to attack 
-	 * and where it will attack from
-	 */
-	private Territory[] planAttack(){
-		Territory[] fromTo = new Territory[2];
-		int randIndex=random.nextInt(numOwned()); //used for choosing owned territory
-		fromTo[0]=aiOwned[randIndex];
-		fromTo[1]=weakestNeigbour(fromTo[0]);		
-		return fromTo;
-	}
 	
-	/**
-	 * Testing
-	 * @return
-	 */
-	private int numOwned(){
-		int sum=0;
-		for(int i=0;i<map.getAllTerritories().length;i++){
-			if(map.getAllTerritories()[i].isOwner()){
-				sum++;
-			}
-		}
-		return sum;
-	}
 	
-	/**
-	 * 
-	 */
-	public void aiAttackPhase(){
-		Territory[] fromTo=planAttack();
-		attackNew(fromTo[0],fromTo[1]);
-	}
-	/**
-	 * Keeps running until player loses
-	 */
-	public void play(){
-		//Needs to get info from user bout attacks.
-	}
 }
 	
 	
