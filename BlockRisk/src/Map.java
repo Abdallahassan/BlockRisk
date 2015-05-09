@@ -4,6 +4,15 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
 
 public class Map {
 	
@@ -54,7 +63,27 @@ public class Map {
 	
 	// Load and already saved game from file.
 	public void load() {
-		//TODO
+		SAXBuilder builder = new SAXBuilder();
+		 File xmlFile = new File("res/mapSave.xml");
+	 
+		  try {
+	 
+			Document document = (Document) builder.build(xmlFile); //builds XML file
+			Element rootNode = document.getRootElement(); //gets rootNode
+			List list = rootNode.getChildren("staff"); //creates list out of root's specified child
+	 
+			for (int i = 0; i < list.size(); i++) {	 
+			   Element node = (Element) list.get(i);
+			   System.out.println("First Name : " + node.getChildText("firstname"));
+			   System.out.println("Last Name : " + node.getChildText("lastname"));
+			   System.out.println("Nick Name : " + node.getChildText("nickname"));
+			   System.out.println("Salary : " + node.getChildText("salary"));	 
+			}	 
+		  } catch (IOException io) { //error handling
+			System.out.println(io.getMessage());
+		  } catch (JDOMException jdomex) { //error handling
+			System.out.println(jdomex.getMessage());
+		  }		
 	}
 	
 	// Save this map to save file.
