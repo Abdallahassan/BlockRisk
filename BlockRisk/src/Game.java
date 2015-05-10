@@ -233,15 +233,15 @@ public class Game extends BasicGameState {
 			int amount=numUnits(unitsNotPlacedAI);
 			blob(amount,terr);
 		break;
+		}
 		int n=0;
 		//keeps changing n until it produces a territory owned by AI
 		while(!map.getAllTerritories()[n].ownedbyAI()){
 			n=random.nextInt(map.getAllTerritories().length);
 		}
-		attackWeakestNeigbour(map.getAllTerritories()[n]);
-		
+		attackWeakestNeighbour(map.getAllTerritories()[n]);		
 		}
-	}
+	
 	
 	private int numUnits(int[] units){
 		int sum=0;
