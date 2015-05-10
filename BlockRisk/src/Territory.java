@@ -16,6 +16,11 @@ public class Territory {
 		this.resourceVal=startingRes;
 	}
 	
+	// Use only by Map.
+	public void setNeighbours(Territory[] neighbours) {
+		this.neighbours = neighbours;
+	}
+	
 	
 	public boolean ownedbyAI() {
 		return owner;
