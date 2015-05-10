@@ -27,7 +27,7 @@ public class MouseInput {
 	/**
 	 * @param ulc Upper left corner
 	 * @param lrc Lower right corner
-	 * @return true if the given coordinates are inside the given rectangle
+	 * @return true if the coordinates are inside the given rectangle
 	 */
 	public boolean insideRect(IntPair ulc, IntPair lrc) {
 		return coordinates.x > ulc.x && coordinates.x < lrc.x && coordinates.y > ulc.y && coordinates.y < lrc.y;
