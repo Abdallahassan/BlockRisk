@@ -20,19 +20,48 @@ public class Map {
 	private Square[][] squares;
 	
 	public Map() {
-		territories = new Territory[12]; // 12 territories
+		territories = new Territory[12]; // 12 territories enumerated 0 to 11.
+		for (int i = 0; i < 6; i++)
+			territories[i] = new Territory(false);
+		for (int i = 6; i < 12; i++)
+			territories[i] = new Territory(true);
+		
+		initNeighbours(0, new int[]{1, 3});
+		initNeighbours(1, new int[]{0, 2, 3, 4});
+		initNeighbours(2, new int[]{1, 4});
+		initNeighbours(3, new int[]{0, 1, 4, 5, 6});
+		initNeighbours(4, new int[]{1, 2, 3, 6, 7, 8});
+		initNeighbours(5, new int[]{3, 6, 9});
+		initNeighbours(6, new int[]{3, 4, 5, 7, 9});
+		initNeighbours(7, new int[]{4, 6, 8, 9, 10});
+		initNeighbours(8, new int[]{4, 7, 10});
+		initNeighbours(9, new int[]{5, 6, 7, 10, 11});
+		initNeighbours(10, new int[]{7, 8, 9, 11});
+		initNeighbours(11, new int[]{9, 10});
+		
 		squares = new Square[160][80];
 		for (int i = 0; i < 160; i++)
 			for (int j = 0; j < 80; j++)
 				squares[i][j] = new Square(new IntPair(i*5, (j*5)+50));
 	}
 	
+	// Use only by MapCreater
 	public void changeOwner(IntPair coord, int id) {
 		squares[coord.x/5][(coord.y-50)/5].setOwnership(id);
 	}
 	
+	// Use only by Mapcreater
 	public void setBound(IntPair coord, boolean val) {
 		squares[coord.x/5][(coord.y-50)/5].setBoundary(val);
+	}
+	
+	private void initNeighbours(int id, int[] neighbourIDs) {
+		Territory[] neighbours = new Territory[neighbourIDs.length];
+		int n = 0;
+		for (int i: neighbourIDs) {
+			neighbours[n] = territories[i];
+		}
+		territories[id].setNeighbours(neighbours);
 	}
 	
 	public void draw(Graphics g) {
