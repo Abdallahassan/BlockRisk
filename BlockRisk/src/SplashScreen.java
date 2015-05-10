@@ -27,7 +27,6 @@ public class SplashScreen extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		float[] cords = {0, 0, 50, 0, 100, 50, 75, 75, 50, 25};
 		try {
 			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/SplashScreenFit.jpg")));
 		} catch (FileNotFoundException e) {
