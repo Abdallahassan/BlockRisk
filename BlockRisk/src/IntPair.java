@@ -15,5 +15,9 @@ public class IntPair {
 	public IntPair add(int x, int y) {
 		return new IntPair(x+this.x, y+this.y);
 	}
+	
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
 
 }
