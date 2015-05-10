@@ -16,21 +16,46 @@ public class Game extends BasicGameState {
 	private int res; //player resources
 	private int resAI; //AI resources
 	private int[] cost={10,100,250}; //cost of infantry, vehicles and aircraft
+	private Texture texture;
 
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		try {
+			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/headerFit.jpg")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		glEnable(GL_TEXTURE_2D);
 		mouseinput = new MouseInput();
 		AIsturn = false;
 		map = new Map();
-		map.load();
+		//map.load();
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
+		GL11.glColor3f(1f, 1f, 1f);
+		texture.bind();
+		drawTexture();
 		map.draw(g);
+	}
+	
+	private void drawTexture() {
+		glBegin(GL_QUADS);  // Draw texture on specified coordinates.
+		glTexCoord2f(0, 0);
+		glVertex2i(0, 0);
+		glTexCoord2f(1, 0);
+		glVertex2i(Main.WIDTH, 0);
+		glTexCoord2f(1, 1);
+		glVertex2i(Main.WIDTH, 50);
+		glTexCoord2f(0, 1);
+		glVertex2i(0, 50);
+		glEnd();
 	}
 
 	@Override
