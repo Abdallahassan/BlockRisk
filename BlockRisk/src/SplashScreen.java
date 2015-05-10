@@ -43,6 +43,7 @@ public class SplashScreen extends BasicGameState {
 			throws SlickException {
 		texture.bind();
 		drawTexture();
+		gc.setShowFPS(false);
 	}
 	
 	private void drawTexture() {
