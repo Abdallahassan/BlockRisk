@@ -120,6 +120,14 @@ public class Map {
 		//TODO
 	}
 	
+	/**
+	 * @param Coord The coordinates of the mouse input. The input MUST BE VALID (i.e. inside the map).
+	 * @return The corresponding Territory.
+	 */
+	public Territory getTerritory(IntPair coord) {
+		return territories[squares[coord.x/5][(coord.y-50)/5].getOwnership()];
+	}
+	
 	public Territory getTerritory(int id) {
 		return territories[id];
 	}
