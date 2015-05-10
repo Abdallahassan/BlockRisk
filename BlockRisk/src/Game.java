@@ -15,7 +15,7 @@ public class Game extends BasicGameState {
 	private int[] unitsNotPlacedAI;
 	private int res; //player resources
 	private int resAI; //AI resources
-	private int[] cost={10,100,250};
+	private int[] cost={10,100,250}; //cost of infantry, vehicles and aircraft
 
 
 	@Override
@@ -140,7 +140,7 @@ public class Game extends BasicGameState {
 	
 	//1) Purchasing Strategies
 	
-	//1a) How to divide given resources among units
+	// How to divide given resources among units
 	private void equalist(int resources){
 		//calc available amount somehow
 		int amount=resources/(cost[0]+cost[1]+cost[2]);
@@ -167,15 +167,9 @@ public class Game extends BasicGameState {
 		buyUnits(2,amount/2,unitsNotPlacedAI);
 	}
 	
-	//1)b) How much resources to use
-	
-	private int resourcesToUse(int amountRes){
 		
-	}
-	
 	//2) Placing Strategies
 	
-	private void borderPatrol(int amount){}
 	
 	/**
 	 * Places all allocated units in one territory
@@ -210,7 +204,7 @@ public class Game extends BasicGameState {
 		int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
 		//maybe save between 0 and 20 percent randomly???
 		int j=random.nextInt(3); 
-		switch(j){	//selects strategy randomly
+		switch(j){	//selects purchasing strategy randomly
 		
 		case 0:
 			equalist(allocatedRes);
@@ -225,8 +219,36 @@ public class Game extends BasicGameState {
 			highOffence(allocatedRes);
 		break;
 		}
+		//placement 
+		int k=random.nextInt(2); 
+		switch(k){	
 		
+		case 0:
+			
+		break;
 		
+		case 1:
+			int a=random.nextInt(map.getAllTerritories().length);
+			Territory terr=map.getAllTerritories()[a];
+			int amount=numUnits(unitsNotPlacedAI);
+			blob(amount,terr);
+		break;
+		int n=0;
+		//keeps changing n until it produces a territory owned by AI
+		while(!map.getAllTerritories()[n].ownedbyAI()){
+			n=random.nextInt(map.getAllTerritories().length);
+		}
+		attackWeakestNeigbour(map.getAllTerritories()[n]);
+		
+		}
+	}
+	
+	private int numUnits(int[] units){
+		int sum=0;
+		for(int i=0;i<units.length;i++){
+			sum+=units[i];
+		}
+		return sum;
 	}
 	
 	
