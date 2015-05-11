@@ -86,8 +86,8 @@ public class Map {
 					tmp = Color.blue;
 				else
 					tmp = Color.red;
-					
-				if (s.boundaryStatus())
+				
+				if (s.getOwnership() == highlight)
 					tmp = tmp.darker();
 				s.draw(tmp, g);
 			}
@@ -292,6 +292,10 @@ public class Map {
 	
 	public Territory getTerritory(int id) {
 		return territories[id];
+	}
+	
+	public Territory getTerritory(IntPair coord) {
+		return territories[squares[coord.x/5][(coord.y-50)/5].getOwnership()];
 	}
 	
 	public Territory[] getAllTerritories() {
