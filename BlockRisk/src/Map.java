@@ -44,6 +44,8 @@ public class Map {
 		for (int i = 0; i < 160; i++)
 			for (int j = 0; j < 80; j++)
 				squares[i][j] = new Square(new IntPair(i*5, (j*5)+50));
+				
+		highlight = -1;
 	}
 	
 	// Use only by MapCreater
@@ -130,10 +132,18 @@ public class Map {
 	
 	/**
 	 * @param Coord The coordinates of the mouse input. The input MUST BE VALID (i.e. inside the map).
-	 * @return The corresponding Territory.
+	 * @return The corresponding Territory ID.
 	 */
-	public Territory getTerritory(IntPair coord) {
-		return territories[squares[coord.x/5][(coord.y-50)/5].getOwnership()];
+	public int getTerritoryID(IntPair coord) {
+		return squares[coord.x/5][(coord.y-50)/5].getOwnership();
+	}
+	
+	public boolean ownedbyAI(int id) {
+		return territories[id].ownedbyAI();
+	}
+	
+	public boolean areNeighbours(int id1, int id2) {
+		return territories[id1].isNeighbour(territories[id2]);
 	}
 	
 	public Territory getTerritory(int id) {
