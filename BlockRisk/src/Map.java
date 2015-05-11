@@ -120,6 +120,10 @@ public class Map {
 		//TODO
 	}
 	
+	public void initNewGame() {
+		//TODO
+	}
+	
 	/**
 	 * @param Coord The coordinates of the mouse input. The input MUST BE VALID (i.e. inside the map).
 	 * @return The corresponding Territory.
