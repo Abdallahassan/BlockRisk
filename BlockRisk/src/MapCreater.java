@@ -22,18 +22,18 @@ public class MapCreater extends BasicGameState {
 		mouseinput = new MouseInput();
 		map = new Map();
 		
-		makeSquare(0, new IntPair(0, 50), new IntPair(190, 140));
-		makeSquare(1, new IntPair(0, 150), new IntPair(190, 290));
-		makeSquare(2, new IntPair(0, 300), new IntPair(190, 440));
-		makeSquare(3, new IntPair(200, 50), new IntPair(340, 190));
-		makeSquare(4, new IntPair(200, 200), new IntPair(340, 440));
-		makeSquare(5, new IntPair(350, 50), new IntPair(540, 140));
-		makeSquare(6, new IntPair(350, 150), new IntPair(540, 240));
-		makeSquare(7, new IntPair(350, 250), new IntPair(540, 390));
-		makeSquare(8, new IntPair(350, 400), new IntPair(790, 440));
-		makeSquare(9, new IntPair(550, 50), new IntPair(690, 290));
-		makeSquare(10, new IntPair(550, 300), new IntPair(790, 390));
-		makeSquare(11, new IntPair(700, 50), new IntPair(790, 290));
+		makeSquare(0, new IntPair(0, 50), new IntPair(195, 145));
+		makeSquare(1, new IntPair(0, 150), new IntPair(195, 295));
+		makeSquare(2, new IntPair(0, 300), new IntPair(195, 445));
+		makeSquare(3, new IntPair(200, 50), new IntPair(345, 195));
+		makeSquare(4, new IntPair(200, 200), new IntPair(345, 445));
+		makeSquare(5, new IntPair(350, 50), new IntPair(545, 145));
+		makeSquare(6, new IntPair(350, 150), new IntPair(545, 245));
+		makeSquare(7, new IntPair(350, 250), new IntPair(545, 395));
+		makeSquare(8, new IntPair(350, 400), new IntPair(795, 445));
+		makeSquare(9, new IntPair(550, 50), new IntPair(695, 295));
+		makeSquare(10, new IntPair(550, 300), new IntPair(795, 395));
+		makeSquare(11, new IntPair(700, 50), new IntPair(795, 295));
 		
 		coord = new IntPair(0, 0);
 	}
@@ -67,7 +67,7 @@ public class MapCreater extends BasicGameState {
 			
 			changeTo = getKeyboardInput();
 			
-			System.out.println("boundary: " + boundary + " changeTo: " + changeTo);
+			//System.out.println("boundary: " + boundary + " changeTo: " + changeTo);
 			
 			coord = mouseinput.getCoordinates();
 			if (coord.x >= 0 && coord.y >= 50 && coord.x < 800 && coord.y < 450 && mouseinput.leftClick()) {
