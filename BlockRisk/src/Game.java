@@ -290,8 +290,24 @@ public class Game extends BasicGameState {
 		while(!map.getAllTerritories()[n].ownedbyAI()){
 			n=random.nextInt(map.getAllTerritories().length);
 		}
-		attackWeakestNeighbour(map.getAllTerritories()[n]);		
+		attackWeakestNeighbour(map.getAllTerritories()[n]);	
+		AIsturn=false;
 		}
+	
+	private void defend(Territory from, Territory to) {
+		int[] unitsFrom=from.getUnits();
+		int[] unitsTo=from.getUnits();
+		int sumA=to.sumAttack();
+		int sumD=from.sumDefence();
+		int r=random.nextInt(10)+1; //1<=r<=10
+		int k=1; //change later ???
+		int avgE=from.averageEvasion();
+		int removeSize=(sumA*r)/(sumD*avgE*k);
+		from.removeUnits(0,removeSize/3);
+		from.removeUnits(1,removeSize/3);
+		from.removeUnits(2,removeSize/3);
+		
+	}
 	
 	
 	private int numUnits(int[] units){
@@ -300,6 +316,27 @@ public class Game extends BasicGameState {
 			sum+=units[i];
 		}
 		return sum;
+	}
+	
+	/**
+	 * Simulates a battle between player and AI
+	 * @param from
+	 * @param to
+	 * @return True if attackers win,false if defenders win
+	 */
+	private boolean combat(Territory from,Territory to){
+		while(numUnits(from.getUnits())>0||numUnits(to.getUnits())>0){
+			attack(from,to);
+			defend(from,to);
+			if(numUnits(from.getUnits())<=0){
+				return false;
+			}
+			else if(numUnits(to.getUnits())<=0){
+				to.changeOwner();
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	
