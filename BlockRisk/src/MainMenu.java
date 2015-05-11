@@ -19,7 +19,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class SplashScreen extends BasicGameState {
+public class MainMenu extends BasicGameState {
 	
 	private Texture texture;
 	private int time;
