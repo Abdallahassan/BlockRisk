@@ -57,7 +57,9 @@ public class Game extends BasicGameState {
 		mouseinput = new MouseInput();
 		AIsturn = false;
 		map = new Map();
-		//map.load();
+		//map.load();   Uncomment later
+		if (Main.isNewGame())
+			map.initNewGame();
 	}
 
 	@Override
