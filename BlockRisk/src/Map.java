@@ -19,6 +19,7 @@ import org.jdom2.output.XMLOutputter;
 
 public class Map {
 	
+	
 	private Territory[] territories;
 	private Square[][] squares;
 	private int highlight; // Do not save in xml file.

@@ -1,1 +1,99 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<Map>
+  <Terr0>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr0>
+  <Terr1>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr1>
+  <Terr2>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr2>
+  <Terr3>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr3>
+  <Terr4>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr4>
+  <Terr5>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr5>
+  <Terr6>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr6>
+  <Terr7>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr7>
+  <Terr8>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr8>
+  <Terr9>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr9>
+  <Terr10>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr10>
+  <Terr11>
+    <units>
+      <infantry>0</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
+    </units>
+    <owner />
+  </Terr11>
+</Map>
