@@ -121,7 +121,10 @@ public class Map {
 	}
 	
 	public void initNewGame() {
-		//TODO
+		for (int i = 0; i < 6; i++)
+			territories[i].setOwner(false);
+		for (int i = 6; i < 12; i++)
+			territories[i].setOwner(true);
 	}
 	
 	/**
