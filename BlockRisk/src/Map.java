@@ -5,6 +5,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 
 public class Map {
@@ -118,9 +121,107 @@ public class Map {
 		  }		
 	}
 	
+	//initilises mapSave.xml
+	public void initMapSave() {
+		 
+		  try {
+	 
+			SAXBuilder builder = new SAXBuilder();
+			File xmlFile = new File("res/mapSave.xml");
+	 
+			Document doc = (Document) builder.build(xmlFile);
+			Element rootNode = doc.getRootElement();
+	 
+						
+			for(int i=0;i<territories.length;i++){
+				Territory territory=territories[i];
+				Element terrNode = new Element("Terr"+i);
+				rootNode.addContent(terrNode);
+				
+				Element terrOwner = new Element("owner");
+				Element terrUnits = new Element("units");
+				Element inf=new Element("infantry");
+				Element veh=new Element("vehicles");
+				Element air=new Element("aircraft");
+				
+				int infNum=territory.getUnits()[0];
+				inf.setText(Integer.toString(infNum));
+				
+				int vehNum=territory.getUnits()[1];
+				veh.setText(Integer.toString(vehNum));
+				
+				int airNum=territory.getUnits()[2];
+				air.setText(Integer.toString(airNum));
+				
+				terrUnits.addContent(inf);
+				terrUnits.addContent(veh);
+				terrUnits.addContent(air);
+				
+				terrNode.addContent(terrUnits);
+				terrNode.addContent(terrOwner);
+									
+			}
+					
+	
+	 
+			XMLOutputter xmlOutput = new XMLOutputter();
+	 
+			// display nice nice
+			xmlOutput.setFormat(Format.getPrettyFormat());
+			xmlOutput.output(doc, new FileWriter("res/mapSave.xml"));
+	 
+			// xmlOutput.output(doc, System.out);
+	 
+			System.out.println("File updated!");
+		  } catch (IOException io) {
+			io.printStackTrace();
+		  } catch (JDOMException e) {
+			e.printStackTrace();
+		  }
+		}
+	
 	// Save this map to save file.
-	public void save() {
-		//TODO
+	public void save(){
+		 
+		  try {
+	 
+			SAXBuilder builder = new SAXBuilder();
+			File xmlFile = new File("res/mapSave.xml");
+	 
+			Document doc = (Document) builder.build(xmlFile);
+			Element rootNode = doc.getRootElement();
+	 
+						
+			for(int i=0;i<territories.length;i++){
+				Territory territory=territories[i];
+				int[] terrUnits=territory.getUnits();
+				Element terr=rootNode.getChild("Terr"+i);
+				Element unitNode=terr.getChild("units");
+				//updates unit values
+				unitNode.getChild("infantry").setText(Integer.toString(terrUnits[0]));
+				unitNode.getChild("vehicles").setText(Integer.toString(terrUnits[1]));
+				unitNode.getChild("aircraft").setText(Integer.toString(terrUnits[2]));
+				
+				terr.getChild("owner").setText(Boolean.toString(territory.ownedbyAI()));
+									
+			}
+					
+	
+	 
+			XMLOutputter xmlOutput = new XMLOutputter();
+	 
+			// display nice nice
+			xmlOutput.setFormat(Format.getPrettyFormat());
+			xmlOutput.output(doc, new FileWriter("res/mapSave.xml"));
+	 
+			// xmlOutput.output(doc, System.out);
+	 
+			System.out.println("File updated!");
+		  } catch (IOException io) {
+			io.printStackTrace();
+		  } catch (JDOMException e) {
+			e.printStackTrace();
+		  }
 	}
 	
 	public void initNewGame() {
