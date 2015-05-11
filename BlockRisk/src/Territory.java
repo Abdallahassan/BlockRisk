@@ -30,6 +30,10 @@ public class Territory {
 		owner = !owner;
 	}
 	
+	public void setOwner(boolean b) {
+		owner = b;
+	}
+	
 	public int[] getUnits(){
 		return units;
 	}
