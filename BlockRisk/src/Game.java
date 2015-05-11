@@ -44,6 +44,7 @@ public class Game extends BasicGameState {
 	
 	private int actionFrom;
 	private boolean attackMode;
+	private boolean inuserTerritory;
 	private final static IntPair saveButtonFrom = new IntPair(0, 0); // change later
 	private final static IntPair saveButtonTo   = new IntPair(1, 1); // change later
 	private final static IntPair mainMenuButtonFrom = new IntPair(0, 0); // change later
@@ -101,19 +102,19 @@ public class Game extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		mouseinput.update();
-		if (attackMode) {
+
+		if (mouseinput.leftClick()) {
+			/*if (attackMode) {
 			// do something.
-		}
-		else if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn && mouseinput.leftClick()) {
-			if (actionFrom == -1 && !map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates()))) {
-				actionFrom = map.getTerritoryID(mouseinput.getCoordinates());
-				map.setHighlight(actionFrom);
-			}
-			else if (actionFrom != -1 && map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates())) && map.areNeighbours(actionFrom, map.getTerritoryID(mouseinput.getCoordinates()))) {
-				attackMode = true;
-				attack(map.getTerritory(actionFrom), map.getTerritory(map.getTerritoryID(mouseinput.getCoordinates())));
-				map.setHighlight(-1);
-			}
+		}*/
+		if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn) { // change to else if later
+			 inuserTerritory = !map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates()));
+			 if (inuserTerritory) {
+				 actionFrom = map.getTerritoryID(mouseinput.getCoordinates());
+				 map.setHighlight(actionFrom);
+			 } else if (actionFrom >= 0 && actionFrom < 12) {
+				 attack(map.getTerritory(actionFrom), map.getTerritory(mouseinput.getCoordinates()));
+			 }
 		}
 		else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo))
 			map.save();
@@ -121,6 +122,8 @@ public class Game extends BasicGameState {
 			map.save();
 			sbg.enterState(1);
 		}
+		}
+		
 	}
 
 	@Override
