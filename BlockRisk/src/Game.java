@@ -70,6 +70,8 @@ public class Game extends BasicGameState {
 		
 		actionFrom = -1;
 		attackMode = false;
+		
+		random = new Random(System.currentTimeMillis());
 	}
 
 	@Override
