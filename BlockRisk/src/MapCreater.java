@@ -61,6 +61,8 @@ public class MapCreater extends BasicGameState {
 				boundary = false;
 			} else if (Keyboard.getEventKey() == Keyboard.KEY_T) {
 				boundary = true;
+			} else if (Keyboard.getEventKey() == Keyboard.KEY_S) {
+				map.save();
 			}
 			
 			changeTo = getKeyboardInput();
