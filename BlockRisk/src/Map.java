@@ -50,6 +50,47 @@ public class Map {
 				squares[i][j] = new Square(new IntPair(i*5, (j*5)+50));
 				
 		highlight = -1;
+		
+		tmpInit();
+	}
+	
+	// This is a temporary method just to test the game mechanics before the map is done.
+	private void tmpInit() {
+		makeSquare(0, new IntPair(0, 50), new IntPair(195, 145));
+		makeSquare(1, new IntPair(0, 150), new IntPair(195, 295));
+		makeSquare(2, new IntPair(0, 300), new IntPair(195, 445));
+		makeSquare(3, new IntPair(200, 50), new IntPair(345, 195));
+		makeSquare(4, new IntPair(200, 200), new IntPair(345, 445));
+		makeSquare(5, new IntPair(350, 50), new IntPair(545, 145));
+		makeSquare(6, new IntPair(350, 150), new IntPair(545, 245));
+		makeSquare(7, new IntPair(350, 250), new IntPair(545, 395));
+		makeSquare(8, new IntPair(350, 400), new IntPair(795, 445));
+		makeSquare(9, new IntPair(550, 50), new IntPair(695, 295));
+		makeSquare(10, new IntPair(550, 300), new IntPair(795, 395));
+		makeSquare(11, new IntPair(700, 50), new IntPair(795, 295));
+	}
+	
+	// Temporary method too.
+	private void makeSquare(int id, IntPair from, IntPair to) {
+		for (int i = from.x; i <= to.x; i+=5)
+			for (int j = from.y; j <= to.y; j+=5)
+				changeOwner(new IntPair(i, j), id);
+	}
+	
+	// Temporary draw method.
+	public void tmpdraw(Graphics g) {
+		for (Square[] array: squares)
+			for (Square s: array) {
+				Color tmp;
+				if (territories[s.getOwnership()].ownedbyAI())
+					tmp = Color.blue;
+				else
+					tmp = Color.red;
+					
+				if (s.boundaryStatus())
+					tmp = tmp.darker();
+				s.draw(tmp, g);
+			}
 	}
 	
 	// Use only by MapCreater
@@ -67,6 +108,7 @@ public class Map {
 		int n = 0;
 		for (int i: neighbourIDs) {
 			neighbours[n] = territories[i];
+			n++;
 		}
 		territories[id].setNeighbours(neighbours);
 	}
