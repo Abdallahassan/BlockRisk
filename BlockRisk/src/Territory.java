@@ -2,9 +2,9 @@
 public class Territory {
 	
 	private boolean owner; // true if it's owned by the AI.
-	private int[] units; //amount of units in this territory
+	private int[] units={0,0,0}; //units[0]=number of infantry,units[1]=number of vehicles, units[2]=aircraft 
 	private int resourceVal; //amount of resources this territory generates each turn 
-	private Territory[] neighbours; 
+//	private Territory[] neighbours; 
 	private final int[] attStats={10, 60, 40, 80}; //change later ??
 	private final int[] defStats={5, 70, 45, 30};
 	private final int[] evStat={30,10,40,60};
