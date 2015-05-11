@@ -1,3 +1,4 @@
+
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -18,23 +19,24 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-
 public class MainMenu extends BasicGameState {
 	
 	private Texture texture;
-	private int time;
+	MouseInput mouseinput;
+	private boolean showHelp;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		try {
-			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/SplashScreenFit.jpg")));
+			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/mainMenuFit.jpg")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		glEnable(GL_TEXTURE_2D);
+		mouseinput = new MouseInput();
 	}
 
 	@Override
@@ -42,7 +44,6 @@ public class MainMenu extends BasicGameState {
 			throws SlickException {
 		texture.bind();
 		drawTexture();
-		gc.setShowFPS(false);
 	}
 	
 	private void drawTexture() {
@@ -61,20 +62,24 @@ public class MainMenu extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		time += delta;
-		
-		if (time > 6000) {     // After 6 seconds.
-			sbg.enterState(1);
-		}
-		
+		mouseinput.update();
+		if (mouseinput.leftClick())
+			if (mouseinput.insideRect(new IntPair(250, 215), new IntPair(560, 260))) {
+				Main.setNewGame(true);
+				sbg.enterState(2);
+			}
+			else if (mouseinput.insideRect(new IntPair(250, 305), new IntPair(560, 350))) {
+				Main.setNewGame(false);
+				sbg.enterState(2);
+			} 
+			else if (mouseinput.insideRect(new IntPair(250, 395), new IntPair(560, 440)) && !showHelp) {
+				showHelp = true; // Deal with the help dialogbox later.
+			}
 	}
 
 	@Override
 	public int getID() {
-		return 0;
+		return 1;
 	}
-
-
-	
 
 }
