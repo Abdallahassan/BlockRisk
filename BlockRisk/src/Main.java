@@ -17,6 +17,8 @@ public class Main extends StateBasedGame {
 	
 	public static final IntPair UPPER_LEFT_CORNER = new IntPair(0, 50);
 	public static final IntPair LOWER_RIGHT_CORNER = new IntPair(Main.WIDTH, Main.HEIGHT-50);
+	
+	private static boolean newGame;
 
 	public Main(String name) {
 		super(name);
@@ -42,6 +44,14 @@ public class Main extends StateBasedGame {
 		this.addState(new Game());
 		this.addState(new MapCreater());
 		this.enterState(SPLASHSCREEN);
+	}
+	
+	public static boolean isNewGame() {
+		return newGame;
+	}
+
+	public static void setNewGame(boolean b) {
+		newGame = b;
 	}
 
 }
