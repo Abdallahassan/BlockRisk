@@ -41,6 +41,13 @@ public class Game extends BasicGameState {
 	private int resAI; //AI resources
 	private int[] cost={10,100,250}; //cost of infantry, vehicles and aircraft
 	private Texture texture;
+	
+	private int actionFrom;
+	private boolean attackMode;
+	private final static IntPair saveButtonFrom = new IntPair(0, 0); // change later
+	private final static IntPair saveButtonTo   = new IntPair(1, 1); // change later
+	private final static IntPair mainMenuButtonFrom = new IntPair(0, 0); // change later
+	private final static IntPair mainMenuButtonTo   = new IntPair(1, 1); // change later
 
 
 	@Override
@@ -60,6 +67,9 @@ public class Game extends BasicGameState {
 		//map.load();   Uncomment later
 		if (Main.isNewGame())
 			map.initNewGame();
+			
+		actionFrom = -1;
+		attackMode = false;
 	}
 
 	@Override
@@ -69,6 +79,10 @@ public class Game extends BasicGameState {
 		texture.bind();
 		drawTexture();
 		map.draw(g);
+		
+		if (attackMode) {
+			// draw something.
+		}
 	}
 	
 	private void drawTexture() {
@@ -88,7 +102,26 @@ public class Game extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		mouseinput.update();
-		
+		if (attackMode) {
+			// do something.
+		}
+		else if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn) {
+			if (actionFrom == -1 && !map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates()))) {
+				actionFrom = map.getTerritoryID(mouseinput.getCoordinates());
+				map.setHighlight(actionFrom);
+			}
+			else if (actionFrom != -1 && map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates())) && map.areNeighbours(actionFrom, map.getTerritoryID(mouseinput.getCoordinates()))) {
+				attackMode = true;
+				attack(map.getTerritory(actionFrom), map.getTerritory(map.getTerritoryID(mouseinput.getCoordinates())));
+				map.setHighlight(-1);
+			}
+		}
+		else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo))
+			map.save();
+		else if (mouseinput.insideRect(mainMenuButtonFrom, mainMenuButtonTo)) {
+			map.save();
+			sbg.enterState(1);
+		}
 	}
 
 	@Override
@@ -290,24 +323,8 @@ public class Game extends BasicGameState {
 		while(!map.getAllTerritories()[n].ownedbyAI()){
 			n=random.nextInt(map.getAllTerritories().length);
 		}
-		attackWeakestNeighbour(map.getAllTerritories()[n]);	
-		AIsturn=false;
+		attackWeakestNeighbour(map.getAllTerritories()[n]);		
 		}
-	
-	private void defend(Territory from, Territory to) {
-		int[] unitsFrom=from.getUnits();
-		int[] unitsTo=from.getUnits();
-		int sumA=to.sumAttack();
-		int sumD=from.sumDefence();
-		int r=random.nextInt(10)+1; //1<=r<=10
-		int k=1; //change later ???
-		int avgE=from.averageEvasion();
-		int removeSize=(sumA*r)/(sumD*avgE*k);
-		from.removeUnits(0,removeSize/3);
-		from.removeUnits(1,removeSize/3);
-		from.removeUnits(2,removeSize/3);
-		
-	}
 	
 	
 	private int numUnits(int[] units){
@@ -316,27 +333,6 @@ public class Game extends BasicGameState {
 			sum+=units[i];
 		}
 		return sum;
-	}
-	
-	/**
-	 * Simulates a battle between player and AI
-	 * @param from
-	 * @param to
-	 * @return True if attackers win,false if defenders win
-	 */
-	private boolean combat(Territory from,Territory to){
-		while(numUnits(from.getUnits())>0||numUnits(to.getUnits())>0){
-			attack(from,to);
-			defend(from,to);
-			if(numUnits(from.getUnits())<=0){
-				return false;
-			}
-			else if(numUnits(to.getUnits())<=0){
-				to.changeOwner();
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	
