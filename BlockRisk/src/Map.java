@@ -18,6 +18,7 @@ public class Map {
 	
 	private Territory[] territories;
 	private Square[][] squares;
+	private int highlight; // Do not save in xml file.
 	
 	public Map() {
 		territories = new Territory[12]; // 12 territories enumerated 0 to 11.
@@ -141,6 +142,14 @@ public class Map {
 	
 	public Territory[] getAllTerritories() {
 		return territories;
+	}
+	
+	public int getHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(int highlight) {
+		this.highlight = highlight;
 	}
 
 }
