@@ -35,4 +35,12 @@ public class Square {
 		return belongsTo;
 	}
 
+	public IntPair getCoord() {
+		return coord;
+	}
+
+	public void setCoord(IntPair coord) {
+		this.coord = coord;
+	}
+
 }

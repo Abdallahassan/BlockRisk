@@ -19,7 +19,6 @@ import org.jdom2.output.XMLOutputter;
 
 public class Map {
 	
-	
 	private Territory[] territories;
 	private Square[][] squares;
 	private int highlight; // Do not save in xml file.
@@ -122,7 +121,10 @@ public class Map {
 		  }		
 	}
 	
-	//initilises mapSave.xml
+	/**
+	 * initialises mapSave.xml, used for when no data of map
+	 * exists/mapSave.xml is empty 
+	 */
 	public void initMapSave() {
 		 
 		  try {
@@ -162,9 +164,7 @@ public class Map {
 				terrNode.addContent(terrOwner);
 									
 			}
-					
-	
-	 
+						 
 			XMLOutputter xmlOutput = new XMLOutputter();
 	 
 			// display nice nice
@@ -180,6 +180,7 @@ public class Map {
 			e.printStackTrace();
 		  }
 		}
+	
 	
 	// Save this map to save file.
 	public void save(){
@@ -203,8 +204,31 @@ public class Map {
 				unitNode.getChild("vehicles").setText(Integer.toString(terrUnits[1]));
 				unitNode.getChild("aircraft").setText(Integer.toString(terrUnits[2]));
 				
-				terr.getChild("owner").setText(Boolean.toString(territory.ownedbyAI()));
-									
+				terr.getChild("owner").setText(Boolean.toString(territory.ownedbyAI()));									
+			}
+			//stores all squares
+			Element squareNode=rootNode.getChild("Squares");
+			for(int j=0;j<squares.length;j++){
+				Element squareRowChild=squareNode.getChild("row"+j);
+				for(int k=0;k<squares[j].length;k++){
+					Square square = squares[j][k];
+					Element squareColChild=squareRowChild.getChild("column"+k);
+					Element coord = squareColChild.getChild("coordinates");
+					Element isBoundary = squareColChild.getChild("isBoundary");
+					Element belongsTo = squareColChild.getChild("belongsTo");
+										
+					isBoundary.setText(Boolean.toString(square.boundaryStatus()));
+					belongsTo.setText(Integer.toString(square.getOwnership()));
+					
+					IntPair pair=square.getCoord();
+					Element x=coord.getChild("x");
+					Element y=coord.getChild("y");
+					
+					x.setText(Integer.toString(pair.x));
+					y.setText(Integer.toString(pair.y));
+											
+				}
+			
 			}
 					
 	
