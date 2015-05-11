@@ -68,6 +68,7 @@ public class Map {
 		makeSquare(9, new IntPair(550, 50), new IntPair(695, 295));
 		makeSquare(10, new IntPair(550, 300), new IntPair(795, 395));
 		makeSquare(11, new IntPair(700, 50), new IntPair(795, 295));
+		initBorders();
 	}
 	
 	// Temporary method too.
@@ -75,6 +76,51 @@ public class Map {
 		for (int i = from.x; i <= to.x; i+=5)
 			for (int j = from.y; j <= to.y; j+=5)
 				changeOwner(new IntPair(i, j), id);
+	}
+	
+	// Temporary
+	private boolean Ok(IntPair sq) {
+		return sq.x >= 0 && sq.x < 160 && sq.y >= 0 && sq.y < 80;
+	}
+	
+	// Temporary
+	private List<IntPair> near(IntPair sq) {
+		List<IntPair> sqs = new ArrayList<IntPair>();
+		IntPair add = new IntPair(sq.x -1, sq.y -1);
+		if (Ok(add))
+			sqs.add(add);
+		add = new IntPair(add.x+1, sq.y);
+		if (Ok(add))
+			sqs.add(add);
+		add = new IntPair(add.x+1, sq.y);
+		if (Ok(add))
+			sqs.add(add);
+		add = new IntPair(add.x, sq.y+1);
+		if (Ok(add))
+			sqs.add(add);
+		add = new IntPair(add.x, sq.y+1);
+		if (Ok(add))
+			sqs.add(add);
+		add = new IntPair(add.x-1, sq.y);
+		if (Ok(add))
+			sqs.add(add);
+		add = new IntPair(add.x-1, sq.y);
+		if (Ok(add))
+			sqs.add(add);
+		add = new IntPair(add.x, sq.y-1);
+		if (Ok(add))
+			sqs.add(add);
+		return sqs;
+	}
+	
+	// Temporary
+	private void initBorders() {
+		for (int i = 0; i < 160; i++)
+			for (int j = 0; j < 80; j++)
+				for (IntPair ip : near(new IntPair(i, j))){
+					if (squares[i][j].getOwnership() != squares[ip.x][ip.y].getOwnership())
+							squares[i][j].setBoundary(true);
+				}
 	}
 	
 	// Temporary draw method.
@@ -87,7 +133,7 @@ public class Map {
 				else
 					tmp = Color.red;
 				
-				if (s.getOwnership() == highlight)
+				if (s.getOwnership() == highlight || s.boundaryStatus())
 					tmp = tmp.darker();
 				s.draw(tmp, g);
 			}
