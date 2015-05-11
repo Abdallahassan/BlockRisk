@@ -43,7 +43,7 @@ public class Main extends StateBasedGame {
 		this.addState(new MainMenu());
 		this.addState(new Game());
 		this.addState(new MapCreater());
-		this.enterState(SPLASHSCREEN);
+		this.enterState(MAPCREATER);
 	}
 	
 	public static boolean isNewGame() {
