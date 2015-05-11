@@ -67,7 +67,7 @@ public class MapCreater extends BasicGameState {
 			
 			changeTo = getKeyboardInput();
 			
-			System.out.println("boundary: " + boundary + " changeTo: " + changeTo);
+			//System.out.println("boundary: " + boundary + " changeTo: " + changeTo);
 			
 			coord = mouseinput.getCoordinates();
 			if (coord.x >= 0 && coord.y >= 50 && coord.x < 800 && coord.y < 450 && mouseinput.leftClick()) {
