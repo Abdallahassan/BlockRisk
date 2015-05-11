@@ -49,7 +49,6 @@ public class Game extends BasicGameState {
 	private final static IntPair mainMenuButtonFrom = new IntPair(0, 0); // change later
 	private final static IntPair mainMenuButtonTo   = new IntPair(1, 1); // change later
 
-
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -66,8 +65,8 @@ public class Game extends BasicGameState {
 		map = new Map();
 		//map.load();   Uncomment later
 		if (Main.isNewGame())
-			map.initNewGame();
-			
+			//map.initNewGame();
+		
 		actionFrom = -1;
 		attackMode = false;
 	}
@@ -78,7 +77,7 @@ public class Game extends BasicGameState {
 		GL11.glColor3f(1f, 1f, 1f);
 		texture.bind();
 		drawTexture();
-		map.draw(g);
+		map.tmpdraw(g);
 		
 		if (attackMode) {
 			// draw something.
@@ -105,7 +104,7 @@ public class Game extends BasicGameState {
 		if (attackMode) {
 			// do something.
 		}
-		else if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn) {
+		else if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn && mouseinput.leftClick()) {
 			if (actionFrom == -1 && !map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates()))) {
 				actionFrom = map.getTerritoryID(mouseinput.getCoordinates());
 				map.setHighlight(actionFrom);
