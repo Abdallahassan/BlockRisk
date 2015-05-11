@@ -1,7 +1,6 @@
 
 public class Territory {
 	
-	private boolean highlighted;
 	private boolean owner; // true if it's owned by the AI.
 	private int[] units; //amount of units in this territory
 	private int resourceVal; //amount of resources this territory generates each turn 
