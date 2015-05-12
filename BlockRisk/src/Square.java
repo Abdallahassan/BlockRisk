@@ -43,4 +43,11 @@ public class Square {
 		this.coord = coord;
 	}
 
+	public void setIsBoundary(boolean n){
+		isBoundary=n;
+	}
+	
+	public void setBelongsTo(int n){
+		belongsTo=n;
+	}
 }

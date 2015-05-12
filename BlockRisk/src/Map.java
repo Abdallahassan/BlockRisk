@@ -183,8 +183,11 @@ public class Map {
 				s.draw(tmp, g);
 			}
 	}
+	/**
+	 * Load an already saved game from file.
+	 * As of now, it loads information about all of the squares.
+	 */
 	
-	// Load and already saved game from file.
 	public void load() {
 		SAXBuilder builder = new SAXBuilder();
 		 File xmlFile = new File("res/mapSave.xml");
@@ -192,16 +195,27 @@ public class Map {
 		  try {
 	 
 			Document document = (Document) builder.build(xmlFile); //builds XML file
-			Element rootNode = document.getRootElement(); //gets rootNode
-			List list = rootNode.getChildren("staff"); //creates list out of root's specified child
-	 
-			for (int i = 0; i < list.size(); i++) {	 
-			   Element node = (Element) list.get(i);
-			   System.out.println("First Name : " + node.getChildText("firstname"));
-			   System.out.println("Last Name : " + node.getChildText("lastname"));
-			   System.out.println("Nick Name : " + node.getChildText("nickname"));
-			   System.out.println("Salary : " + node.getChildText("salary"));	 
-			}	 
+			Element rootNode = document.getRootElement(); //gets rootNode					
+			
+			//retrieves all squares
+			Element squareNode=rootNode.getChild("Squares");
+			for(int j=0;j<squares.length;j++){
+				Element squareRowChild=squareNode.getChild("row"+j);
+				for(int k=0;k<squares[j].length;k++){
+					Element squareColChild=squareRowChild.getChild("column"+k);
+					Element coord = squareColChild.getChild("coordinates");
+					Element isBoundary = squareColChild.getChild("isBoundary");
+					Element belongsTo = squareColChild.getChild("belongsTo");
+					Element xCoord=coord.getChild("x");
+					Element yCoord=coord.getChild("y");
+					
+					squares[j][k].setIsBoundary(Boolean.parseBoolean(isBoundary.getText()));
+					squares[j][k].setBelongsTo(Integer.parseInt(belongsTo.getText()));
+					squares[j][k].getCoord().x=Integer.parseInt(xCoord.getText());
+					squares[j][k].getCoord().y=Integer.parseInt(yCoord.getText());
+				}
+			}
+			
 		  } catch (IOException io) { //error handling
 			System.out.println(io.getMessage());
 		  } catch (JDOMException jdomex) { //error handling
