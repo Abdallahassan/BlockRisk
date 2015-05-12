@@ -118,5 +118,9 @@ public class Territory {
 	public Territory[] getNeighbours(){
 		return neighbours;
 	}
+	
+	public int getSomeUnit(int index) {
+		return units[index];
+	}
 
 }
