@@ -50,7 +50,7 @@ public class Map {
 				
 		highlight = -1;
 		
-		tmpInit();
+		//tmpInit();
 	}
 	
 	// This is a temporary method just to test the game mechanics before the map is done.
