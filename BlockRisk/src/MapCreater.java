@@ -1,4 +1,3 @@
-
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -65,6 +64,8 @@ public class MapCreater extends BasicGameState {
 				map.save();
 			} else if (Keyboard.getEventKey() == Keyboard.KEY_L) {
 				map.load();
+			} else if (Keyboard.getEventKey() == Keyboard.KEY_I) {
+				map.initBorders();
 			}
 			
 			changeTo = getKeyboardInput();
