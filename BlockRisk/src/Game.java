@@ -32,6 +32,7 @@ import java.util.Random;
 
 public class Game extends BasicGameState {
 	
+
 	private MouseInput mouseinput;
 	private boolean AIsturn;        // true if it's the Ai's turn to play.
 	private Map map;
@@ -52,9 +53,7 @@ public class Game extends BasicGameState {
 	private final static IntPair mainMenuButtonFrom = new IntPair(0, 0); // change later
 	private final static IntPair mainMenuButtonTo   = new IntPair(1, 1); // change later
 	private Picbox soldier;
-	private String numofSoldiers;
-	private String numofVehicles;
-	private String numofAircraft;
+	private String[] inputArgs;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -77,8 +76,9 @@ public class Game extends BasicGameState {
 		actionFrom = -1;
 		attackMode = false;
 		
-		random = new Random(System.currentTimeMillis());
-		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(230,460), new IntPair(380,460)});
+		inputArgs = new String[15]; // change to 18 later.
+		random = new Random(System.currentTimeMillis());                                                                                                                 //
+		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(230,460), new IntPair(380,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
 	}
 
 	@Override
@@ -93,15 +93,18 @@ public class Game extends BasicGameState {
 		//numofAircraft;
 		
 		if (actionFrom < 0 || map.ownedbyAI(actionFrom)) {
-			numofSoldiers = "";
-			numofVehicles = "";
-			numofAircraft = "";
+			inputArgs[0] = " ";
+			inputArgs[1] = " ";
+			inputArgs[2] = " ";
 		} else {
-			numofSoldiers = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(0));
-			numofVehicles = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(1));
-			numofAircraft = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(2));
+			inputArgs[0] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(0));
+			inputArgs[1] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(1));
+			inputArgs[2] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(2));
 		}
-		soldier.draw(new String[] {numofSoldiers, numofVehicles, numofAircraft}, Color.cyan);
+		for (int i=3; i < 15; i++)
+			inputArgs[i] = Integer.toString(map.getTerritory(i-3).numUnits());
+		
+		soldier.draw(inputArgs, Color.yellow);
 		
 		if (attackMode) {
 			// draw something.
@@ -365,8 +368,7 @@ public class Game extends BasicGameState {
 			}
 			return sum;
 		}
-		
-		
+			
 		
 		
 	}
