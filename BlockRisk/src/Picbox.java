@@ -4,13 +4,17 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2i;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.FontUtils;
 
 
 public class Picbox {
@@ -18,13 +22,18 @@ public class Picbox {
 	private IntPair lrc;
 	private String filepath;
 	private Texture texture;
+	private IntPair[] txtcoords;
+	private TrueTypeFont font;
 	
-	public Picbox(IntPair ulc, IntPair lrc, String filepath) {
+	public Picbox(IntPair ulc, IntPair lrc, String filepath, IntPair[] txtcoords) {
 		super();
 		this.ulc = ulc;
 		this.lrc = lrc;
 		this.filepath = filepath;
 		initTexture();
+		this.txtcoords = txtcoords;
+		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+		font = new TrueTypeFont(awtFont, false);
 	}
 	
 	private void initTexture() {
@@ -37,7 +46,7 @@ public class Picbox {
 		}
 	}
 	
-	public void draw() {
+	public void draw(String[] todraw, Color textColour) {
 		texture.bind();
 		
 		glBegin(GL_QUADS);  // Draw texture on specified coordinates.
@@ -50,6 +59,9 @@ public class Picbox {
 		glTexCoord2f(0, 1);
 		glVertex2i(ulc.x, lrc.y);
 		glEnd();
+		
+		for (int i = 0; i < txtcoords.length; i++)
+			font.drawString(txtcoords[i].x, txtcoords[i].y, todraw[i], textColour);
 	}
 
 }
