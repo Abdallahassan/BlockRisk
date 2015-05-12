@@ -113,7 +113,7 @@ public class Map {
 	}
 	
 	// Temporary
-	private void initBorders() {
+	public void initBorders() {
 		for (int i = 0; i < 160; i++)
 			for (int j = 0; j < 80; j++)
 				for (IntPair ip : near(new IntPair(i, j))){
@@ -162,23 +162,12 @@ public class Map {
 		for (Square[] array: squares)
 			for (Square s: array) {
 				Color tmp;
-				int i = s.getOwnership();
-					if (i == 0 || i == 6)
-						tmp = Color.blue;
-					else if (i == 1 || i == 7)
-						tmp = Color.cyan;
-					else if (i == 2 || i == 8)
-						tmp = Color.green;
-					else if (i == 3 || i == 9)
-						tmp = Color.red;
-					else if (i == 4 || i == 10)
-						tmp = Color.yellow;
-					else if (i == 5 || i == 11)
-						tmp = Color.orange;
-					else
-						tmp = Color.pink;
+				if (territories[s.getOwnership()].ownedbyAI())
+					tmp = Color.blue;
+				else
+					tmp = Color.red;
 					
-				if (s.boundaryStatus())
+				if (s.boundaryStatus() || s.getOwnership() == highlight)
 					tmp = tmp.darker();
 				s.draw(tmp, g);
 			}
