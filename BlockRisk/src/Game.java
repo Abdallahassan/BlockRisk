@@ -182,6 +182,19 @@ public class Game extends BasicGameState {
 			return resourceSum;
 		}
 		
+		/**
+		 * Generates resources for the AI depending on resource value of territories. 
+		 */
+		private int genResAI(){ //need method like this for the AI too
+			Territory[] terr=map.getAllTerritories();
+			int resourceSum=0;
+			for(int i=0;i<terr.length;i++){
+				if (terr[i].ownedbyAI()){ //if owned by AI
+					resourceSum+=terr[i].getResourceVal();
+				}
+			}
+			return resourceSum;
+		
 		//1) Buying Units
 		
 		/**
@@ -244,8 +257,47 @@ public class Game extends BasicGameState {
 		
 		
 		
-		private void defend(){
-			
+		/**
+		 * Same as attack method but for the defending
+		 * team.
+		 * @param from
+		 * @param to
+		 */
+		private void defend(Territory from,Territory to){
+			int sumA=to.sumAttack();
+			int sumD=from.sumDefence();
+			int r=random.nextInt(10)+1; //1<=r<=10
+			int k=1; //change later ???
+			int avgE=from.averageEvasion();
+			if(sumD==0){
+				sumD=1;
+			}
+			if(avgE==0){
+				avgE=1;
+			}
+			int removeSize=(sumA*r)/(sumD*avgE*k);
+			from.removeUnits(0,removeSize/3);
+			from.removeUnits(1,removeSize/3);
+			from.removeUnits(2,removeSize/3);
+		}
+		
+		/**
+		 * Combat between player and AI territories
+		 * @param from
+		 * @param to
+		 * @return win: If the attacker won, win is True
+		 */
+		private boolean combat(Territory from,Territory to){
+			boolean win=false;
+			while(numUnits(from.getUnits())>0||numUnits(to.getUnits())>0){
+				attack(from,to);
+				defend(to,from);
+				if(numUnits(from.getUnits())<=0){
+					win=true;
+					to.changeOwner();
+				}
+			}
+			return win;
 		}
 		
 		
