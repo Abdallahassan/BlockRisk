@@ -60,7 +60,7 @@ public class Game extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		try {
-			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/headerFit.jpg")));
+			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/headerNew.jpg")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -78,7 +78,7 @@ public class Game extends BasicGameState {
 		attackMode = false;
 		
 		random = new Random(System.currentTimeMillis());
-		soldier = new Picbox(new IntPair(0,450), new IntPair(67,500), "res/soldier.jpg", new IntPair[]{new IntPair(80,460)});
+		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(230,460), new IntPair(380,460)});
 	}
 
 	@Override
@@ -89,11 +89,19 @@ public class Game extends BasicGameState {
 		drawTexture();
 		map.draw(g);
 		
-		if (actionFrom < 0 || map.ownedbyAI(actionFrom))
+		//numofVehicles;
+		//numofAircraft;
+		
+		if (actionFrom < 0 || map.ownedbyAI(actionFrom)) {
 			numofSoldiers = "";
-		else
+			numofVehicles = "";
+			numofAircraft = "";
+		} else {
 			numofSoldiers = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(0));
-		soldier.draw(new String[] {numofSoldiers}, Color.cyan);
+			numofVehicles = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(1));
+			numofAircraft = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(2));
+		}
+		soldier.draw(new String[] {numofSoldiers, numofVehicles, numofAircraft}, Color.cyan);
 		
 		if (attackMode) {
 			// draw something.
@@ -357,6 +365,7 @@ public class Game extends BasicGameState {
 			}
 			return sum;
 		}
+		
 		
 		
 		
