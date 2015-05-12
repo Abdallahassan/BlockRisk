@@ -1,4 +1,3 @@
-
 public class Territory {
 	
 	private boolean owner; // true if it's owned by the AI.
@@ -92,8 +91,11 @@ public class Territory {
 			int numUnit=units[i];
 			sumUnits+=numUnit;
 			sumEv+=numUnit*evStat[i];
-		}		
-		return sumEv/sumUnits;
+		}
+		if (sumUnits == 0)
+			return 1;        // Avoid division by zero.
+		else
+			return sumEv/sumUnits;
 	}
 	
 	public boolean isNeighbour(Territory to){
