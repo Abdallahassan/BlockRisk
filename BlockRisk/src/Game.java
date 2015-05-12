@@ -16,12 +16,14 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2i;
+
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.*;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,7 +41,7 @@ public class Game extends BasicGameState {
 	private int[] unitsNotPlacedAI;
 	private int res; //player resources
 	private int resAI; //AI resources
-	private int[] cost={10,100,250}; //cost of infantry, vehicles and aircraft
+	private int[] cost={10,100,250};
 	private Texture texture;
 	
 	private int actionFrom;
@@ -64,7 +66,7 @@ public class Game extends BasicGameState {
 		mouseinput = new MouseInput();
 		AIsturn = false;
 		map = new Map();
-		//map.load();   Uncomment later
+		map.load();
 		if (Main.isNewGame())
 			//map.initNewGame();
 		
@@ -80,7 +82,7 @@ public class Game extends BasicGameState {
 		GL11.glColor3f(1f, 1f, 1f);
 		texture.bind();
 		drawTexture();
-		map.tmpdraw(g);
+		map.draw(g);
 		
 		if (attackMode) {
 			// draw something.
@@ -135,213 +137,216 @@ public class Game extends BasicGameState {
 	
 	
 	//Game Logic Section Below
-	/*
-	 * There are four stages to each players turn. 
-	 * 1)Buying Units (after gaining resources)
-	 * 2)Placing Units
-	 * 3)Attacking territories
-	 * 4)Reinforcing a territory (move units from one owned terr to another)
-	 */
-	
-	//0) Gaining resources
-	/**
-	 * Generates resources for the player (non-AI) depending on resource value of territories. 
-	 */
-	private int genResPlayer(){ //need method like this for the AI too
-		Territory[] terr=map.getAllTerritories();
-		int resourceSum=0;
-		for(int i=0;i<terr.length;i++){
-			if (!terr[i].ownedbyAI()){ //if owned by player
-				resourceSum+=terr[i].getResourceVal();
+		/*
+		 * There are four stages to each players turn. 
+		 * 1)Buying Units (after gaining resources)
+		 * 2)Placing Units
+		 * 3)Attacking territories
+		 * 4)Reinforcing a territory (move units from one owned terr to another)
+		 */
+		
+		//0) Gaining resources
+		/**
+		 * Generates resources for the player (non-AI) depending on resource value of territories. 
+		 */
+		private int genResPlayer(){ //need method like this for the AI too
+			Territory[] terr=map.getAllTerritories();
+			int resourceSum=0;
+			for(int i=0;i<terr.length;i++){
+				if (!terr[i].ownedbyAI()){ //if owned by player
+					resourceSum+=terr[i].getResourceVal();
+				}
 			}
+			return resourceSum;
 		}
-		return resourceSum;
-	}
-	
-	//1) Buying Units
-	
-	/**
-	 * Need error handling here (buy too much, res=0)
-	 * @param i
-	 * @param units Player or AI units 
-	 */
-	private void buyUnits(int i,int amount,int[] units){
-		res-=cost[i]*amount;
-		units[i]+=amount;
-	}
-	
-	//2)Placing Units
-	/**
-	 * Error handling needed !!
-	 * @param i
-	 * @param amount
-	 * @param terr
-	 */
-	private void placeUnits(int i,int amount,Territory terr,int[] units){
-		units[i]-=amount;
-		terr.addUnits(i,amount);
-	}
-	
-	//3)Attacking
 		
-	/**
-	 * Updated territory attack system. The amount of units lost for the opponents
-	 * will be U=(sum(A)*R)/(sum(D)*avg(E)*K). 
-	 * sum(A)=sum of attack stat for owned units in territory
-	 * sum(D)=sum of defence stat for enemy units in territory
-	 * avg(E)=the average evasion for enemy units in territory
-	 * R=a random integer between 1 and 10
-	 * K=a constant that affects amount of units lost.
-	 * This method is used when player/AI attack a territory. Defender reduces attackers
-	 * units with this method. This returns amount of units that defender loses. Reduce
-	 * this amount later from the territory using territory class' removeUnits() method
-	 * @param from
-	 * @param to
-	 */
-	private void attack(Territory from, Territory to){
-		int[] unitsFrom=from.getUnits();
-		int[] unitsTo=from.getUnits();
-		int sumA=from.sumAttack();
-		int sumD=to.sumDefence();
-		int r=random.nextInt(10)+1; //1<=r<=10
-		int k=1; //change later ???
-		int avgE=to.averageEvasion();
-		int removeSize=(sumA*r)/(sumD*avgE*k);
-		to.removeUnits(0,removeSize/3);
-		to.removeUnits(1,removeSize/3);
-		to.removeUnits(2,removeSize/3);
-	}
-	//4) Reinforce
-	/**
-	 * Only one reinforcement allowed per turn
-	 * @param from
-	 * @param to
-	 * @param i
-	 * @param amount
-	 */
-	private void reinforce(Territory from,Territory to,int i,int amount){
-		from.removeUnits(i,amount);
-		to.addUnits(i, amount);
-	}
-	
-	//AI Logic and Methods Below.
-	
-	//1) Purchasing Strategies
-	
-	// How to divide given resources among units
-	private void equalist(int resources){
-		//calc available amount somehow
-		int amount=resources/(cost[0]+cost[1]+cost[2]);
-		buyUnits(0,amount/3,unitsNotPlacedAI);
-		buyUnits(1,amount/3,unitsNotPlacedAI);
-		buyUnits(2,amount/3,unitsNotPlacedAI);
-	}
-	/**
-	 * Allocates all to unit[i]
-	 * @param resources
-	 */
-	private void highAllocation(int resources,int i){
-		int amount=resources/cost[i];
-		buyUnits(i,amount,unitsNotPlacedAI);
-	}
-	
-	/**
-	 * Splits 50/50 between tanks and aircraft,
-	 * no infantry purchased
-	 */
-	private void highOffence(int resources){
-		int amount=resources/(cost[1]+cost[2]);
-		buyUnits(1,amount/2,unitsNotPlacedAI);
-		buyUnits(2,amount/2,unitsNotPlacedAI);
-	}
-	
+		//1) Buying Units
 		
-	//2) Placing Strategies
-	
-	
-	/**
-	 * Places all allocated units in one territory
-	 * @param amount
-	 * @param terr
-	 */
-	private void blob(int amount,Territory terr){
-		placeUnits(0,amount/3,terr,unitsNotPlacedAI);
-		placeUnits(1,amount/3,terr,unitsNotPlacedAI);
-		placeUnits(2,amount/3,terr,unitsNotPlacedAI);
-	}
-	//3) Attack Strategies
-	/**
-	 * Attacks weakest neighbour of given Territory terr
-	 * @param terr
-	 */
-	private void attackWeakestNeighbour(Territory terr){
-		Territory[] neighbours = terr.getNeighbours();
-		int lowestSum=Integer.MAX_VALUE;
-		int weakestTerr=-1; //an index
-		for(int i=0;i<neighbours.length;i++){
-			if(neighbours[i].numUnits()<lowestSum){
-				lowestSum=neighbours[i].numUnits();
-				weakestTerr=i;
+		/**
+		 * Need error handling here (buy too much, res=0)
+		 * @param i
+		 * @param units Player or AI units 
+		 */
+		private void buyUnits(int i,int amount,int[] units){
+			res-=cost[i]*amount;
+			units[i]+=amount;
+		}
+		
+		//2)Placing Units
+		/**
+		 * Error handling needed !!
+		 * @param i
+		 * @param amount
+		 * @param terr
+		 */
+		private void placeUnits(int i,int amount,Territory terr,int[] units){
+			units[i]-=amount;
+			terr.addUnits(i,amount);
+		}
+		
+		//3)Attacking
+			
+		/**
+		 * Updated territory attack system. The amount of units lost for the opponents
+		 * will be U=(sum(A)*R)/(sum(D)*avg(E)*K). 
+		 * sum(A)=sum of attack stat for owned units in territory
+		 * sum(D)=sum of defence stat for enemy units in territory
+		 * avg(E)=the average evasion for enemy units in territory
+		 * R=a random integer between 1 and 10
+		 * K=a constant that affects amount of units lost.
+		 * This method is used when player/AI attack a territory. Defender reduces attackers
+		 * units with this method. This returns amount of units that defender loses. Reduce
+		 * this amount later from the territory using territory class' removeUnits() method
+		 * @param from
+		 * @param to
+		 */
+		private void attack(Territory from, Territory to){
+			int[] unitsFrom=from.getUnits();
+			int[] unitsTo=from.getUnits();
+			int sumA=from.sumAttack();
+			int sumD=to.sumDefence();
+			int r=random.nextInt(10)+1; //1<=r<=10
+			int k=1; //change later ???
+			int avgE=to.averageEvasion();
+			int removeSize;
+			
+			if (sumD*avgE*k == 0)
+				removeSize = 1;               // Avoid division by 0.
+			else
+				removeSize = (sumA*r)/(sumD*avgE*k);
+			
+			to.removeUnits(0,removeSize/3);
+			to.removeUnits(1,removeSize/3);
+			to.removeUnits(2,removeSize/3);
+		}
+		//4) Reinforce
+		/**
+		 * Only one reinforcement allowed per turn
+		 * @param from
+		 * @param to
+		 * @param i
+		 * @param amount
+		 */
+		private void reinforce(Territory from,Territory to,int i,int amount){
+			from.removeUnits(i,amount);
+			to.addUnits(i, amount);
+		}
+		
+		//AI Logic and Methods Below.
+		
+		//1) Purchasing Strategies
+		
+		// How to divide given resources among units
+		private void equalist(int resources){
+			//calc available amount somehow
+			int amount=resources/(cost[0]+cost[1]+cost[2]);
+			buyUnits(0,amount/3,unitsNotPlacedAI);
+			buyUnits(1,amount/3,unitsNotPlacedAI);
+			buyUnits(2,amount/3,unitsNotPlacedAI);
+		}
+		/**
+		 * Allocates all to unit[i]
+		 * @param resources
+		 */
+		private void highAllocation(int resources,int i){
+			int amount=resources/cost[i];
+			buyUnits(i,amount,unitsNotPlacedAI);
+		}
+		
+		/**
+		 * Splits 50/50 between tanks and aircraft,
+		 * no infantry purchased
+		 */
+		private void highOffence(int resources){
+			int amount=resources/(cost[1]+cost[2]);
+			buyUnits(1,amount/2,unitsNotPlacedAI);
+			buyUnits(2,amount/2,unitsNotPlacedAI);
+		}
+		
+			
+		//2) Placing Strategies
+		
+		
+		/**
+		 * Places all allocated units in one territory
+		 * @param amount
+		 * @param terr
+		 */
+		private void blob(int amount,Territory terr){
+			placeUnits(0,amount/3,terr,unitsNotPlacedAI);
+			placeUnits(1,amount/3,terr,unitsNotPlacedAI);
+			placeUnits(2,amount/3,terr,unitsNotPlacedAI);
+		}
+		//3) Attack Strategies
+		/**
+		 * Attacks weakest neighbour of given Territory terr
+		 * @param terr
+		 */
+		private void attackWeakestNeighbour(Territory terr){
+			Territory[] neighbours = terr.getNeighbours();
+			int lowestSum=Integer.MAX_VALUE;
+			int weakestTerr=-1; //an index
+			for(int i=0;i<neighbours.length;i++){
+				if(neighbours[i].numUnits()<lowestSum){
+					lowestSum=neighbours[i].numUnits();
+					weakestTerr=i;
+				}
 			}
+			Territory toAttack=neighbours[weakestTerr];
+			attack(terr,toAttack);
 		}
-		Territory toAttack=neighbours[weakestTerr];
-		attack(terr,toAttack);
-	}
-	
-	private void aiTurn(){
-		int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
-		//maybe save between 0 and 20 percent randomly???
-		int j=random.nextInt(3); 
-		switch(j){	//selects purchasing strategy randomly
 		
-		case 0:
-			equalist(allocatedRes);
-		break;
-		
-		case 1:
-			int i=random.nextInt(3); //0<=i<3
-			highAllocation(allocatedRes,i); //purchases inf,veh or aircraft at random
-		break;
+		private void aiTurn(){
+			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
+			//maybe save between 0 and 20 percent randomly???
+			int j=random.nextInt(3); 
+			switch(j){	//selects purchasing strategy randomly
 			
-		case 2:
-			highOffence(allocatedRes);
-		break;
-		}
-		//placement 
-		int k=random.nextInt(2); 
-		switch(k){	
-		
-		case 0:
+			case 0:
+				equalist(allocatedRes);
+			break;
 			
-		break;
+			case 1:
+				int i=random.nextInt(3); //0<=i<3
+				highAllocation(allocatedRes,i); //purchases inf,veh or aircraft at random
+			break;
+				
+			case 2:
+				highOffence(allocatedRes);
+			break;
+			}
+			//placement 
+			int k=random.nextInt(2); 
+			switch(k){	
+			
+			case 0:
+				
+			break;
+			
+			case 1:
+				int a=random.nextInt(map.getAllTerritories().length);
+				Territory terr=map.getAllTerritories()[a];
+				int amount=numUnits(unitsNotPlacedAI);
+				blob(amount,terr);
+			break;
+			}
+			int n=0;
+			//keeps changing n until it produces a territory owned by AI
+			while(!map.getAllTerritories()[n].ownedbyAI()){
+				n=random.nextInt(map.getAllTerritories().length);
+			}
+			attackWeakestNeighbour(map.getAllTerritories()[n]);		
+			}
 		
-		case 1:
-			int a=random.nextInt(map.getAllTerritories().length);
-			Territory terr=map.getAllTerritories()[a];
-			int amount=numUnits(unitsNotPlacedAI);
-			blob(amount,terr);
-		break;
+		
+		private int numUnits(int[] units){
+			int sum=0;
+			for(int i=0;i<units.length;i++){
+				sum+=units[i];
+			}
+			return sum;
 		}
-		int n=0;
-		//keeps changing n until it produces a territory owned by AI
-		while(!map.getAllTerritories()[n].ownedbyAI()){
-			n=random.nextInt(map.getAllTerritories().length);
-		}
-		attackWeakestNeighbour(map.getAllTerritories()[n]);		
-		}
-	
-	
-	private int numUnits(int[] units){
-		int sum=0;
-		for(int i=0;i<units.length;i++){
-			sum+=units[i];
-		}
-		return sum;
+		
+		
+		
 	}
-	
-	
-	
-}
-	
-	
-	
