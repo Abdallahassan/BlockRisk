@@ -47,6 +47,7 @@ public class Picbox {
 	}
 	
 	public void draw(String[] todraw, Color textColour) {
+		GL11.glColor3f(1f, 1f, 1f);
 		texture.bind();
 		
 		glBegin(GL_QUADS);  // Draw texture on specified coordinates.
