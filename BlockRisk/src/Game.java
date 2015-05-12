@@ -194,6 +194,7 @@ public class Game extends BasicGameState {
 				}
 			}
 			return resourceSum;
+		}
 		
 		//1) Buying Units
 		
