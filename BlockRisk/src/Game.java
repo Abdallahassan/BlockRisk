@@ -241,6 +241,18 @@ public class Game extends BasicGameState {
 			to.removeUnits(1,removeSize/3);
 			to.removeUnits(2,removeSize/3);
 		}
+		
+		
+		
+		private void defend(){
+			
+		}
+		
+		
+		
+		
+		
+		
 		//4) Reinforce
 		/**
 		 * Only one reinforcement allowed per turn
