@@ -63,6 +63,8 @@ public class MapCreater extends BasicGameState {
 				boundary = true;
 			} else if (Keyboard.getEventKey() == Keyboard.KEY_S) {
 				map.save();
+			} else if (Keyboard.getEventKey() == Keyboard.KEY_L) {
+				map.load();
 			}
 			
 			changeTo = getKeyboardInput();
@@ -73,6 +75,8 @@ public class MapCreater extends BasicGameState {
 			if (coord.x >= 0 && coord.y >= 50 && coord.x < 800 && coord.y < 450 && mouseinput.leftClick()) {
 				if (boundary)
 					map.setBound(coord, true);
+				else if (changeTo == 12 && !boundary)
+					map.setBound(coord, false);
 				else
 					map.changeOwner(coord, changeTo);
 			}
@@ -104,6 +108,8 @@ public class MapCreater extends BasicGameState {
 			return 10;
 		case Keyboard.KEY_B:
 			return 11;
+		case Keyboard.KEY_C:
+			return 12;
 		default:
 			return changeTo;
 		}
