@@ -51,6 +51,10 @@ public class Game extends BasicGameState {
 	private final static IntPair saveButtonTo   = new IntPair(1, 1); // change later
 	private final static IntPair mainMenuButtonFrom = new IntPair(0, 0); // change later
 	private final static IntPair mainMenuButtonTo   = new IntPair(1, 1); // change later
+	private Picbox soldier;
+	private String numofSoldiers;
+	private String numofVehicles;
+	private String numofAircraft;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -74,6 +78,7 @@ public class Game extends BasicGameState {
 		attackMode = false;
 		
 		random = new Random(System.currentTimeMillis());
+		soldier = new Picbox(new IntPair(0,450), new IntPair(67,500), "res/soldier.jpg", new IntPair[]{new IntPair(80,460)});
 	}
 
 	@Override
@@ -83,6 +88,12 @@ public class Game extends BasicGameState {
 		texture.bind();
 		drawTexture();
 		map.draw(g);
+		
+		if (actionFrom < 0 || map.ownedbyAI(actionFrom))
+			numofSoldiers = "";
+		else
+			numofSoldiers = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(0));
+		soldier.draw(new String[] {numofSoldiers}, Color.cyan);
 		
 		if (attackMode) {
 			// draw something.
