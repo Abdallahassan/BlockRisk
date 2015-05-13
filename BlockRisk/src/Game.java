@@ -56,6 +56,7 @@ public class Game extends BasicGameState {
 	private final static IntPair buyButtonTo   = new IntPair(745, 45);
 	private boolean buying;
 	private Picbox soldier;
+	private Picbox attackbox;
 	private String[] inputArgs;
 	private final static IntPair soldierFrom = new IntPair(354, 455);
 	private final static IntPair soldierTo   = new IntPair(450, 495);
@@ -63,6 +64,12 @@ public class Game extends BasicGameState {
 	private final static IntPair vehicleTo   = new IntPair(610, 495);
 	private final static IntPair airplaneFrom = new IntPair(650, 455);
 	private final static IntPair airplaneTo   = new IntPair(750, 495);
+	private final static IntPair attackFrom = new IntPair(250, 75);
+	private final static IntPair attackTo   = new IntPair(550, 425);
+	private final static IntPair attackButtonFrom = new IntPair(270, 385);
+	private final static IntPair attackButtonTo   = new IntPair(350, 415);
+	private final static IntPair retreatButtonFrom = new IntPair(440, 385);
+	private final static IntPair retreatButtonTo   = new IntPair(522, 415);
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -90,6 +97,7 @@ public class Game extends BasicGameState {
 		inputArgs = new String[18];
 		random = new Random(System.currentTimeMillis());                                                                                                                                                                                   //
 		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(170,460), new IntPair(305,460), new IntPair(425,460), new IntPair(585,460), new IntPair(730,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
+		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{});
 	}
 
 	@Override
@@ -121,7 +129,7 @@ public class Game extends BasicGameState {
 		soldier.draw(inputArgs, Color.yellow);
 		
 		if (attackMode) {
-			// draw something.
+			attackbox.draw(new String[]{}, Color.cyan);
 		}
 	}
 	
@@ -145,16 +153,20 @@ public class Game extends BasicGameState {
 
 		if (mouseinput.leftClick()) {
 			System.out.println(mouseinput.getCoordinates());
-			/*if (attackMode) {
-			// do something.
-		}*/
-		if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn) { // change to else if later
+			if (attackMode) {
+			if (mouseinput.insideRect(attackButtonFrom, attackButtonTo)) {
+				// Attack things here...
+			} else if (mouseinput.insideRect(retreatButtonFrom, retreatButtonTo)) {
+				attackMode = false;
+			}
+		}
+			else if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn) {
 			 inuserTerritory = !map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates()));
 			 if (inuserTerritory) {
 				 actionFrom = map.getTerritoryID(mouseinput.getCoordinates());
 				 map.setHighlight(actionFrom);
-			 } else if (actionFrom >= 0 && actionFrom < 12) {
-				 attack(map.getTerritory(actionFrom), map.getTerritory(mouseinput.getCoordinates()));
+			 } else if (actionFrom >= 0 && actionFrom < 12 && map.areNeighbours(actionFrom, map.getTerritoryID(mouseinput.getCoordinates()))) {
+				 attackMode = true;
 			 }
 		}
 		else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo))
