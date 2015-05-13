@@ -53,6 +53,9 @@ public class Game extends BasicGameState {
 	private final static IntPair saveButtonTo   = new IntPair(488, 45);
 	private final static IntPair mainMenuButtonFrom = new IntPair(50, 5);
 	private final static IntPair mainMenuButtonTo   = new IntPair(230, 45);
+	private final static IntPair buyButtonFrom = new IntPair(565, 5);
+	private final static IntPair buyButtonTo   = new IntPair(745, 45);
+	private boolean buying;
 	private Picbox soldier;
 	private String[] inputArgs;
 
@@ -148,6 +151,8 @@ public class Game extends BasicGameState {
 		else if (mouseinput.insideRect(mainMenuButtonFrom, mainMenuButtonTo)) {
 			map.save();
 			sbg.enterState(1);
+		} else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo)) {
+			buying = true;
 		}
 		}
 		
