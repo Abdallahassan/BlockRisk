@@ -70,6 +70,7 @@ public class Game extends BasicGameState {
 	private final static IntPair attackButtonTo   = new IntPair(350, 415);
 	private final static IntPair retreatButtonFrom = new IntPair(440, 385);
 	private final static IntPair retreatButtonTo   = new IntPair(522, 415);
+	private int[] stats; // stats[0] = user's sum attack, stats[1] = users's sum defence, stats[2] = user's average evasion.
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -98,6 +99,7 @@ public class Game extends BasicGameState {
 		random = new Random(System.currentTimeMillis());                                                                                                                                                                                   //
 		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(170,460), new IntPair(305,460), new IntPair(425,460), new IntPair(585,460), new IntPair(730,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
 		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{});
+		stats = new int[6];
 	}
 
 	@Override
