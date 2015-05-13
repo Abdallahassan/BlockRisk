@@ -122,5 +122,9 @@ public class Territory {
 	public int getSomeUnit(int index) {
 		return units[index];
 	}
+	
+	public void setUnits(int i,int amount){
+		units[i]=amount;
+	}
 
 }

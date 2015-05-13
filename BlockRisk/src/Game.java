@@ -288,7 +288,7 @@ public class Game extends BasicGameState {
 		
 		/**
 		 * Combat between player and AI territories
-		 * @param from
+		 * @param from Attackers territory
 		 * @param to
 		 * @param resum Resumes the attack, if false, returns to map
 		 * @return win: If the attacker won, win is True
@@ -296,23 +296,23 @@ public class Game extends BasicGameState {
 		 */
 		private boolean combat(Territory from,Territory to,boolean resume){
 			boolean win=false;
-			while(resume){
+			while(resume){ //IF ATTACKER WINS, LEFT OVER UNITS STAY IN "to" TERRITORY
 				attack(from,to);
 				defend(to,from);
-				if(numUnits(from.getUnits())<=0){
+				if(numUnits(to.getUnits())<=0){//defender loses
 					win=true;
 					to.changeOwner();
 				}
-				if(numUnits(to.getUnits())<=0){//attacker loses
-					
+				if(numUnits(from.getUnits())<=0){//attacker loses
+					//leave one infantry in the 
+					from.setUnits(0,1);
+					from.setUnits(1,0);
+					from.setUnits(1,0);
 				}
 				//needs some mouse input here to change resume !!!
 			}
 			return win;
-		}
-		
-		
-		
+		}		
 		
 		
 		
@@ -435,7 +435,11 @@ public class Game extends BasicGameState {
 			attackWeakestNeighbour(map.getAllTerritories()[n]);		
 			}
 		
-		
+		/**
+		 * Finds total number of units. Can be used on terr.getUnits().
+		 * @param units
+		 * @return
+		 */
 		private int numUnits(int[] units){
 			int sum=0;
 			for(int i=0;i<units.length;i++){
