@@ -211,9 +211,29 @@ public class Game extends BasicGameState {
 		 * @param units: unitsNotPlaced or unitsNotPlacedAI, these
 		 * arrays store the units so that they can be placed later. 
 		 */
-		private void buyUnits(int i,int amount,int[] units){
+		private void buyUnitsPlayer(int i,int amount){
+			if(cost[i]*amount>res){
+				//ALERT MESSAGE HERE,ILLEGAL AMOUNT
+			}
+			else{
 			res-=cost[i]*amount;
-			units[i]+=amount;
+			unitsNotPlaced[i]+=amount;
+			}
+		}
+		
+		/**
+		 * Buys units for the AI
+		 * @param i
+		 * @param amount
+		 */
+		private void buyUnitsAI(int i,int amount){
+			if(cost[i]*amount>resAI){
+				//ALERT MESSAGE HERE,ILLEGAL AMOUNT
+			}
+			else{
+			resAI-=cost[i]*amount;
+			unitsNotPlacedAI[i]+=amount;
+			}
 		}
 		
 		//2)Placing Units
@@ -224,9 +244,31 @@ public class Game extends BasicGameState {
 		 * @param terr The territory you want to place it in.
 		 * @param unitsNotPlaced or unitsNotPlacedAI. Takes units from these arrays
 		 */
-		private void placeUnits(int i,int amount,Territory terr,int[] units){
-			units[i]-=amount;
+		private void placeUnits(int i,int amount,Territory terr){
+			if(amount>unitsNotPlaced[i]){
+				//ERROR MESSAGE
+			}
+			else{
+			unitsNotPlaced[i]-=amount;
 			terr.addUnits(i,amount);
+			}
+		}
+		
+		/**
+		 * Error handling needed !!
+		 * @param i Type of unit
+		 * @param amount
+		 * @param terr The territory you want to place it in.
+		 * @param unitsNotPlaced or unitsNotPlacedAI. Takes units from these arrays
+		 */
+		private void placeUnitsAI(int i,int amount,Territory terr){
+			if(amount>unitsNotPlacedAI[i]){
+				//ERROR MESSAGE
+			}
+			else{
+			unitsNotPlacedAI[i]-=amount;
+			terr.addUnits(i,amount);
+			}
 		}
 		
 		//3)Attacking
@@ -342,9 +384,9 @@ public class Game extends BasicGameState {
 		private void equalist(int resources){
 			//calc available amount somehow
 			int amount=resources/(cost[0]+cost[1]+cost[2]);
-			buyUnits(0,amount/3,unitsNotPlacedAI);
-			buyUnits(1,amount/3,unitsNotPlacedAI);
-			buyUnits(2,amount/3,unitsNotPlacedAI);
+			buyUnitsAI(0,amount/3);
+			buyUnitsAI(1,amount/3);
+			buyUnitsAI(2,amount/3);
 		}
 		/**
 		 * Allocates all to unit[i]
@@ -352,7 +394,7 @@ public class Game extends BasicGameState {
 		 */
 		private void highAllocation(int resources,int i){
 			int amount=resources/cost[i];
-			buyUnits(i,amount,unitsNotPlacedAI);
+			buyUnitsAI(i,amount);
 		}
 		
 		/**
@@ -361,8 +403,8 @@ public class Game extends BasicGameState {
 		 */
 		private void highOffence(int resources){
 			int amount=resources/(cost[1]+cost[2]);
-			buyUnits(1,amount/2,unitsNotPlacedAI);
-			buyUnits(2,amount/2,unitsNotPlacedAI);
+			buyUnitsAI(1,amount/2);
+			buyUnitsAI(2,amount/2);
 		}
 		
 			
@@ -375,9 +417,9 @@ public class Game extends BasicGameState {
 		 * @param terr
 		 */
 		private void blob(int amount,Territory terr){
-			placeUnits(0,amount/3,terr,unitsNotPlacedAI);
-			placeUnits(1,amount/3,terr,unitsNotPlacedAI);
-			placeUnits(2,amount/3,terr,unitsNotPlacedAI);
+			placeUnitsAI(0,amount/3,terr);
+			placeUnitsAI(1,amount/3,terr);
+			placeUnitsAI(2,amount/3,terr);
 		}
 		//3) Attack Strategies
 		/**
@@ -418,20 +460,13 @@ public class Game extends BasicGameState {
 			break;
 			}
 			//placement 
-			int k=random.nextInt(2); 
-			switch(k){	
+		
+			int a=random.nextInt(map.getAllTerritories().length);
+			Territory terr=map.getAllTerritories()[a];
+			int amount=numUnits(unitsNotPlacedAI);
+			blob(amount,terr);
 			
-			case 0:
-				
-			break;
 			
-			case 1:
-				int a=random.nextInt(map.getAllTerritories().length);
-				Territory terr=map.getAllTerritories()[a];
-				int amount=numUnits(unitsNotPlacedAI);
-				blob(amount,terr);
-			break;
-			}
 			int n=0;
 			//keeps changing n until it produces a territory owned by AI
 			while(!map.getAllTerritories()[n].ownedbyAI()){
