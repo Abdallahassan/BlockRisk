@@ -40,10 +40,11 @@ public class Game extends BasicGameState {
 	private Territory[] aiOwned;
 	private int[] unitsNotPlaced; //units the player can place in territories (non-AI)
 	private int[] unitsNotPlacedAI;
-	private int res; //player resources
-	private int resAI; //AI resources
+	private int res=10000; //player resources
+	private int resAI=10000; //AI resources
 	private int[] cost={10,100,250};
 	private Texture texture;
+	private boolean gameOver;
 	
 	private int actionFrom;
 	private boolean attackMode;
@@ -289,17 +290,23 @@ public class Game extends BasicGameState {
 		 * Combat between player and AI territories
 		 * @param from
 		 * @param to
+		 * @param resum Resumes the attack, if false, returns to map
 		 * @return win: If the attacker won, win is True
+		 * 
 		 */
-		private boolean combat(Territory from,Territory to){
+		private boolean combat(Territory from,Territory to,boolean resume){
 			boolean win=false;
-			while(numUnits(from.getUnits())>0||numUnits(to.getUnits())>0){
+			while(resume){
 				attack(from,to);
 				defend(to,from);
 				if(numUnits(from.getUnits())<=0){
 					win=true;
 					to.changeOwner();
 				}
+				if(numUnits(to.getUnits())<=0){//attacker loses
+					
+				}
+				//needs some mouse input here to change resume !!!
 			}
 			return win;
 		}
@@ -436,7 +443,27 @@ public class Game extends BasicGameState {
 			}
 			return sum;
 		}
-			
+		
+		/**
+		 * Checks if the game is over. If it is, a game over pop up menu
+		 * will show up saying whether you won or lost. Game is over when 
+		 * all territories are owned by player or AI
+		 */
+		private void gameOverCheck(){
+			Territory[] terr=map.getAllTerritories();
+			int sumOwnedAI=0;
+			for(int i=0;i<terr.length;i++){
+				if(terr[i].ownedbyAI()){
+					sumOwnedAI++;
+				}
+			}
+			if(sumOwnedAI==0){ //player wins
+				gameOver=true;
+			}
+			else if(sumOwnedAI==terr.length){ //AI wins
+				gameOver=true;
+			}
+		}
 		
 		
 	}
