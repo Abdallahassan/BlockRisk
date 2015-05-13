@@ -37,11 +37,11 @@ public class Game extends BasicGameState {
 	private boolean AIsturn;        // true if it's the Ai's turn to play.
 	private Map map;
 	private Random random;
-	private Territory[] aiOwned;
+	//private Territory[] aiOwned;
 	private int[] unitsNotPlaced; //units the player can place in territories (non-AI)
 	private int[] unitsNotPlacedAI;
-	private int res=10000; //player resources
-	private int resAI=10000; //AI resources
+	private int res; //player resources
+	private int resAI; //AI resources
 	private int[] cost={10,100,250};
 	private Texture texture;
 	private boolean gameOver;
