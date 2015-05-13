@@ -80,9 +80,11 @@ public class Game extends BasicGameState {
 		actionFrom = -1;
 		attackMode = false;
 		
-		inputArgs = new String[15]; // change to 18 later.
-		random = new Random(System.currentTimeMillis());                                                                                                                 //
-		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(230,460), new IntPair(380,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
+		unitsNotPlaced = new int[3];
+		
+		inputArgs = new String[18];
+		random = new Random(System.currentTimeMillis());                                                                                                                                                                                   //
+		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(170,460), new IntPair(305,460), new IntPair(425,460), new IntPair(585,460), new IntPair(730,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
 	}
 
 	@Override
@@ -104,9 +106,12 @@ public class Game extends BasicGameState {
 			inputArgs[0] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(0));
 			inputArgs[1] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(1));
 			inputArgs[2] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(2));
+			inputArgs[3] = Integer.toString(unitsNotPlaced[0]);
+			inputArgs[4] = Integer.toString(unitsNotPlaced[1]);
+			inputArgs[5] = Integer.toString(unitsNotPlaced[2]);
 		}
-		for (int i=3; i < 15; i++)
-			inputArgs[i] = Integer.toString(map.getTerritory(i-3).numUnits());
+		for (int i=6; i < 18; i++)
+			inputArgs[i] = Integer.toString(map.getTerritory(i-6).numUnits());
 		
 		soldier.draw(inputArgs, Color.yellow);
 		
