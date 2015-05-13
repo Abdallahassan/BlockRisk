@@ -437,7 +437,7 @@ public class Game extends BasicGameState {
 				}
 			}
 			Territory toAttack=neighbours[weakestTerr];
-			attack(terr,toAttack);
+			combat(terr,toAttack,true);
 		}
 		
 		private void aiTurn(){
@@ -472,7 +472,7 @@ public class Game extends BasicGameState {
 			while(!map.getAllTerritories()[n].ownedbyAI()){
 				n=random.nextInt(map.getAllTerritories().length);
 			}
-			attackWeakestNeighbour(map.getAllTerritories()[n]);		
+			attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
 			}
 		
 		/**
