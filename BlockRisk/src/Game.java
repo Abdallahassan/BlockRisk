@@ -171,7 +171,7 @@ public class Game extends BasicGameState {
 		/**
 		 * Generates resources for the player (non-AI) depending on resource value of territories. 
 		 */
-		private int genResPlayer(){ //need method like this for the AI too
+		private int genResPlayer(){ 
 			Territory[] terr=map.getAllTerritories();
 			int resourceSum=0;
 			for(int i=0;i<terr.length;i++){
@@ -200,8 +200,10 @@ public class Game extends BasicGameState {
 		
 		/**
 		 * Need error handling here (buy too much, res=0)
-		 * @param i
-		 * @param units Player or AI units 
+		 * @param i Unit you want to purchase 
+		 * @param amount: The amount of that unit 
+		 * @param units: unitsNotPlaced or unitsNotPlacedAI, these
+		 * arrays store the units so that they can be placed later. 
 		 */
 		private void buyUnits(int i,int amount,int[] units){
 			res-=cost[i]*amount;
@@ -211,9 +213,10 @@ public class Game extends BasicGameState {
 		//2)Placing Units
 		/**
 		 * Error handling needed !!
-		 * @param i
+		 * @param i Type of unit
 		 * @param amount
-		 * @param terr
+		 * @param terr The territory you want to place it in.
+		 * @param unitsNotPlaced or unitsNotPlacedAI. Takes units from these arrays
 		 */
 		private void placeUnits(int i,int amount,Territory terr,int[] units){
 			units[i]-=amount;
@@ -245,6 +248,8 @@ public class Game extends BasicGameState {
 			int k=1; //change later ???
 			int avgE=to.averageEvasion();
 			int removeSize;
+			
+			
 			
 			if (sumD*avgE*k == 0)
 				removeSize = 1;               // Avoid division by 0.
