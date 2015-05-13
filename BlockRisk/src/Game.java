@@ -49,10 +49,10 @@ public class Game extends BasicGameState {
 	private int actionFrom;
 	private boolean attackMode;
 	private boolean inuserTerritory;
-	private final static IntPair saveButtonFrom = new IntPair(0, 0); // change later
-	private final static IntPair saveButtonTo   = new IntPair(1, 1); // change later
-	private final static IntPair mainMenuButtonFrom = new IntPair(0, 0); // change later
-	private final static IntPair mainMenuButtonTo   = new IntPair(1, 1); // change later
+	private final static IntPair saveButtonFrom = new IntPair(310, 5);
+	private final static IntPair saveButtonTo   = new IntPair(488, 45);
+	private final static IntPair mainMenuButtonFrom = new IntPair(50, 5);
+	private final static IntPair mainMenuButtonTo   = new IntPair(230, 45);
 	private Picbox soldier;
 	private String[] inputArgs;
 
