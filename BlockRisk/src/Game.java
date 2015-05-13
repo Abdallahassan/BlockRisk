@@ -32,7 +32,6 @@ import java.util.Random;
 
 public class Game extends BasicGameState {
 	
-
 	private MouseInput mouseinput;
 	private boolean AIsturn;        // true if it's the Ai's turn to play.
 	private Map map;
@@ -58,6 +57,12 @@ public class Game extends BasicGameState {
 	private boolean buying;
 	private Picbox soldier;
 	private String[] inputArgs;
+	private final static IntPair soldierFrom = new IntPair(354, 455);
+	private final static IntPair soldierTo   = new IntPair(450, 495);
+	private final static IntPair vehicleFrom = new IntPair(500, 455);
+	private final static IntPair vehicleTo   = new IntPair(610, 495);
+	private final static IntPair airplaneFrom = new IntPair(650, 455);
+	private final static IntPair airplaneTo   = new IntPair(750, 495);
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -139,6 +144,7 @@ public class Game extends BasicGameState {
 		mouseinput.update();
 
 		if (mouseinput.leftClick()) {
+			System.out.println(mouseinput.getCoordinates());
 			/*if (attackMode) {
 			// do something.
 		}*/
@@ -158,6 +164,12 @@ public class Game extends BasicGameState {
 			sbg.enterState(1);
 		} else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo)) {
 			buying = true;
+		} else if (mouseinput.insideRect(soldierFrom, soldierTo) && actionFrom >= 0) {
+			placeUnits(0,1,map.getTerritory(actionFrom));
+		} else if (mouseinput.insideRect(vehicleFrom, vehicleTo) && actionFrom >= 0) {
+			placeUnits(1,1,map.getTerritory(actionFrom));
+		} else if (mouseinput.insideRect(airplaneFrom, airplaneTo) && actionFrom >= 0) {
+			placeUnits(2,1,map.getTerritory(actionFrom));
 		}
 		}
 		
