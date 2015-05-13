@@ -312,13 +312,13 @@ public class Game extends BasicGameState {
 			int r=random.nextInt(10)+1; //1<=r<=10
 			int k=1; //change later ???
 			int avgE=to.averageEvasion();
-			int removeSize=(sumA*r)/(sumD*avgE*k);
 			if(sumD==0){
 				sumD=1;
 			}
 			if(avgE==0){
 				avgE=1;
 			}
+			int removeSize=(sumA*r)/(sumD*avgE*k);			
 			to.removeUnits(0,removeSize/3);
 			to.removeUnits(1,removeSize/3);
 			to.removeUnits(2,removeSize/3);
