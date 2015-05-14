@@ -57,9 +57,11 @@ public class Game extends BasicGameState {
 	private final static IntPair buyButtonFrom = new IntPair(565, 5);
 	private final static IntPair buyButtonTo   = new IntPair(745, 45);
 	private boolean buying;
+	private boolean decided;
 	private Picbox soldier;
 	private Picbox attackbox;
 	private Picbox buytroops;
+	private Picbox gameover;
 	private String[] inputArgs;
 	private String[] statArgs;
 	private final static IntPair soldierFrom = new IntPair(354, 455);
@@ -76,6 +78,11 @@ public class Game extends BasicGameState {
 	private final static IntPair retreatButtonTo   = new IntPair(522, 415);
 	private int[] stats; // stats[0] = user's sum attack, stats[1] = users's sum defence, stats[2] = user's average evasion.
 
+	private final static IntPair exitgameFrom = new IntPair(267, 345);
+	private final static IntPair exitgameTo   = new IntPair(393, 385);
+	private final static IntPair startnewgameFrom = new IntPair(406, 345);
+	private final static IntPair startnewgameTo   = new IntPair(533, 385);
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -91,8 +98,10 @@ public class Game extends BasicGameState {
 		AIsturn = false;
 		map = new Map();
 		map.load();
-		if (Main.isNewGame())
+		if (Main.isNewGame()) {
 			//map.initNewGame();
+		}
+		// gameOver = true; Only for testing purposes. Delete later.
 		
 		actionFrom = -1;
 		attackMode = false;
@@ -139,7 +148,9 @@ public class Game extends BasicGameState {
 		
 		soldier.draw(inputArgs, Color.yellow);
 		
-		if (attackMode) {
+		if (gameOver) {
+			gameover.draw(new String[]{}, Color.white);
+		} else if (attackMode) {
 			for (int i = 0; i < 3; i++)
 				statArgs[i] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(i));
 			for (int i = 3; i < 6; i++)
@@ -169,10 +180,26 @@ public class Game extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		mouseinput.update();
+		
+		if (gameOver && !decided) {
+			if (AIwon)
+				gameover = new Picbox(new IntPair(250,100), new IntPair(550,400), "res/youLost.jpg", new IntPair[]{});
+			else
+				gameover = new Picbox(new IntPair(250,100), new IntPair(550,400), "res/youWon.jpg", new IntPair[]{});;
+			decided = true;
+		}
 
 		if (mouseinput.leftClick()) {
 			System.out.println(mouseinput.getCoordinates());
-			if (attackMode) {
+			if (gameOver) {
+				if (mouseinput.insideRect(exitgameFrom, exitgameTo))
+					sbg.enterState(1);
+				else if (mouseinput.insideRect(startnewgameFrom, startnewgameTo)) {
+					Main.setNewGame(true);
+					sbg.enterState(2);  // does this work?
+					// map.initNewGame();  maybe this is better.
+				}
+			} else if (attackMode) {
 			if (mouseinput.insideRect(attackButtonFrom, attackButtonTo)) {
 				if (combat(map.getTerritory(actionFrom), attackOn)) {
 					//update and exit
