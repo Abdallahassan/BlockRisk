@@ -372,23 +372,22 @@ public class Game extends BasicGameState {
 		 * @return win: If the attacker won, win is True
 		 * 
 		 */
-		private boolean combat(Territory from,Territory to,boolean resume){
+		private boolean combat(Territory from,Territory to){
 			boolean win=false;
-			while(resume){ //IF ATTACKER WINS, LEFT OVER UNITS STAY IN "to" TERRITORY
-				attack(from,to);
-				defend(to,from);
-				if(numUnits(to.getUnits())<=0){//defender loses
-					win=true;
-					to.changeOwner();
-				}
-				if(numUnits(from.getUnits())<=0){//attacker loses
-					//leave one infantry in the 
-					from.setUnits(0,1);
-					from.setUnits(1,0);
-					from.setUnits(1,0);
-				}
-				//needs some mouse input here to change resume !!!
+			 //IF ATTACKER WINS, LEFT OVER UNITS STAY IN "to" TERRITORY
+			attack(from,to);
+			defend(to,from);
+			
+			if(numUnits(to.getUnits())<=0){//defender loses
+				win=true;
+				to.changeOwner();
 			}
+			if(numUnits(from.getUnits())<=0){//attacker loses
+					//leave one infantry in the attacker's territory
+				from.setUnits(0,1);
+				from.setUnits(1,0);
+				from.setUnits(1,0);
+			}			
 			return win;
 		}		
 		
@@ -468,7 +467,7 @@ public class Game extends BasicGameState {
 				}
 			}
 			Territory toAttack=neighbours[weakestTerr];
-			combat(terr,toAttack,true);
+			combat(terr,toAttack);
 		}
 		
 		private void aiTurn(){
@@ -540,5 +539,34 @@ public class Game extends BasicGameState {
 			}
 		}
 		
+		private void updateSumAttack(Territory terr){
+			int sum=terr.sumAttack();
+			stats[0]=sum;			
+		}
+		
+		private void updateSumDefence(Territory terr){
+			int sum=terr.sumDefence();
+			stats[1]=sum;			
+		}
+		
+		private void updateAvgEvasion(Territory terr){
+			int sum=terr.averageEvasion();
+			stats[2]=sum;			
+		}
+		
+		private void updateSumAttackAI(Territory terr){
+			int sum=terr.sumAttack();
+			stats[3]=sum;			
+		}
+		
+		private void updateSumDefenceAI(Territory terr){
+			int sum=terr.sumDefence();
+			stats[4]=sum;			
+		}
+		
+		private void updateAvgEvasionAI(Territory terr){
+			int sum=terr.averageEvasion();
+			stats[5]=sum;			
+		}
 		
 	}

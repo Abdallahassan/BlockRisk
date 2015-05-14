@@ -214,7 +214,8 @@ public class Map {
 	
 	/**
 	 * initialises mapSave.xml, used for when no data of map
-	 * exists/mapSave.xml is empty 
+	 * exists/mapSave.xml is empty . 
+	 * Arsalan-THIS METHOD WONT BE NEEDED ANY LONGER.
 	 */
 	public void initMapSave() {
 		 
