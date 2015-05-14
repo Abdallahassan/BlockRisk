@@ -104,6 +104,7 @@ public class Game extends BasicGameState {
 		random = new Random(System.currentTimeMillis());                                                                                                                                                                                   //
 		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(170,460), new IntPair(305,460), new IntPair(425,460), new IntPair(585,460), new IntPair(730,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
 		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{new IntPair(315, 130), new IntPair(315, 185), new IntPair(315, 245), new IntPair(470, 130), new IntPair(470, 185), new IntPair(470, 245), new IntPair(360, 295), new IntPair(360, 320), new IntPair(360, 345), new IntPair(510, 295), new IntPair(510, 320), new IntPair(510, 345)});
+		buytroops = new Picbox(attackFrom, attackTo, "res/buyMenu.jpg", new IntPair[]{new IntPair(435, 345)});
 		stats = new int[6];
 	}
 
@@ -146,9 +147,9 @@ public class Game extends BasicGameState {
 			for (int i = 6; i < 12; i++)
 				statArgs[i] = Integer.toString(stats[i-6]);
 			attackbox.draw(statArgs, Color.magenta);
-		} /*else if (buying) {
-			
-		}*/
+		} else if (buying) {
+			buytroops.draw(new String[]{Integer.toString(0)}, Color.magenta); // CHANGE LATER!!!
+		}
 	}
 	
 	private void drawTexture() {
