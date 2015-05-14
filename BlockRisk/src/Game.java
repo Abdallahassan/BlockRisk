@@ -99,7 +99,7 @@ public class Game extends BasicGameState {
 		map = new Map();
 		map.load();
 		if (Main.isNewGame()) {
-			//map.initNewGame();
+			initnewGame();
 		}
 		// gameOver = true; Only for testing purposes. Delete later.
 		
@@ -115,6 +115,17 @@ public class Game extends BasicGameState {
 		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{new IntPair(315, 130), new IntPair(315, 185), new IntPair(315, 245), new IntPair(470, 130), new IntPair(470, 185), new IntPair(470, 245), new IntPair(360, 295), new IntPair(360, 320), new IntPair(360, 345), new IntPair(510, 295), new IntPair(510, 320), new IntPair(510, 345)});
 		buytroops = new Picbox(attackFrom, attackTo, "res/buyMenu.jpg", new IntPair[]{new IntPair(435, 345)});
 		stats = new int[6];
+	}
+	
+	/**
+	 * Run only if a new game is created.
+	 * 
+	 * Right now only the map initializes, 
+	 * but we need to initialize the troops and resources too, both for the player and for the AI.
+	 */
+	private void initnewGame() {
+		map.initNewGame();
+		
 	}
 
 	@Override
