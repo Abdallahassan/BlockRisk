@@ -59,6 +59,7 @@ public class Game extends BasicGameState {
 	private boolean buying;
 	private Picbox soldier;
 	private Picbox attackbox;
+	private Picbox buytroops;
 	private String[] inputArgs;
 	private String[] statArgs;
 	private final static IntPair soldierFrom = new IntPair(354, 455);
@@ -145,7 +146,9 @@ public class Game extends BasicGameState {
 			for (int i = 6; i < 12; i++)
 				statArgs[i] = Integer.toString(stats[i-6]);
 			attackbox.draw(statArgs, Color.magenta);
-		}
+		} /*else if (buying) {
+			
+		}*/
 	}
 	
 	private void drawTexture() {
@@ -180,7 +183,9 @@ public class Game extends BasicGameState {
 			} else if (mouseinput.insideRect(retreatButtonFrom, retreatButtonTo)) {
 				attackMode = false;
 			}
-		}
+		} /*else if (buying) {
+			// do later
+		}*/
 			else if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn) {
 			 inuserTerritory = !map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates()));
 			 if (inuserTerritory) {
@@ -204,6 +209,8 @@ public class Game extends BasicGameState {
 			placeUnits(1,1,map.getTerritory(actionFrom));
 		} else if (mouseinput.insideRect(airplaneFrom, airplaneTo) && actionFrom >= 0) {
 			placeUnits(2,1,map.getTerritory(actionFrom));
+		} else if (mouseinput.insideRect(buyButtonFrom, buyButtonTo)) {
+			buying = true;
 		}
 		}
 		
