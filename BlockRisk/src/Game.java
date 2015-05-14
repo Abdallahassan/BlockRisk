@@ -45,6 +45,7 @@ public class Game extends BasicGameState {
 	private Texture texture;
 	private boolean gameOver;
 	
+	private Territory attackOn;
 	private int actionFrom;
 	private boolean attackMode;
 	private boolean inuserTerritory;
@@ -58,6 +59,7 @@ public class Game extends BasicGameState {
 	private Picbox soldier;
 	private Picbox attackbox;
 	private String[] inputArgs;
+	private String[] statArgs;
 	private final static IntPair soldierFrom = new IntPair(354, 455);
 	private final static IntPair soldierTo   = new IntPair(450, 495);
 	private final static IntPair vehicleFrom = new IntPair(500, 455);
@@ -96,9 +98,10 @@ public class Game extends BasicGameState {
 		unitsNotPlaced = new int[3];
 		
 		inputArgs = new String[18];
+		statArgs = new String[12];
 		random = new Random(System.currentTimeMillis());                                                                                                                                                                                   //
 		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(170,460), new IntPair(305,460), new IntPair(425,460), new IntPair(585,460), new IntPair(730,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
-		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{});
+		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{new IntPair(315, 130), new IntPair(315, 185), new IntPair(315, 245), new IntPair(470, 130), new IntPair(470, 185), new IntPair(470, 245), new IntPair(360, 295), new IntPair(360, 320), new IntPair(360, 345), new IntPair(510, 295), new IntPair(510, 320), new IntPair(510, 345)});
 		stats = new int[6];
 	}
 
@@ -117,6 +120,9 @@ public class Game extends BasicGameState {
 			inputArgs[0] = " ";
 			inputArgs[1] = " ";
 			inputArgs[2] = " ";
+			inputArgs[3] = " ";
+			inputArgs[4] = " ";
+			inputArgs[5] = " ";
 		} else {
 			inputArgs[0] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(0));
 			inputArgs[1] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(1));
@@ -131,7 +137,13 @@ public class Game extends BasicGameState {
 		soldier.draw(inputArgs, Color.yellow);
 		
 		if (attackMode) {
-			attackbox.draw(new String[]{}, Color.cyan);
+			for (int i = 0; i < 3; i++)
+				statArgs[i] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(i));
+			for (int i = 3; i < 6; i++)
+				statArgs[i] = Integer.toString(attackOn.getSomeUnit(i-3));
+			for (int i = 6; i < 12; i++)
+				statArgs[i] = Integer.toString(stats[i-6]);
+			attackbox.draw(statArgs, Color.magenta);
 		}
 	}
 	
@@ -157,7 +169,13 @@ public class Game extends BasicGameState {
 			System.out.println(mouseinput.getCoordinates());
 			if (attackMode) {
 			if (mouseinput.insideRect(attackButtonFrom, attackButtonTo)) {
-				// Attack things here...
+				if (combat(map.getTerritory(actionFrom), map.getTerritory(mouseinput.getCoordinates()))) {
+					//update and exit
+					updateStats(map.getTerritory(actionFrom), attackOn);
+					attackMode = false;
+				} else {
+					updateStats(map.getTerritory(actionFrom), attackOn);
+				}
 			} else if (mouseinput.insideRect(retreatButtonFrom, retreatButtonTo)) {
 				attackMode = false;
 			}
@@ -169,6 +187,7 @@ public class Game extends BasicGameState {
 				 map.setHighlight(actionFrom);
 			 } else if (actionFrom >= 0 && actionFrom < 12 && map.areNeighbours(actionFrom, map.getTerritoryID(mouseinput.getCoordinates()))) {
 				 attackMode = true;
+				 attackOn = map.getTerritory(mouseinput.getCoordinates());
 			 }
 		}
 		else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo))
