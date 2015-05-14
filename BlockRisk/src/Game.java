@@ -44,6 +44,7 @@ public class Game extends BasicGameState {
 	private int[] cost={10,100,250};
 	private Texture texture;
 	private boolean gameOver;
+	private boolean AIwon;
 	
 	private Territory attackOn;
 	private int actionFrom;
@@ -552,9 +553,11 @@ public class Game extends BasicGameState {
 			}
 			if(sumOwnedAI==0){ //player wins
 				gameOver=true;
+				AIwon = false;
 			}
 			else if(sumOwnedAI==terr.length){ //AI wins
 				gameOver=true;
+				AIwon = true;
 			}
 		}
 		
