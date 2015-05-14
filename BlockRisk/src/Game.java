@@ -559,6 +559,7 @@ public class Game extends BasicGameState {
 			stats[3]=sum;			
 		}
 		
+			
 		private void updateSumDefenceAI(Territory terr){
 			int sum=terr.sumDefence();
 			stats[4]=sum;			
@@ -567,6 +568,15 @@ public class Game extends BasicGameState {
 		private void updateAvgEvasionAI(Territory terr){
 			int sum=terr.averageEvasion();
 			stats[5]=sum;			
+		}
+		
+		public void updateStats(Territory player,Territory ai){
+			updateSumAttack(player);
+			updateSumDefence(player);
+			updateAvgEvasion(player);
+			updateSumAttackAI(ai);
+			updateSumDefenceAI(ai);
+			updateAvgEvasionAI(ai);			
 		}
 		
 	}
