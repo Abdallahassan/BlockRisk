@@ -169,7 +169,7 @@ public class Game extends BasicGameState {
 			System.out.println(mouseinput.getCoordinates());
 			if (attackMode) {
 			if (mouseinput.insideRect(attackButtonFrom, attackButtonTo)) {
-				if (combat(map.getTerritory(actionFrom), map.getTerritory(mouseinput.getCoordinates()))) {
+				if (combat(map.getTerritory(actionFrom), attackOn)) {
 					//update and exit
 					updateStats(map.getTerritory(actionFrom), attackOn);
 					attackMode = false;
