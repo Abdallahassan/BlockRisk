@@ -273,15 +273,16 @@ public class Game extends BasicGameState {
 					// map.initNewGame();  maybe this is better.
 				}
 			} else if (attackMode) {
+				updateStats(map.getTerritory(actionFrom), attackOn);
 			if (mouseinput.insideRect(attackButtonFrom, attackButtonTo)) {
 				if (combat(map.getTerritory(actionFrom), attackOn)) {
 					//update and exit
 					System.out.println("won " + map.getTerritory(actionFrom) + " " + attackOn);
-					updateStats(map.getTerritory(actionFrom), attackOn);
+					//updateStats(map.getTerritory(actionFrom), attackOn);
 					attackMode = false;
 				} else {
 					System.out.println("nowon " + map.getTerritory(actionFrom) + " " + attackOn);
-					updateStats(map.getTerritory(actionFrom), attackOn);
+					//updateStats(map.getTerritory(actionFrom), attackOn);
 				}
 			} else if (mouseinput.insideRect(retreatButtonFrom, retreatButtonTo)) {
 				attackMode = false;
