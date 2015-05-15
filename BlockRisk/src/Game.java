@@ -487,6 +487,9 @@ public class Game extends BasicGameState {
 				avgE=1;
 			}
 			int removeSize=(sumA*r*k)/(sumD*avgE);	//will remove this amount from each unit type
+			if(removeSize==0){
+				removeSize=1;
+			}
 			
 			int numInf=to.getUnits()[0];
 			int numVeh=to.getUnits()[1];
@@ -537,6 +540,9 @@ public class Game extends BasicGameState {
 				avgE=1;
 			}
 			int removeSize=(sumA*r*k)/(sumD*avgE);	//will remove this amount from each unit type
+			if(removeSize==0){
+				removeSize=1;
+			}
 			
 			int numInf=from.getUnits()[0];
 			int numVeh=from.getUnits()[1];
