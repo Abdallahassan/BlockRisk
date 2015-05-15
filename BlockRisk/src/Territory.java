@@ -7,7 +7,7 @@ public class Territory {
 	private final int[] attStats={1, 6, 4, 8}; //divided all stats by 10 to keep it 2 digit.
 	private final int[] defStats={1, 7, 4, 3};
 	private final int[] evStat={3,1,4,6};
-	private int startingRes=10000;
+	private int startingRes=200;
 	
 	public Territory(boolean owner) {
 		this.owner = owner;

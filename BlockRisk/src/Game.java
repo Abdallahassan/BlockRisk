@@ -379,7 +379,7 @@ public class Game extends BasicGameState {
 		/**
 		 * Generates resources for the player (non-AI) depending on resource value of territories. 
 		 */
-		private int genResPlayer(){ 
+		private void genResPlayer(){ 
 			Territory[] terr=map.getAllTerritories();
 			int resourceSum=0;
 			for(int i=0;i<terr.length;i++){
@@ -387,13 +387,13 @@ public class Game extends BasicGameState {
 					resourceSum+=terr[i].getResourceVal();
 				}
 			}
-			return resourceSum;
+			res=resourceSum;
 		}
 		
 		/**
 		 * Generates resources for the AI depending on resource value of territories. 
 		 */
-		private int genResAI(){ //need method like this for the AI too
+		private void genResAI(){ //need method like this for the AI too
 			Territory[] terr=map.getAllTerritories();
 			int resourceSum=0;
 			for(int i=0;i<terr.length;i++){
@@ -401,7 +401,7 @@ public class Game extends BasicGameState {
 					resourceSum+=terr[i].getResourceVal();
 				}
 			}
-			return resourceSum;
+			resAI=resourceSum;
 		}
 		
 		//1) Buying Units
