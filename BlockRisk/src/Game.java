@@ -41,7 +41,7 @@ public class Game extends BasicGameState {
 	private int[] unitsNotPlacedAI;
 	private int res; //player resources
 	private int resAI; //AI resources
-	private int[] cost={10,100,250};
+	private int[] cost={50,100,250};
 	private Texture texture;
 	private boolean gameOver;
 	private boolean AIwon;
@@ -112,6 +112,27 @@ public class Game extends BasicGameState {
 	private final static IntPair buytwentyairFrom = new IntPair(501, 271);
 	private final static IntPair buytwentyairTo   = new IntPair(544, 295);
 	
+	/* FOR DEBUGGING, is temporary 
+	public static void main(String[] args){
+		Game game = new Game();
+		Random r= new Random();
+		game.random=r;
+		game.stats=new int[6];
+		Territory from=new Territory(false);
+		Territory to=new Territory(true);
+		from.setUnits(0,5);
+		from.setUnits(1,3);
+		from.setUnits(2,1);
+		to.setUnits(0,5);
+		to.setUnits(1,3);
+		to.setUnits(2,1);
+		game.combat(from,to);
+		game.combat(from,to);
+		game.combat(from,to);
+	}
+	*/
+	
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -158,8 +179,8 @@ public class Game extends BasicGameState {
 			terr[i].setUnits(1,3);
 			terr[i].setUnits(2,1);			
 		}
-		res=5000; //can be changed later
-		resAI=5000;
+		res=2000; //can be changed later
+		resAI=2000;
 		AIsturn=false;
 		gameOver=false;
 		AIwon=false;
@@ -454,11 +475,9 @@ public class Game extends BasicGameState {
 		 * @param to
 		 */
 		private void attack(Territory from, Territory to){
-			int[] unitsFrom=from.getUnits();
-			int[] unitsTo=from.getUnits();
 			int sumA=from.sumAttack();
 			int sumD=to.sumDefence();
-			int r=random.nextInt(10)+1; //1<=r<=10
+			int r=random.nextInt(5)+1; //1<=r<=5
 			int k=1; //change later ???
 			int avgE=to.averageEvasion();
 			if(sumD==0){
@@ -467,11 +486,35 @@ public class Game extends BasicGameState {
 			if(avgE==0){
 				avgE=1;
 			}
-			int removeSize=(sumA*r)/(sumD*avgE*k);			
-			to.removeUnits(0,removeSize/3);
-			to.removeUnits(1,removeSize/3);
-			to.removeUnits(2,removeSize/3);
-		}
+			int removeSize=(sumA*r*k)/(sumD*avgE);	//will remove this amount from each unit type
+			
+			int numInf=to.getUnits()[0];
+			int numVeh=to.getUnits()[1];
+			int numAir=to.getUnits()[2];
+			
+			
+			if(removeSize>numInf){
+				to.setUnits(0,0);
+			}
+			else{
+				to.removeUnits(0,removeSize);
+			}
+			if(removeSize>numVeh){
+				to.setUnits(1,0);	
+			}
+			else{
+				to.removeUnits(1,removeSize);
+			}
+			if(removeSize>numAir){
+				to.setUnits(2,0);				
+			}
+			else{
+				to.removeUnits(2,removeSize);
+			}
+			
+			
+		}			
+	
 		
 		
 		
@@ -484,7 +527,7 @@ public class Game extends BasicGameState {
 		private void defend(Territory from,Territory to){
 			int sumA=to.sumAttack();
 			int sumD=from.sumDefence();
-			int r=random.nextInt(10)+1; //1<=r<=10
+			int r=random.nextInt(5)+1; //1<=r<=5
 			int k=1; //change later ???
 			int avgE=from.averageEvasion();
 			if(sumD==0){
@@ -493,10 +536,33 @@ public class Game extends BasicGameState {
 			if(avgE==0){
 				avgE=1;
 			}
-			int removeSize=(sumA*r)/(sumD*avgE*k);
-			from.removeUnits(0,removeSize/3);
-			from.removeUnits(1,removeSize/3);
-			from.removeUnits(2,removeSize/3);
+			int removeSize=(sumA*r*k)/(sumD*avgE);	//will remove this amount from each unit type
+			
+			int numInf=from.getUnits()[0];
+			int numVeh=from.getUnits()[1];
+			int numAir=from.getUnits()[2];
+			
+			
+			if(removeSize>numInf){
+				from.setUnits(0,0);
+			}
+			else{
+				from.removeUnits(0,removeSize);
+			}
+			if(removeSize>numVeh){
+				from.setUnits(1,0);	
+			}
+			else{
+				from.removeUnits(1,removeSize);
+			}
+			if(removeSize>numAir){
+				from.setUnits(2,0);				
+			}
+			else{
+				from.removeUnits(2,removeSize);
+			}
+			
+		
 		}
 		
 		/**
@@ -508,17 +574,28 @@ public class Game extends BasicGameState {
 		 * 
 		 */
 		private boolean combat(Territory from,Territory to){
+			updateStats(from,to);
 			boolean win=false;
 			 //IF ATTACKER WINS, LEFT OVER UNITS STAY IN "to" TERRITORY
 			attack(from,to);
-			defend(to,from);
+			System.out.println("Attack performed");
+			defend(from,to);
+			System.out.println("Defence performed");
+			
 			
 			if(numUnits(to.getUnits())<=0){//defender loses
+				System.out.println("WIN");
 				win=true;
 				to.changeOwner();
+				int[] attUnitsLeft=from.getUnits();
+				for(int i=0;i<attUnitsLeft.length;i++){
+					to.setUnits(i,attUnitsLeft[i]);
+				}				
 			}
+			
 			if(numUnits(from.getUnits())<=0){//attacker loses
 					//leave one infantry in the attacker's territory
+				System.out.println("LOSE");
 				from.setUnits(0,1);
 				from.setUnits(1,0);
 				from.setUnits(1,0);

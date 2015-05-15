@@ -4,9 +4,9 @@ public class Territory {
 	private int[] units={0,0,0}; //units[0]=number of infantry,units[1]=number of vehicles, units[2]=aircraft 
 	private int resourceVal; //amount of resources this territory generates each turn 
 	private Territory[] neighbours; //Not sure if needed.  Abdallah: Keep it for now.
-	private final int[] attStats={10, 60, 40, 80}; //change later ??
-	private final int[] defStats={5, 70, 45, 30};
-	private final int[] evStat={30,10,40,60};
+	private final int[] attStats={1, 6, 4, 8}; //divided all stats by 10 to keep it 2 digit.
+	private final int[] defStats={1, 7, 4, 3};
+	private final int[] evStat={3,1,4,6};
 	private int startingRes=10000;
 	
 	public Territory(boolean owner) {
