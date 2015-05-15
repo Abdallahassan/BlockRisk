@@ -203,7 +203,6 @@ public class Game extends BasicGameState {
 			initnewGame();
 			uninitialized = false;
 		}
-		System.out.println(Main.isNewGame());
 		mouseinput.update();
 		
 		if (gameOver && !decided) {
