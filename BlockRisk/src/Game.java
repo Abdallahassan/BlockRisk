@@ -170,7 +170,7 @@ public class Game extends BasicGameState {
 				statArgs[i] = Integer.toString(stats[i-6]);
 			attackbox.draw(statArgs, Color.magenta);
 		} else if (buying) {
-			buytroops.draw(new String[]{Integer.toString(0)}, Color.magenta); // CHANGE LATER!!!
+			buytroops.draw(new String[]{Integer.toString(res)}, Color.magenta);
 		}
 	}
 	
