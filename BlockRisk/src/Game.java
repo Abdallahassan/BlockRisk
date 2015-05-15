@@ -43,8 +43,8 @@ public class Game extends BasicGameState {
 	private int resAI; //AI resources
 	private int[] cost={10,100,250};
 	private Texture texture;
-	private boolean gameOver;
-	private boolean AIwon;
+	private boolean gameOver; //true if game has ended
+	private boolean AIwon; //true if the AI has won
 	
 	private Territory attackOn;
 	private int actionFrom;
@@ -274,7 +274,7 @@ public class Game extends BasicGameState {
 		/**
 		 * Generates resources for the player (non-AI) depending on resource value of territories. 
 		 */
-		private int genResPlayer(){ 
+		private void genResPlayer(){ 
 			Territory[] terr=map.getAllTerritories();
 			int resourceSum=0;
 			for(int i=0;i<terr.length;i++){
@@ -282,13 +282,13 @@ public class Game extends BasicGameState {
 					resourceSum+=terr[i].getResourceVal();
 				}
 			}
-			return resourceSum;
+			res=resourceSum;
 		}
 		
 		/**
 		 * Generates resources for the AI depending on resource value of territories. 
 		 */
-		private int genResAI(){ //need method like this for the AI too
+		private void genResAI(){ //need method like this for the AI too
 			Territory[] terr=map.getAllTerritories();
 			int resourceSum=0;
 			for(int i=0;i<terr.length;i++){
@@ -296,7 +296,7 @@ public class Game extends BasicGameState {
 					resourceSum+=terr[i].getResourceVal();
 				}
 			}
-			return resourceSum;
+			resAI=resourceSum;
 		}
 		
 		//1) Buying Units
@@ -537,6 +537,7 @@ public class Game extends BasicGameState {
 		}
 		
 		private void aiTurn(){
+			genResAI();			
 			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
 			//maybe save between 0 and 20 percent randomly???
 			int j=random.nextInt(3); 
@@ -555,8 +556,8 @@ public class Game extends BasicGameState {
 				highOffence(allocatedRes);
 			break;
 			}
+			
 			//placement 
-		
 			int a=random.nextInt(map.getAllTerritories().length);
 			Territory terr=map.getAllTerritories()[a];
 			int amount=numUnits(unitsNotPlacedAI);
