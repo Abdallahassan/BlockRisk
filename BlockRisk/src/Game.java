@@ -111,6 +111,7 @@ public class Game extends BasicGameState {
 	private final static IntPair buytenairTo   = new IntPair(489, 295);
 	private final static IntPair buytwentyairFrom = new IntPair(501, 271);
 	private final static IntPair buytwentyairTo   = new IntPair(544, 295);
+	private int numofAttacks;
 	
 	/* FOR DEBUGGING, is temporary 
 	public static void main(String[] args){
@@ -155,6 +156,7 @@ public class Game extends BasicGameState {
 		attackMode = false;
 		
 		unitsNotPlaced = new int[3];
+		unitsNotPlacedAI = new int[3];
 		
 		inputArgs = new String[18];
 		statArgs = new String[12];
@@ -248,6 +250,7 @@ public class Game extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		gameOverCheck();
 		if (Main.isNewGame() && uninitialized) {
 			initnewGame();
 			uninitialized = false;
@@ -261,6 +264,17 @@ public class Game extends BasicGameState {
 				gameover = new Picbox(new IntPair(250,100), new IntPair(550,400), "res/youWon.jpg", new IntPair[]{});;
 			decided = true;
 		}
+		
+		if (numofAttacks > 2) {
+			numofAttacks = 0;
+			AIsturn = true;
+			aiTurn();
+			genResPlayer();
+			genResAI();
+			AIsturn = false;
+		}
+		
+		System.out.println("attacks: " + numofAttacks);
 
 		if (mouseinput.leftClick()) {
 			System.out.println(mouseinput.getCoordinates());
@@ -269,12 +283,12 @@ public class Game extends BasicGameState {
 					sbg.enterState(1);
 				else if (mouseinput.insideRect(startnewgameFrom, startnewgameTo)) {
 					Main.setNewGame(true);
-					sbg.enterState(2);  // does this work?
-					// map.initNewGame();  maybe this is better.
+					initnewGame();
 				}
 			} else if (attackMode) {
 				updateStats(map.getTerritory(actionFrom), attackOn);
 			if (mouseinput.insideRect(attackButtonFrom, attackButtonTo)) {
+				numofAttacks++;
 				if (combat(map.getTerritory(actionFrom), attackOn)) {
 					//update and exit
 					System.out.println("won " + map.getTerritory(actionFrom) + " " + attackOn);
