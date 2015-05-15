@@ -612,14 +612,28 @@ public class Game extends BasicGameState {
 				System.out.println("WIN"); //debugging purposes only
 				win=true;
 				to.changeOwner();
+				to.setUnits(0,0);
+				to.setUnits(0,0);
+				to.setUnits(0,0);			
+				System.out.println("OWNER CHANGED");
+				
 				int[] attUnitsLeft=from.getUnits();
-				for(int i=0;i<attUnitsLeft.length;i++){
-					to.setUnits(i,attUnitsLeft[i]-1);
-					//from.removeUnits(i,attUnitsLeft[i]-1);
-				}				
+				
+				if(numUnits(from.getUnits())<=1){
+					System.out.println("a");
+					to.setUnits(0,1);					
+				}
+				else{
+					to.addUnits(0, attUnitsLeft[0]-1);
+					to.addUnits(1, attUnitsLeft[1]);
+					to.addUnits(2, attUnitsLeft[2]);
+					from.removeUnits(0, attUnitsLeft[0]-1);
+					from.removeUnits(1, attUnitsLeft[1]);
+					from.removeUnits(2, attUnitsLeft[2]);
+				}			
 			}
 			
-			if(numUnits(from.getUnits())<=0){//attacker loses
+			else if(numUnits(from.getUnits())<=0){//attacker loses
 					//leave one infantry in the attacker's territory
 				System.out.println("LOSE"); //debugging purposes only
 				from.setUnits(0,1);
@@ -627,7 +641,8 @@ public class Game extends BasicGameState {
 				from.setUnits(1,0);
 			}			
 			return win;
-		}		
+		}	
+
 		
 		
 		
@@ -705,10 +720,13 @@ public class Game extends BasicGameState {
 				}
 			}
 			Territory toAttack=neighbours[weakestTerr];
-			combat(terr,toAttack);
+			while(numUnits(terr.getUnits())>1){ //keeps attacking that zone until win or lose
+				combat(terr,toAttack);
+			}
+			
 		}
 		
-		private void aiTurn(){
+		private void aiTurnOLD(){
 			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
 			//maybe save between 0 and 20 percent randomly???
 			int j=random.nextInt(3); 
@@ -730,17 +748,61 @@ public class Game extends BasicGameState {
 			//placement 
 		
 			int a=random.nextInt(map.getAllTerritories().length);
+			while(!map.getAllTerritories()[a].ownedbyAI()){
+				a=random.nextInt(map.getAllTerritories().length);
+			}
 			Territory terr=map.getAllTerritories()[a];
 			int amount=numUnits(unitsNotPlacedAI);
 			blob(amount,terr);
 			
-			
-			int n=0;
+			//chooses the "from" territory randomly
+			int n=random.nextInt(map.getAllTerritories().length);
 			//keeps changing n until it produces a territory owned by AI
 			while(!map.getAllTerritories()[n].ownedbyAI()){
 				n=random.nextInt(map.getAllTerritories().length);
 			}
-			attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
+			Territory from=map.getAllTerritories()[n];
+			
+			////chooses the "to" territory randomly
+			int f=random.nextInt(from.getNeighbours().length);
+			Territory to = from.getNeighbours()[f];
+			combat(from,to);
+			
+			
+			
+			//attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
+			}
+
+		
+		private void aiTurn(){
+			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
+			equalist(allocatedRes);
+			
+			//placement 		
+			int a=random.nextInt(map.getAllTerritories().length);
+			while(!map.getAllTerritories()[a].ownedbyAI()){
+				a=random.nextInt(map.getAllTerritories().length);
+			}
+			Territory terr=map.getAllTerritories()[a];
+			int amount=numUnits(unitsNotPlacedAI);
+			blob(amount,terr);
+			
+			//chooses the "from" territory randomly
+			int n=random.nextInt(map.getAllTerritories().length);
+			//keeps changing n until it produces a territory owned by AI
+			while(!map.getAllTerritories()[n].ownedbyAI()){
+				n=random.nextInt(map.getAllTerritories().length);
+			}
+			Territory from=map.getAllTerritories()[n];
+			
+			////chooses the "to" territory randomly
+			int f=random.nextInt(from.getNeighbours().length);
+			Territory to = from.getNeighbours()[f];
+			combat(from,to);
+			
+			
+			
+			//attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
 			}
 		
 		/**
