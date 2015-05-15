@@ -265,7 +265,8 @@ public class Game extends BasicGameState {
 			decided = true;
 		}
 		
-		if (numofAttacks > 2) {
+		if (numofAttacks > 2 && !gameOver) {
+			buying = attackMode = false;
 			numofAttacks = 0;
 			AIsturn = true;
 			aiTurn();
@@ -775,6 +776,7 @@ public class Game extends BasicGameState {
 
 		
 		private void aiTurn(){
+			System.out.println("Computer: my turn now!");
 			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
 			equalist(allocatedRes);
 			
