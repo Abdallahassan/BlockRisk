@@ -83,6 +83,34 @@ public class Game extends BasicGameState {
 	private final static IntPair startnewgameFrom = new IntPair(406, 345);
 	private final static IntPair startnewgameTo   = new IntPair(533, 385);
 	private boolean uninitialized;
+	private final static IntPair exitbuyFrom = new IntPair(524, 75);
+	private final static IntPair exitbuyTo   = new IntPair(549, 87);
+	private final static IntPair buyoneinfFrom = new IntPair(336, 142);
+	private final static IntPair buyoneinfTo   = new IntPair(379, 164);
+	private final static IntPair buyfiveinfFrom = new IntPair(391, 142);
+	private final static IntPair buyfiveinfTo   = new IntPair(433, 164);
+	private final static IntPair buyteninfFrom = new IntPair(447, 142);
+	private final static IntPair buyteninfTo   = new IntPair(489, 164);
+	private final static IntPair buytwentyinfFrom = new IntPair(501, 142);
+	private final static IntPair buytwentyinfTo   = new IntPair(544, 164);
+	
+	private final static IntPair buyonevehFrom = new IntPair(336, 210);
+	private final static IntPair buyonevehTo   = new IntPair(379, 232);
+	private final static IntPair buyfivevehFrom = new IntPair(391, 210);
+	private final static IntPair buyfivevehTo   = new IntPair(433, 232);
+	private final static IntPair buytenvehFrom = new IntPair(447, 210);
+	private final static IntPair buytenvehTo   = new IntPair(489, 232);
+	private final static IntPair buytwentyvehFrom = new IntPair(501, 210);
+	private final static IntPair buytwentyvehTo   = new IntPair(544, 232);
+	
+	private final static IntPair buyoneairFrom = new IntPair(336, 271);
+	private final static IntPair buyoneairTo   = new IntPair(379, 295);
+	private final static IntPair buyfiveairFrom = new IntPair(391, 271);
+	private final static IntPair buyfiveairTo   = new IntPair(433, 295);
+	private final static IntPair buytenairFrom = new IntPair(447, 271);
+	private final static IntPair buytenairTo   = new IntPair(489, 295);
+	private final static IntPair buytwentyairFrom = new IntPair(501, 271);
+	private final static IntPair buytwentyairTo   = new IntPair(544, 295);
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -152,9 +180,9 @@ public class Game extends BasicGameState {
 			inputArgs[0] = " ";
 			inputArgs[1] = " ";
 			inputArgs[2] = " ";
-			inputArgs[3] = " ";
-			inputArgs[4] = " ";
-			inputArgs[5] = " ";
+			inputArgs[3] = Integer.toString(unitsNotPlaced[0]);
+			inputArgs[4] = Integer.toString(unitsNotPlaced[1]);
+			inputArgs[5] = Integer.toString(unitsNotPlaced[2]);
 		} else {
 			inputArgs[0] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(0));
 			inputArgs[1] = Integer.toString(map.getTerritory(actionFrom).getSomeUnit(1));
@@ -227,17 +255,45 @@ public class Game extends BasicGameState {
 			if (mouseinput.insideRect(attackButtonFrom, attackButtonTo)) {
 				if (combat(map.getTerritory(actionFrom), attackOn)) {
 					//update and exit
+					System.out.println("won " + map.getTerritory(actionFrom) + " " + attackOn);
 					updateStats(map.getTerritory(actionFrom), attackOn);
 					attackMode = false;
 				} else {
+					System.out.println("nowon " + map.getTerritory(actionFrom) + " " + attackOn);
 					updateStats(map.getTerritory(actionFrom), attackOn);
 				}
 			} else if (mouseinput.insideRect(retreatButtonFrom, retreatButtonTo)) {
 				attackMode = false;
 			}
-		} /*else if (buying) {
-			// do later
-		}*/
+		} else if (buying) {
+			if (mouseinput.insideRect(exitbuyFrom, exitbuyTo)) {
+				buying = false;
+			} else if (mouseinput.insideRect(buyoneinfFrom, buyoneinfTo)) {
+				buyUnitsPlayer(0, 1);
+			} else if (mouseinput.insideRect(buyfiveinfFrom, buyfiveinfTo)) {
+				buyUnitsPlayer(0, 5);
+			} else if (mouseinput.insideRect(buyteninfFrom, buyteninfTo)) {
+				buyUnitsPlayer(0, 10);
+			} else if (mouseinput.insideRect(buytwentyinfFrom, buytwentyinfTo)) {
+				buyUnitsPlayer(0, 20);
+			} else if (mouseinput.insideRect(buyonevehFrom, buyonevehTo)) {
+				buyUnitsPlayer(1, 1);
+			} else if (mouseinput.insideRect(buyfivevehFrom, buyfivevehTo)) {
+				buyUnitsPlayer(1, 5);
+			} else if (mouseinput.insideRect(buytenvehFrom, buytenvehTo)) {
+				buyUnitsPlayer(1, 10);
+			} else if (mouseinput.insideRect(buytwentyvehFrom, buytwentyvehTo)) {
+				buyUnitsPlayer(1, 20);
+			} else if (mouseinput.insideRect(buyoneairFrom, buyoneairTo)) {
+				buyUnitsPlayer(2, 1);
+			} else if (mouseinput.insideRect(buyfiveairFrom, buyfiveairTo)) {
+				buyUnitsPlayer(2, 5);
+			} else if (mouseinput.insideRect(buytenairFrom, buytenairTo)) {
+				buyUnitsPlayer(2, 10);
+			} else if (mouseinput.insideRect(buytwentyairFrom, buytwentyairTo)) {
+				buyUnitsPlayer(2, 20);
+			}
+		}
 			else if (mouseinput.insideRect(Main.UPPER_LEFT_CORNER, Main.LOWER_RIGHT_CORNER) && !AIsturn) {
 			 inuserTerritory = !map.ownedbyAI(map.getTerritoryID(mouseinput.getCoordinates()));
 			 if (inuserTerritory) {
