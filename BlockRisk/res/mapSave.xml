@@ -2,97 +2,97 @@
 <Map>
   <Terr0>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>false</owner>
   </Terr0>
   <Terr1>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>false</owner>
   </Terr1>
   <Terr2>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>false</owner>
   </Terr2>
   <Terr3>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>false</owner>
   </Terr3>
   <Terr4>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>false</owner>
   </Terr4>
   <Terr5>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>false</owner>
   </Terr5>
   <Terr6>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>true</owner>
   </Terr6>
   <Terr7>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>true</owner>
   </Terr7>
   <Terr8>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>true</owner>
   </Terr8>
   <Terr9>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>true</owner>
   </Terr9>
   <Terr10>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>true</owner>
   </Terr10>
   <Terr11>
     <units>
-      <infantry>0</infantry>
-      <vehicles>0</vehicles>
-      <aircraft>0</aircraft>
+      <infantry>5</infantry>
+      <vehicles>3</vehicles>
+      <aircraft>1</aircraft>
     </units>
     <owner>true</owner>
   </Terr11>

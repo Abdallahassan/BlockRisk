@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Territory {
 	
 	private boolean owner; // true if it's owned by the AI.
@@ -65,26 +67,32 @@ public class Territory {
 
 	
 	public int sumAttack(){
+		Random random = new Random();
+		int r=random.nextInt(3)+1;
 		int sum=0;
 		for(int i=0;i<units.length;i++){
 			int numUnit=units[i];
 			int prod=numUnit*attStats[i];
 			sum+=prod;
 		}
-		return sum;
+		return sum*r;
 	}
 	
 	public int sumDefence(){
+		Random random = new Random();
+		int r=random.nextInt(3)+1;
 		int sum=0;
 		for(int i=0;i<units.length;i++){
 			int numUnit=units[i];
 			int prod=numUnit*defStats[i];
 			sum+=prod;
 		}
-		return sum;
+		return sum*r;
 	}
 	
 	public int averageEvasion(){
+		Random random = new Random();
+		int r=random.nextInt(3)+1;
 		int sumEv=0;
 		int sumUnits=0;
 		for(int i=0;i<units.length;i++){
@@ -95,7 +103,7 @@ public class Territory {
 		if (sumUnits == 0)
 			return 1;        // Avoid division by zero.
 		else
-			return sumEv/sumUnits;
+			return sumEv/sumUnits*r;
 	}
 	
 	public boolean isNeighbour(Territory to){

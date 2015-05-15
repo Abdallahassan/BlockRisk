@@ -490,9 +490,13 @@ public class Game extends BasicGameState {
 		 * @param to
 		 */
 		private void attack(Territory from, Territory to){
+			if(numUnits(from.getUnits())<=1){
+				System.out.println("no attack, too few troops");
+			}
+			else{
 			int sumA=from.sumAttack();
 			int sumD=to.sumDefence();
-			int r=random.nextInt(5)+1; //1<=r<=5
+			int r=random.nextInt(10)+1; //1<=r<=10
 			int k=1; //change later ???
 			int avgE=to.averageEvasion();
 			if(sumD==0){
@@ -529,7 +533,7 @@ public class Game extends BasicGameState {
 			else{
 				to.removeUnits(2,removeSize);
 			}
-			
+		}
 			
 		}			
 	
@@ -545,7 +549,7 @@ public class Game extends BasicGameState {
 		private void defend(Territory from,Territory to){
 			int sumA=to.sumAttack();
 			int sumD=from.sumDefence();
-			int r=random.nextInt(5)+1; //1<=r<=5
+			int r=random.nextInt(10)+1; //1<=r<=5
 			int k=1; //change later ???
 			int avgE=from.averageEvasion();
 			if(sumD==0){
@@ -599,24 +603,25 @@ public class Game extends BasicGameState {
 			boolean win=false;
 			 //IF ATTACKER WINS, LEFT OVER UNITS STAY IN "to" TERRITORY
 			attack(from,to);
-			System.out.println("Attack performed");
+			System.out.println("Attack performed"); //debugging purposes only
 			defend(from,to);
-			System.out.println("Defence performed");
+			System.out.println("Defence performed"); //debugging purposes only
 			
 			
 			if(numUnits(to.getUnits())<=0){//defender loses
-				System.out.println("WIN");
+				System.out.println("WIN"); //debugging purposes only
 				win=true;
 				to.changeOwner();
 				int[] attUnitsLeft=from.getUnits();
 				for(int i=0;i<attUnitsLeft.length;i++){
-					to.setUnits(i,attUnitsLeft[i]);
+					to.setUnits(i,attUnitsLeft[i]-1);
+					//from.removeUnits(i,attUnitsLeft[i]-1);
 				}				
 			}
 			
 			if(numUnits(from.getUnits())<=0){//attacker loses
 					//leave one infantry in the attacker's territory
-				System.out.println("LOSE");
+				System.out.println("LOSE"); //debugging purposes only
 				from.setUnits(0,1);
 				from.setUnits(1,0);
 				from.setUnits(1,0);
