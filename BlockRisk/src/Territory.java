@@ -123,6 +123,11 @@ public class Territory {
 		return units[index];
 	}
 	
+	/**
+	 * Sets unit to a specific amount
+	 * @param i
+	 * @param amount
+	 */
 	public void setUnits(int i,int amount){
 		units[i]=amount;
 	}

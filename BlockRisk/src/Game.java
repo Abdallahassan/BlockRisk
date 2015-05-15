@@ -126,7 +126,7 @@ public class Game extends BasicGameState {
 	private void initnewGame() {
 		map.initNewGame();
 		Territory[] terr=map.getAllTerritories();
-		for(int i=0;i<terr.length;i++){ //each territory gets 5 inf,3 veh and 1 aircraft
+		for(int i=0;i<terr.length;i++){ //each territory gets 5 inf,3 veh and 1 aircraft (player and AI)
 			terr[i].setUnits(0,5);
 			terr[i].setUnits(1,3);
 			terr[i].setUnits(2,1);			
