@@ -274,7 +274,7 @@ public class Game extends BasicGameState {
 			AIsturn = false;
 		}
 		
-		System.out.println("attacks: " + numofAttacks);
+		//System.out.println("attacks: " + numofAttacks);
 
 		if (mouseinput.leftClick()) {
 			System.out.println(mouseinput.getCoordinates());
