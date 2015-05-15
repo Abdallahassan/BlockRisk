@@ -43,8 +43,8 @@ public class Game extends BasicGameState {
 	private int resAI; //AI resources
 	private int[] cost={10,100,250};
 	private Texture texture;
-	private boolean gameOver; //true if game has ended
-	private boolean AIwon; //true if the AI has won
+	private boolean gameOver;
+	private boolean AIwon;
 	
 	private Territory attackOn;
 	private int actionFrom;
@@ -82,6 +82,7 @@ public class Game extends BasicGameState {
 	private final static IntPair exitgameTo   = new IntPair(393, 385);
 	private final static IntPair startnewgameFrom = new IntPair(406, 345);
 	private final static IntPair startnewgameTo   = new IntPair(533, 385);
+	private boolean uninitialized;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -98,9 +99,7 @@ public class Game extends BasicGameState {
 		AIsturn = false;
 		map = new Map();
 		map.load();
-		if (Main.isNewGame()) {
-			initnewGame();
-		}
+		uninitialized = true;
 		// gameOver = true; Only for testing purposes. Delete later.
 		
 		actionFrom = -1;
@@ -126,7 +125,7 @@ public class Game extends BasicGameState {
 	private void initnewGame() {
 		map.initNewGame();
 		Territory[] terr=map.getAllTerritories();
-		for(int i=0;i<terr.length;i++){ //each territory gets 5 inf,3 veh and 1 aircraft (player and AI)
+		for(int i=0;i<terr.length;i++){ //each territory gets 5 inf,3 veh and 1 aircraft
 			terr[i].setUnits(0,5);
 			terr[i].setUnits(1,3);
 			terr[i].setUnits(2,1);			
@@ -200,6 +199,11 @@ public class Game extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		if (Main.isNewGame() && uninitialized) {
+			initnewGame();
+			uninitialized = false;
+		}
+		System.out.println(Main.isNewGame());
 		mouseinput.update();
 		
 		if (gameOver && !decided) {
@@ -284,7 +288,7 @@ public class Game extends BasicGameState {
 		/**
 		 * Generates resources for the player (non-AI) depending on resource value of territories. 
 		 */
-		private void genResPlayer(){ 
+		private int genResPlayer(){ 
 			Territory[] terr=map.getAllTerritories();
 			int resourceSum=0;
 			for(int i=0;i<terr.length;i++){
@@ -292,13 +296,13 @@ public class Game extends BasicGameState {
 					resourceSum+=terr[i].getResourceVal();
 				}
 			}
-			res=resourceSum;
+			return resourceSum;
 		}
 		
 		/**
 		 * Generates resources for the AI depending on resource value of territories. 
 		 */
-		private void genResAI(){ //need method like this for the AI too
+		private int genResAI(){ //need method like this for the AI too
 			Territory[] terr=map.getAllTerritories();
 			int resourceSum=0;
 			for(int i=0;i<terr.length;i++){
@@ -306,7 +310,7 @@ public class Game extends BasicGameState {
 					resourceSum+=terr[i].getResourceVal();
 				}
 			}
-			resAI=resourceSum;
+			return resourceSum;
 		}
 		
 		//1) Buying Units
@@ -547,7 +551,6 @@ public class Game extends BasicGameState {
 		}
 		
 		private void aiTurn(){
-			genResAI();			
 			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
 			//maybe save between 0 and 20 percent randomly???
 			int j=random.nextInt(3); 
@@ -566,8 +569,8 @@ public class Game extends BasicGameState {
 				highOffence(allocatedRes);
 			break;
 			}
-			
 			//placement 
+		
 			int a=random.nextInt(map.getAllTerritories().length);
 			Territory terr=map.getAllTerritories()[a];
 			int amount=numUnits(unitsNotPlacedAI);
