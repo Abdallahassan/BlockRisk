@@ -13,7 +13,7 @@ public class Main extends StateBasedGame {
 	
 	public static final int  HEIGHT = 500;
 	public static final int WIDTH  = 800;
-	private static final int FPS    = 10;
+	private static final int FPS    = 20;
 	
 	public static final IntPair UPPER_LEFT_CORNER = new IntPair(0, 50);
 	public static final IntPair LOWER_RIGHT_CORNER = new IntPair(Main.WIDTH, Main.HEIGHT-50);
