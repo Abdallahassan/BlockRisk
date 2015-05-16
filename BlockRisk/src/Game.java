@@ -352,15 +352,17 @@ public class Game extends BasicGameState {
 			sbg.enterState(1);
 		} else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo)) {
 			buying = true;
-		} else if (mouseinput.insideRect(soldierFrom, soldierTo) && actionFrom >= 0) {
-			placeUnits(0,1,map.getTerritory(actionFrom));
-		} else if (mouseinput.insideRect(vehicleFrom, vehicleTo) && actionFrom >= 0) {
-			placeUnits(1,1,map.getTerritory(actionFrom));
-		} else if (mouseinput.insideRect(airplaneFrom, airplaneTo) && actionFrom >= 0) {
-			placeUnits(2,1,map.getTerritory(actionFrom));
 		} else if (mouseinput.insideRect(buyButtonFrom, buyButtonTo)) {
 			buying = true;
 		}
+		} else if (mouseinput.holdDown()) {
+			if (mouseinput.insideRect(soldierFrom, soldierTo) && actionFrom >= 0) {
+				placeUnits(0,1,map.getTerritory(actionFrom));
+			} else if (mouseinput.insideRect(vehicleFrom, vehicleTo) && actionFrom >= 0) {
+				placeUnits(1,1,map.getTerritory(actionFrom));
+			} else if (mouseinput.insideRect(airplaneFrom, airplaneTo) && actionFrom >= 0) {
+				placeUnits(2,1,map.getTerritory(actionFrom));
+			}
 		}
 		
 	}
