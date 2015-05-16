@@ -113,26 +113,7 @@ public class Game extends BasicGameState {
 	private final static IntPair buytwentyairTo   = new IntPair(544, 295);
 	private int numofAttacks;
 	
-	/* FOR DEBUGGING, is temporary 
-	public static void main(String[] args){
-		Game game = new Game();
-		Random r= new Random();
-		game.random=r;
-		game.stats=new int[6];
-		Territory from=new Territory(false);
-		Territory to=new Territory(true);
-		from.setUnits(0,5);
-		from.setUnits(1,3);
-		from.setUnits(2,1);
-		to.setUnits(0,5);
-		to.setUnits(1,3);
-		to.setUnits(2,1);
-		game.combat(from,to);
-		game.combat(from,to);
-		game.combat(from,to);
-	}
-	*/
-	
+
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -627,7 +608,6 @@ public class Game extends BasicGameState {
 				int[] attUnitsLeft=from.getUnits();
 				
 				if(numUnits(from.getUnits())<=1){
-					System.out.println("a");
 					to.setUnits(0,1);					
 				}
 				else{
@@ -800,59 +780,73 @@ public class Game extends BasicGameState {
 			Territory terr=map.getAllTerritories()[a];
 			int amount=numUnits(unitsNotPlacedAI);
 			blob(amount,terr);
+						
 			
 			
-			//chooses the "from" territory randomly
-			int n= chooseFrom();
-			Territory from=map.getAllTerritories()[n];
+			//chooses the "from" and "to" territories 
+			int[] fromTo=fromToAI();
+			Territory from=map.getAllTerritories()[fromTo[0]];
+			Territory to=map.getAllTerritories()[fromTo[1]];	
 			
-			////chooses the "to" territory randomly
-		
-			
-			int f=chooseTo(from);
-			Territory to = from.getNeighbours()[f];
+						
 			boolean resumeCombat=combat(from,to);
 			
 			if(resumeCombat){ //won this round
-				n=chooseFrom();
-				from=map.getAllTerritories()[n];
-				f=chooseTo(from);
-				to = from.getNeighbours()[f];
+				fromTo=fromToAI();
+				from=map.getAllTerritories()[fromTo[0]];
+				to=map.getAllTerritories()[fromTo[1]];	
 				resumeCombat=combat(from,to);
 			}
 			else{
 				combat(from,to);
 			}
 			if(resumeCombat){ //won this round
-				n=chooseFrom();
-				from=map.getAllTerritories()[n];
-				f=chooseTo(from);
-				to = from.getNeighbours()[f];
+				fromTo=fromToAI();
+				from=map.getAllTerritories()[fromTo[0]];
+				to=map.getAllTerritories()[fromTo[1]];	
 				resumeCombat=combat(from,to);
 			}
 			else{
 				combat(from,to);
-			}
+			}			
 		}
 		
-		
-		private int chooseFrom(){
-			int n=random.nextInt(map.getAllTerritories().length);
-			//keeps changing n until it produces a territory owned by AI
-			while(!map.getAllTerritories()[n].ownedbyAI()){
-				n=random.nextInt(map.getAllTerritories().length);
+		/**
+		 * Finds an owned territory and lets that be "from".
+		 * Then finds a neighbour of from that is not owned, that 
+		 * becomes "to"
+		 * @return
+		 */
+		private int[] fromToAI(){
+			boolean stop=false;
+			Territory[] terr=map.getAllTerritories();
+			int[] index=new int[2];
+			while(!stop){
+				int n=random.nextInt(terr.length);//choose random territory
+				if(terr[n].ownedbyAI()){ //if owned by AI
+					Territory[] neigh = terr[n].getNeighbours();
+					int m=random.nextInt(neigh.length);
+					System.out.println("n : "+n+" m: "+m);
+					
+					if(!neigh[m].ownedbyAI()){ //if owned by player
+						for(int a=0;a<terr.length;a++){
+							if(neigh[m].equals(terr[a])){
+								m=a;
+								System.out.println("a is "+a);
+								break;
+							}
+						}
+						index[0]=n;
+						index[1]=m;
+						System.out.println(n);
+						System.out.println(m);
+						stop=true; //found a target
+					}
+				}
 			}
-			return n;
-		}
-		
-		private int chooseTo(Territory from){
-			int f=random.nextInt(from.getNeighbours().length);
-			while(from.getNeighbours()[f].ownedbyAI()){
-				f=random.nextInt(from.getNeighbours().length);
+			return index;
 			}
-			return f;
-		}
-		
+			
 		
 		
 		/**
