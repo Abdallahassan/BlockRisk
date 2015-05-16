@@ -791,6 +791,7 @@ public class Game extends BasicGameState {
 			while(!map.getAllTerritories()[a].ownedbyAI()){
 				a=random.nextInt(map.getAllTerritories().length);
 			}
+			System.out.println("WORKS 1");
 			Territory terr=map.getAllTerritories()[a];
 			
 						
@@ -801,15 +802,20 @@ public class Game extends BasicGameState {
 			System.out.println("unitsNotPlacedAI "+unitsNotPlacedAI[0]+" "+unitsNotPlacedAI[1]+" "+unitsNotPlacedAI[2]);
 			
 			//chooses the "from" and "to" territories 
+			System.out.println("WORKS 2");
 			int[] fromTo=fromToAI();
+			System.out.println("WORKS 2.4");
+			
 			Territory from=map.getAllTerritories()[fromTo[0]];
 			Territory to=map.getAllTerritories()[fromTo[1]];	
 			
 						
 			boolean resumeCombat=combat(from,to);
 			
-			if(resumeCombat){ //won this round
+			if(resumeCombat&&!AIwon){ //won this round
+				System.out.println("WORKS 2.5a");
 				fromTo=fromToAI();
+				System.out.println("WORKS 2.5A");
 				from=map.getAllTerritories()[fromTo[0]];
 				to=map.getAllTerritories()[fromTo[1]];	
 				resumeCombat=combat(from,to);
@@ -817,8 +823,10 @@ public class Game extends BasicGameState {
 			else{
 				combat(from,to);
 			}
-			if(resumeCombat){ //won this round
+			if(resumeCombat&&!AIwon){ //won this round
+				System.out.println("WORKS 2.5 b");
 				fromTo=fromToAI();
+				System.out.println("WORKS 2.5 B");
 				from=map.getAllTerritories()[fromTo[0]];
 				to=map.getAllTerritories()[fromTo[1]];	
 				resumeCombat=combat(from,to);
@@ -826,6 +834,7 @@ public class Game extends BasicGameState {
 			else{
 				combat(from,to);
 			}			
+			System.out.println("WORKS 3");
 		}
 		
 		/**
@@ -840,11 +849,14 @@ public class Game extends BasicGameState {
 			int[] index=new int[2];
 			while(!stop){
 				int n=random.nextInt(terr.length);//choose random territory
-				if(terr[n].ownedbyAI()&&numUnits(terr[n].getUnits())>1){ //if owned by AI
+			    System.out.println("n "+n);
+				if(terr[n].ownedbyAI()){ //if owned by AI
 					Territory[] neigh = terr[n].getNeighbours();
-					int m=random.nextInt(neigh.length);				
+					int m=random.nextInt(neigh.length);		
+					System.out.println("m "+m);
 					
 					if(!neigh[m].ownedbyAI()){ //if owned by player
+						System.out.println("WORKS HEreee");
 						for(int a=0;a<terr.length;a++){
 							if(neigh[m].equals(terr[a])){
 								m=a;								
