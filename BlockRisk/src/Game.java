@@ -733,6 +733,10 @@ public class Game extends BasicGameState {
 			
 		}
 		
+		
+		/**
+		 * Dont remove yet
+		 */
 		private void aiTurnOLD(){
 			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
 			//maybe save between 0 and 20 percent randomly???
@@ -780,10 +784,12 @@ public class Game extends BasicGameState {
 			//attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
 			}
 		
-		
+		/**
+		 * Simple AI, will make more complex later.
+		 */
 		private void aiTurn(){
 			System.out.println("Computer: my turn now!");
-			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
+			int allocatedRes=resAI;
 			equalist(allocatedRes);
 			
 			//placement 		
@@ -794,8 +800,6 @@ public class Game extends BasicGameState {
 			Territory terr=map.getAllTerritories()[a];
 			int amount=numUnits(unitsNotPlacedAI);
 			blob(amount,terr);
-			
-			
 			
 			
 			//chooses the "from" territory randomly
@@ -829,11 +833,7 @@ public class Game extends BasicGameState {
 			else{
 				combat(from,to);
 			}
-			
-			
-			
-			//attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
-			}
+		}
 		
 		
 		private int chooseFrom(){
