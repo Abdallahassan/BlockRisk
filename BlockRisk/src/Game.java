@@ -787,23 +787,65 @@ public class Game extends BasicGameState {
 			int amount=numUnits(unitsNotPlacedAI);
 			blob(amount,terr);
 			
+			
+			
+			
 			//chooses the "from" territory randomly
-			int n=random.nextInt(map.getAllTerritories().length);
-			//keeps changing n until it produces a territory owned by AI
-			while(!map.getAllTerritories()[n].ownedbyAI()){
-				n=random.nextInt(map.getAllTerritories().length);
-			}
+			int n= chooseFrom();
 			Territory from=map.getAllTerritories()[n];
 			
 			////chooses the "to" territory randomly
-			int f=random.nextInt(from.getNeighbours().length);
+		
+			
+			int f=chooseTo(from);
 			Territory to = from.getNeighbours()[f];
-			combat(from,to);
+			boolean resumeCombat=combat(from,to);
+			
+			if(resumeCombat){ //won this round
+				n=chooseFrom();
+				from=map.getAllTerritories()[n];
+				f=chooseTo(from);
+				to = from.getNeighbours()[f];
+				resumeCombat=combat(from,to);
+			}
+			else{
+				combat(from,to);
+			}
+			if(resumeCombat){ //won this round
+				n=chooseFrom();
+				from=map.getAllTerritories()[n];
+				f=chooseTo(from);
+				to = from.getNeighbours()[f];
+				resumeCombat=combat(from,to);
+			}
+			else{
+				combat(from,to);
+			}
 			
 			
 			
 			//attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
 			}
+		
+		
+		private int chooseFrom(){
+			int n=random.nextInt(map.getAllTerritories().length);
+			//keeps changing n until it produces a territory owned by AI
+			while(!map.getAllTerritories()[n].ownedbyAI()){
+				n=random.nextInt(map.getAllTerritories().length);
+			}
+			return n;
+		}
+		
+		private int chooseTo(Territory from){
+			int f=random.nextInt(from.getNeighbours().length);
+			while(from.getNeighbours()[f].ownedbyAI()){
+				f=random.nextInt(from.getNeighbours().length);
+			}
+			return f;
+		}
+		
+		
 		
 		/**
 		 * Finds total number of units. Can be used on terr.getUnits().
