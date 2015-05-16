@@ -60,12 +60,10 @@ public class Game extends BasicGameState {
 	private boolean decided;
 	private Picbox soldier;
 	private Picbox attackbox;
-	private Picbox attackAI;
 	private Picbox buytroops;
 	private Picbox gameover;
 	private String[] inputArgs;
 	private String[] statArgs;
-	private boolean AIscurrentlyAttacking;
 	private final static IntPair soldierFrom = new IntPair(354, 455);
 	private final static IntPair soldierTo   = new IntPair(450, 495);
 	private final static IntPair vehicleFrom = new IntPair(500, 455);
@@ -114,7 +112,6 @@ public class Game extends BasicGameState {
 	private final static IntPair buytwentyairFrom = new IntPair(501, 271);
 	private final static IntPair buytwentyairTo   = new IntPair(544, 295);
 	private int numofAttacks;
-	private long time;
 	
 	/* FOR DEBUGGING, is temporary 
 	public static void main(String[] args){
@@ -166,7 +163,6 @@ public class Game extends BasicGameState {
 		random = new Random(System.currentTimeMillis());                                                                                                                                                                                   //
 		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(170,460), new IntPair(305,460), new IntPair(425,460), new IntPair(585,460), new IntPair(730,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
 		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{new IntPair(315, 130), new IntPair(315, 185), new IntPair(315, 245), new IntPair(470, 130), new IntPair(470, 185), new IntPair(470, 245), new IntPair(360, 295), new IntPair(360, 320), new IntPair(360, 345), new IntPair(510, 295), new IntPair(510, 320), new IntPair(510, 345)});
-		attackAI  = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{new IntPair(315, 130), new IntPair(315, 185), new IntPair(315, 245), new IntPair(470, 130), new IntPair(470, 185), new IntPair(470, 245), new IntPair(360, 295), new IntPair(360, 320), new IntPair(360, 345), new IntPair(510, 295), new IntPair(510, 320), new IntPair(510, 345)});
 		buytroops = new Picbox(attackFrom, attackTo, "res/buyMenu.jpg", new IntPair[]{new IntPair(435, 345)});
 		stats = new int[6];
 	}
@@ -230,9 +226,6 @@ public class Game extends BasicGameState {
 			attackbox.draw(statArgs, Color.magenta);
 		} else if (buying) {
 			buytroops.draw(new String[]{Integer.toString(res)}, Color.magenta);
-		} else if (AIscurrentlyAttacking) {
-			updatestatArgs();
-			attackAI.draw(statArgs, Color.magenta); // Maybe change colour later?
 		}
 	}
 	
@@ -261,7 +254,6 @@ public class Game extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		//System.out.println(AIscurrentlyAttacking);
 		gameOverCheck();
 		if (Main.isNewGame() && uninitialized) {
 			initnewGame();
@@ -278,7 +270,6 @@ public class Game extends BasicGameState {
 		}
 		
 		if (numofAttacks > 2 && !gameOver) {
-			AIscurrentlyAttacking = true;
 			buying = attackMode = false;
 			numofAttacks = 0;
 			AIsturn = true;
@@ -286,7 +277,6 @@ public class Game extends BasicGameState {
 			genResPlayer();
 			genResAI();
 			AIsturn = false;
-			AIscurrentlyAttacking = false;
 		}
 		
 		//System.out.println("attacks: " + numofAttacks);
@@ -788,16 +778,6 @@ public class Game extends BasicGameState {
 			//attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
 			}
 		
-		/**
-		 * Wait n seconds. Please call this method after every time the AI calls the combat method.
-		 */
-		/*private void waitSeconds(int n) {
-			long time2 = System.currentTimeMillis();
-			long timeAfter = System.currentTimeMillis();
-			while (timeAfter <= time2 + (n*1000)) {
-				timeAfter = System.currentTimeMillis();
-			}
-		}*/
 		
 		private void aiTurn(){
 			System.out.println("Computer: my turn now!");
@@ -826,7 +806,6 @@ public class Game extends BasicGameState {
 			int f=chooseTo(from);
 			Territory to = from.getNeighbours()[f];
 			boolean resumeCombat=combat(from,to);
-			//waitSeconds(3);
 			
 			if(resumeCombat){ //won this round
 				n=chooseFrom();
@@ -834,11 +813,9 @@ public class Game extends BasicGameState {
 				f=chooseTo(from);
 				to = from.getNeighbours()[f];
 				resumeCombat=combat(from,to);
-				//waitSeconds(3);
 			}
 			else{
 				combat(from,to);
-				//waitSeconds(3);
 			}
 			if(resumeCombat){ //won this round
 				n=chooseFrom();
@@ -846,11 +823,9 @@ public class Game extends BasicGameState {
 				f=chooseTo(from);
 				to = from.getNeighbours()[f];
 				resumeCombat=combat(from,to);
-				//waitSeconds(3);
 			}
 			else{
 				combat(from,to);
-				//waitSeconds(3);
 			}
 			
 			
