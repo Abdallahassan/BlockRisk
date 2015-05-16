@@ -26,19 +26,19 @@
   </Terr2>
   <Terr3>
     <units>
-      <infantry>5</infantry>
-      <vehicles>3</vehicles>
-      <aircraft>1</aircraft>
+      <infantry>1</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
     </units>
     <owner>false</owner>
   </Terr3>
   <Terr4>
     <units>
-      <infantry>5</infantry>
-      <vehicles>3</vehicles>
-      <aircraft>1</aircraft>
+      <infantry>2</infantry>
+      <vehicles>1</vehicles>
+      <aircraft>0</aircraft>
     </units>
-    <owner>false</owner>
+    <owner>true</owner>
   </Terr4>
   <Terr5>
     <units>
@@ -50,11 +50,11 @@
   </Terr5>
   <Terr6>
     <units>
-      <infantry>5</infantry>
-      <vehicles>3</vehicles>
-      <aircraft>1</aircraft>
+      <infantry>1</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
     </units>
-    <owner>true</owner>
+    <owner>false</owner>
   </Terr6>
   <Terr7>
     <units>
@@ -66,9 +66,9 @@
   </Terr7>
   <Terr8>
     <units>
-      <infantry>5</infantry>
-      <vehicles>3</vehicles>
-      <aircraft>1</aircraft>
+      <infantry>1</infantry>
+      <vehicles>0</vehicles>
+      <aircraft>0</aircraft>
     </units>
     <owner>true</owner>
   </Terr8>
@@ -82,9 +82,9 @@
   </Terr9>
   <Terr10>
     <units>
-      <infantry>5</infantry>
-      <vehicles>3</vehicles>
-      <aircraft>1</aircraft>
+      <infantry>6</infantry>
+      <vehicles>4</vehicles>
+      <aircraft>2</aircraft>
     </units>
     <owner>true</owner>
   </Terr10>

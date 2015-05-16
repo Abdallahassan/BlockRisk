@@ -242,6 +242,7 @@ public class Game extends BasicGameState {
 		}
 		mouseinput.update();
 		
+		
 		if (gameOver && !decided) {
 			if (AIwon)
 				gameover = new Picbox(new IntPair(250,100), new IntPair(550,400), "res/youLost.jpg", new IntPair[]{});
@@ -403,7 +404,7 @@ public class Game extends BasicGameState {
 		 */
 		private void buyUnitsPlayer(int i,int amount){
 			if(cost[i]*amount>res){
-				//ALERT MESSAGE HERE,ILLEGAL AMOUNT
+				System.out.println("ILLEGAL PURCHASE AMOUNT PLAYER");
 			}
 			else{
 			res-=cost[i]*amount;
@@ -418,7 +419,7 @@ public class Game extends BasicGameState {
 		 */
 		private void buyUnitsAI(int i,int amount){
 			if(cost[i]*amount>resAI){
-				//ALERT MESSAGE HERE,ILLEGAL AMOUNT
+				System.out.println("ILLEGAL PURCHASE AMOUNT");
 			}
 			else{
 			resAI-=cost[i]*amount;
@@ -591,9 +592,9 @@ public class Game extends BasicGameState {
 			boolean win=false;
 			 //IF ATTACKER WINS, LEFT OVER UNITS STAY IN "to" TERRITORY
 			attack(from,to);
-			System.out.println("Attack performed"); //debugging purposes only
+			//System.out.println("Attack performed"); //debugging purposes only
 			defend(from,to);
-			System.out.println("Defence performed"); //debugging purposes only
+			//System.out.println("Defence performed"); //debugging purposes only
 			
 			
 			if(numUnits(to.getUnits())<=0){//defender loses
@@ -601,8 +602,8 @@ public class Game extends BasicGameState {
 				win=true;
 				to.changeOwner();
 				to.setUnits(0,0);
-				to.setUnits(0,0);
-				to.setUnits(0,0);			
+				to.setUnits(1,0);
+				to.setUnits(2,0);			
 				System.out.println("OWNER CHANGED");
 				
 				int[] attUnitsLeft=from.getUnits();
@@ -611,6 +612,7 @@ public class Game extends BasicGameState {
 					to.setUnits(0,1);					
 				}
 				else{
+					System.out.println("units left:"+numUnits(from.getUnits()));
 					to.addUnits(0, attUnitsLeft[0]-1);
 					to.addUnits(1, attUnitsLeft[1]);
 					to.addUnits(2, attUnitsLeft[2]);
@@ -768,9 +770,16 @@ public class Game extends BasicGameState {
 		 * Simple AI, will make more complex later.
 		 */
 		private void aiTurn(){
-			System.out.println("Computer: my turn now!");
+			System.out.println("Computer: my turn now!");			
 			int allocatedRes=resAI;
-			equalist(allocatedRes);
+			System.out.println("allocatedRes "+allocatedRes);
+			
+			
+			int amountPurchase=allocatedRes/(cost[0]+cost[1]+cost[2]);
+			buyUnitsAI(0,amountPurchase);
+			buyUnitsAI(1,amountPurchase);
+			buyUnitsAI(2,amountPurchase);
+			System.out.println("unitsNotPlacedAI "+unitsNotPlacedAI[0]+" "+unitsNotPlacedAI[1]+" "+unitsNotPlacedAI[2]);
 			
 			//placement 		
 			int a=random.nextInt(map.getAllTerritories().length);
@@ -779,6 +788,8 @@ public class Game extends BasicGameState {
 			}
 			Territory terr=map.getAllTerritories()[a];
 			int amount=numUnits(unitsNotPlacedAI);
+			
+			
 			blob(amount,terr);
 						
 			
@@ -823,23 +834,19 @@ public class Game extends BasicGameState {
 			int[] index=new int[2];
 			while(!stop){
 				int n=random.nextInt(terr.length);//choose random territory
-				if(terr[n].ownedbyAI()){ //if owned by AI
+				if(terr[n].ownedbyAI()&&numUnits(terr[n].getUnits())>1){ //if owned by AI
 					Territory[] neigh = terr[n].getNeighbours();
-					int m=random.nextInt(neigh.length);
-					System.out.println("n : "+n+" m: "+m);
+					int m=random.nextInt(neigh.length);				
 					
 					if(!neigh[m].ownedbyAI()){ //if owned by player
 						for(int a=0;a<terr.length;a++){
 							if(neigh[m].equals(terr[a])){
-								m=a;
-								System.out.println("a is "+a);
+								m=a;								
 								break;
 							}
 						}
 						index[0]=n;
-						index[1]=m;
-						System.out.println(n);
-						System.out.println(m);
+						index[1]=m;						
 						stop=true; //found a target
 					}
 				}
