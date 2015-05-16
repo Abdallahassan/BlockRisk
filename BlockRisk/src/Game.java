@@ -588,6 +588,10 @@ public class Game extends BasicGameState {
 		 * 
 		 */
 		private boolean combat(Territory from,Territory to){
+			if(numUnits(from.getUnits())<=1&&numUnits(to.getUnits())<=1){
+				return false;
+			}
+			else{
 			updateStats(from,to);
 			boolean win=false;
 			 //IF ATTACKER WINS, LEFT OVER UNITS STAY IN "to" TERRITORY
@@ -630,6 +634,7 @@ public class Game extends BasicGameState {
 				from.setUnits(1,0);
 			}			
 			return win;
+			}			
 		}	
 
 		
@@ -787,12 +792,13 @@ public class Game extends BasicGameState {
 				a=random.nextInt(map.getAllTerritories().length);
 			}
 			Territory terr=map.getAllTerritories()[a];
-			int amount=numUnits(unitsNotPlacedAI);
 			
-			
-			blob(amount,terr);
 						
-			
+			placeUnitsAI(0,unitsNotPlacedAI[0],terr);
+			placeUnitsAI(1,unitsNotPlacedAI[1],terr);
+			placeUnitsAI(2,unitsNotPlacedAI[2],terr);
+						
+			System.out.println("unitsNotPlacedAI "+unitsNotPlacedAI[0]+" "+unitsNotPlacedAI[1]+" "+unitsNotPlacedAI[2]);
 			
 			//chooses the "from" and "to" territories 
 			int[] fromTo=fromToAI();
