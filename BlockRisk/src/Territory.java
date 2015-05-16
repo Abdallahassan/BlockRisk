@@ -68,7 +68,7 @@ public class Territory {
 	
 	public int sumAttack(){
 		Random random = new Random();
-		int r=random.nextInt(3)+1;
+		int r=random.nextInt(2)+1;
 		int sum=0;
 		for(int i=0;i<units.length;i++){
 			int numUnit=units[i];
@@ -80,7 +80,7 @@ public class Territory {
 	
 	public int sumDefence(){
 		Random random = new Random();
-		int r=random.nextInt(3)+1;
+		int r=random.nextInt(2)+1;
 		int sum=0;
 		for(int i=0;i<units.length;i++){
 			int numUnit=units[i];
@@ -92,7 +92,7 @@ public class Territory {
 	
 	public int averageEvasion(){
 		Random random = new Random();
-		int r=random.nextInt(3)+1;
+		int r=random.nextInt(2)+1;
 		int sumEv=0;
 		int sumUnits=0;
 		for(int i=0;i<units.length;i++){
