@@ -722,7 +722,7 @@ public class Game extends BasicGameState {
 		
 		
 		/**
-		 * Dont remove yet
+		 * Dont remove yet (even if it wont be used)
 		 */
 		private void aiTurnOLD(){
 			int allocatedRes=resAI*4/5; //allocated 80% of owned resources this turn
@@ -771,6 +771,47 @@ public class Game extends BasicGameState {
 			//attackWeakestNeighbour(map.getAllTerritories()[n]);	//initiate an attack, no retreat
 			}
 		
+		
+		
+		/**
+		 * Begins the AI's turn, buys and places 
+		 * its units.
+		 */
+		private void beginAIturn(){
+			AIsturn=true;
+			System.out.println("Computer: my turn now!");			
+			int allocatedRes=resAI;				
+			int amountPurchase=allocatedRes/(cost[0]+cost[1]+cost[2]);
+			buyUnitsAI(0,amountPurchase);
+			buyUnitsAI(1,amountPurchase);
+			buyUnitsAI(2,amountPurchase);
+						
+			//placement 		
+			int a=random.nextInt(map.getAllTerritories().length);
+			while(!map.getAllTerritories()[a].ownedbyAI()){
+				a=random.nextInt(map.getAllTerritories().length);
+			}
+			Territory terr=map.getAllTerritories()[a];			
+						
+			placeUnitsAI(0,unitsNotPlacedAI[0],terr);
+			placeUnitsAI(1,unitsNotPlacedAI[1],terr);
+			placeUnitsAI(2,unitsNotPlacedAI[2],terr);
+		}
+		
+		/**
+		 * Gives the AI a target
+		 */
+		private void combatAI(){
+			int[] fromTo=fromToAI(); //provides array containing "from" and "to" territories
+			Territory from=map.getAllTerritories()[fromTo[0]];
+			Territory to=map.getAllTerritories()[fromTo[1]];	
+		}
+		private void endAIturn(){
+			AIsturn=false;
+		}
+				
+		
+		
 		/**
 		 * Simple AI, will make more complex later.
 		 */
@@ -802,9 +843,9 @@ public class Game extends BasicGameState {
 			System.out.println("unitsNotPlacedAI "+unitsNotPlacedAI[0]+" "+unitsNotPlacedAI[1]+" "+unitsNotPlacedAI[2]);
 			
 			//chooses the "from" and "to" territories 
-			System.out.println("WORKS 2");
+			
 			int[] fromTo=fromToAI();
-			System.out.println("WORKS 2.4");
+		
 			
 			Territory from=map.getAllTerritories()[fromTo[0]];
 			Territory to=map.getAllTerritories()[fromTo[1]];	
