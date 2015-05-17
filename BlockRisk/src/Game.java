@@ -392,7 +392,8 @@ public class Game extends BasicGameState {
 		else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo))
 			map.save();
 		else if (mouseinput.insideRect(mainMenuButtonFrom, mainMenuButtonTo)) {
-			map.save();
+			//map.save();
+			uninitialized = true;
 			sbg.enterState(1);
 		} else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo)) {
 			buying = true;
