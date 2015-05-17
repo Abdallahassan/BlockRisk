@@ -867,6 +867,7 @@ public class Game extends BasicGameState {
 			int[] fromTo=fromToAI(); //provides array containing "from" and "to" territories
 			Territory from=map.getAllTerritories()[fromTo[0]];
 			Territory to=map.getAllTerritories()[fromTo[1]];	
+			combat(from,to);
 		}
 		private void endAIturn(){
 			AIsturn=false;
@@ -953,14 +954,13 @@ public class Game extends BasicGameState {
 			int[] index=new int[2];
 			while(!stop){
 				int n=random.nextInt(terr.length);//choose random territory
-			    System.out.println("n "+n);
+			   
 				if(terr[n].ownedbyAI()){ //if owned by AI
 					Territory[] neigh = terr[n].getNeighbours();
 					int m=random.nextInt(neigh.length);		
-					System.out.println("m "+m);
+					
 					
 					if(!neigh[m].ownedbyAI()){ //if owned by player
-						System.out.println("WORKS HEreee");
 						for(int a=0;a<terr.length;a++){
 							if(neigh[m].equals(terr[a])){
 								m=a;								
@@ -970,6 +970,7 @@ public class Game extends BasicGameState {
 						index[0]=n;
 						index[1]=m;						
 						stop=true; //found a target
+						System.out.println("n "+n+" m: "+m);
 					}
 				}
 			}
