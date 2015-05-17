@@ -60,6 +60,7 @@ public class Game extends BasicGameState {
 	private boolean decided;
 	private Picbox soldier;
 	private Picbox attackbox;
+	private Picbox attackAI;
 	private Picbox buytroops;
 	private Picbox gameover;
 	private String[] inputArgs;
@@ -112,8 +113,10 @@ public class Game extends BasicGameState {
 	private final static IntPair buytwentyairFrom = new IntPair(501, 271);
 	private final static IntPair buytwentyairTo   = new IntPair(544, 295);
 	private int numofAttacks;
-	
-
+	private int numofAttacksAI;
+	private boolean AIattacking;
+	private boolean wait;
+	private boolean waitBeginning;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -144,6 +147,7 @@ public class Game extends BasicGameState {
 		random = new Random(System.currentTimeMillis());                                                                                                                                                                                   //
 		soldier = new Picbox(new IntPair(0,450), new IntPair(800,500), "res/FooterNew.jpg", new IntPair[]{new IntPair(60,460), new IntPair(170,460), new IntPair(305,460), new IntPair(425,460), new IntPair(585,460), new IntPair(730,460), new IntPair(70,90), new IntPair(75, 210), new IntPair(55, 355), new IntPair(265,110), new IntPair(255,300), new IntPair(445,65), new IntPair(425, 190), new IntPair(430,310), new IntPair(635,400), new IntPair(580,130), new IntPair(715,305), new IntPair(710,120)});
 		attackbox = new Picbox(attackFrom, attackTo, "res/attacKMenu.jpg", new IntPair[]{new IntPair(315, 130), new IntPair(315, 185), new IntPair(315, 245), new IntPair(470, 130), new IntPair(470, 185), new IntPair(470, 245), new IntPair(360, 295), new IntPair(360, 320), new IntPair(360, 345), new IntPair(510, 295), new IntPair(510, 320), new IntPair(510, 345)});
+		attackAI = new Picbox(attackFrom, attackTo, "res/attackAI.jpg", new IntPair[]{new IntPair(315, 130), new IntPair(315, 185), new IntPair(315, 245), new IntPair(470, 130), new IntPair(470, 185), new IntPair(470, 245), new IntPair(360, 295), new IntPair(360, 320), new IntPair(360, 345), new IntPair(510, 295), new IntPair(510, 320), new IntPair(510, 345)});
 		buytroops = new Picbox(attackFrom, attackTo, "res/buyMenu.jpg", new IntPair[]{new IntPair(435, 345)});
 		stats = new int[6];
 	}
@@ -207,6 +211,9 @@ public class Game extends BasicGameState {
 			attackbox.draw(statArgs, Color.magenta);
 		} else if (buying) {
 			buytroops.draw(new String[]{Integer.toString(res)}, Color.magenta);
+		} else if (AIattacking) {
+			updatestatArgs();
+			attackAI.draw(statArgs, Color.magenta);
 		}
 	}
 	
@@ -231,6 +238,15 @@ public class Game extends BasicGameState {
 		glVertex2i(0, 50);
 		glEnd();
 	}
+	
+	/**
+	 * Wait n seconds
+	 * @param n
+	 */
+	private void waitSeconds(int n) {
+		long timestamp = System.currentTimeMillis();
+		while (System.currentTimeMillis() < timestamp + (n*1000));
+	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
@@ -252,17 +268,63 @@ public class Game extends BasicGameState {
 		}
 		
 		if (numofAttacks > 2 && !gameOver) {
-			buying = attackMode = false;
-			numofAttacks = 0;
-			AIsturn = true;
-			aiTurn();
-			genResPlayer();
+			attackMode = false;
+			buying = false;
+			numofAttacks = 0; 
 			genResAI();
-			AIsturn = false;
+			AIsturn = true;
+			waitBeginning = true;
 		}
 		
-		//System.out.println("attacks: " + numofAttacks);
-
+		if (AIsturn) {
+			if (waitBeginning) {
+				waitSeconds(2);
+				waitBeginning = false;
+			}
+			else if (numofAttacksAI == 0 && !wait) {
+				beginAIturn();
+				AIattacking = true;
+				wait = true;
+			} else if (numofAttacksAI == 0 && wait) {
+				waitSeconds(2);
+				combatAI();
+				numofAttacksAI++;
+				wait = false;
+			} else if (numofAttacksAI == 1 && !wait) {
+				waitSeconds(2);
+				AIattacking = false;
+				wait = true;
+			} else if (numofAttacksAI == 1 && !AIattacking) {
+				waitSeconds(2);
+				AIattacking = true;
+			} else if (numofAttacksAI == 1 && AIattacking && wait) {
+				waitSeconds(2);
+				combatAI();
+				numofAttacksAI++;
+				wait = false;
+			} else if (numofAttacksAI == 2 && !wait) {
+				waitSeconds(2);
+				AIattacking = false;
+				wait = true;
+			} else if (numofAttacksAI == 2 && !AIattacking) {
+				waitSeconds(2);
+				AIattacking = true;
+			} else if (numofAttacksAI == 2 && AIattacking && wait) {
+				waitSeconds(2);
+				combatAI();
+				numofAttacksAI++;
+				wait = false;
+			} else if (numofAttacksAI == 3 && !wait) {
+				waitSeconds(2);
+				AIattacking = false;
+				wait = true;
+			} else if (numofAttacksAI == 3 && wait) {
+				wait = false;
+				endAIturn();
+				genResPlayer();
+			}
+			
+		} else {
 		if (mouseinput.leftClick()) {
 			System.out.println(mouseinput.getCoordinates());
 			if (gameOver) {
@@ -346,7 +408,7 @@ public class Game extends BasicGameState {
 				placeUnits(2,1,map.getTerritory(actionFrom));
 			}
 		}
-		
+		}
 	}
 
 	@Override
@@ -808,6 +870,7 @@ public class Game extends BasicGameState {
 		}
 		private void endAIturn(){
 			AIsturn=false;
+			numofAttacksAI = 0;
 		}
 				
 		
