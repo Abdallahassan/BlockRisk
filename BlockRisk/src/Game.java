@@ -650,7 +650,7 @@ public class Game extends BasicGameState {
 		 * 
 		 */
 		private boolean combat(Territory from,Territory to){
-			if(numUnits(from.getUnits())<=1&&numUnits(to.getUnits())<=1){
+			if(numUnits(from.getUnits())<=1 && numUnits(to.getUnits())<=1){
 				return false;
 			}
 			else{
@@ -867,7 +867,7 @@ public class Game extends BasicGameState {
 			int[] fromTo=fromToAI(); //provides array containing "from" and "to" territories
 			Territory from=map.getAllTerritories()[fromTo[0]];
 			Territory to=map.getAllTerritories()[fromTo[1]];	
-			combat(from,to);
+			combat(from,to); 
 		}
 		private void endAIturn(){
 			AIsturn=false;

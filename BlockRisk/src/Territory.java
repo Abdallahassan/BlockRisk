@@ -75,7 +75,11 @@ public class Territory {
 			int prod=numUnit*attStats[i];
 			sum+=prod;
 		}
-		return sum*r;
+		int finalSum =sum*r/5;
+		if(finalSum==0){
+			finalSum=1;
+		}
+		return finalSum;
 	}
 	
 	public int sumDefence(){
@@ -87,7 +91,11 @@ public class Territory {
 			int prod=numUnit*defStats[i];
 			sum+=prod;
 		}
-		return sum*r;
+		int finalSum =sum*r/5;
+		if(finalSum==0){
+			finalSum=1;
+		}
+		return finalSum;
 	}
 	
 	public int averageEvasion(){
@@ -100,10 +108,16 @@ public class Territory {
 			sumUnits+=numUnit;
 			sumEv+=numUnit*evStat[i];
 		}
-		if (sumUnits == 0)
+		if (sumUnits == 0){
 			return 1;        // Avoid division by zero.
-		else
-			return sumEv/sumUnits*r;
+		}
+		else{
+			int finalSum=sumEv/sumUnits*r/5;
+		if(finalSum==0){
+			finalSum=1;
+		}
+		return finalSum;
+		}
 	}
 	
 	public boolean isNeighbour(Territory to){
