@@ -3,11 +3,18 @@ import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.util.ResourceLoader;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -15,6 +22,8 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import sun.misc.IOUtils;
 
 
 public class Map {
@@ -175,12 +184,15 @@ public class Map {
 	/**
 	 * Load an already saved game from file.
 	 * As of now, it loads information about all of the squares.
+	 * @throws URISyntaxException 
 	 */
 	
 	public void load() {
 		SAXBuilder builder = new SAXBuilder();
-		 File xmlFile = new File("res/mapSave.xml");
-	 
+		 File xmlFileold = new File("res/mapSave.xml");
+		 
+		 InputStream xmlFile = ResourceLoader.getResourceAsStream("res/mapSave.xml");
+		 
 		  try {
 	 
 			Document document = (Document) builder.build(xmlFile); //builds XML file
@@ -275,12 +287,15 @@ public class Map {
 	
 	
 	// Save this map to save file.
-	public void save(){
+	// Doesn't work!
+	public void save() {
 		 
 		  try {
 	 
 			SAXBuilder builder = new SAXBuilder();
-			File xmlFile = new File("res/mapSave.xml");
+			File xmlFileold = new File("res/mapSave.xml");
+			
+			InputStream xmlFile = ResourceLoader.getResourceAsStream("res/mapSave.xml");
 	 
 			Document doc = (Document) builder.build(xmlFile);
 			Element rootNode = doc.getRootElement();
