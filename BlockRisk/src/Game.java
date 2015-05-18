@@ -334,7 +334,7 @@ public class Game extends BasicGameState {
 				}
 				else if (mouseinput.insideRect(startnewgameFrom, startnewgameTo)) {
 					Main.setNewGame(true);
-					Main.setMusic(true);
+					//Main.setMusic(true);
 					initnewGame();
 				}
 			} else if (attackMode) {
