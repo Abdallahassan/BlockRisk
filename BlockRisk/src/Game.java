@@ -328,10 +328,13 @@ public class Game extends BasicGameState {
 		if (mouseinput.leftClick()) {
 			System.out.println(mouseinput.getCoordinates());
 			if (gameOver) {
-				if (mouseinput.insideRect(exitgameFrom, exitgameTo))
+				if (mouseinput.insideRect(exitgameFrom, exitgameTo)) {
+					Main.setMusic(true);
 					sbg.enterState(1);
+				}
 				else if (mouseinput.insideRect(startnewgameFrom, startnewgameTo)) {
 					Main.setNewGame(true);
+					Main.setMusic(true);
 					initnewGame();
 				}
 			} else if (attackMode) {
