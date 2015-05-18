@@ -19,9 +19,11 @@ public class Main extends StateBasedGame {
 	public static final IntPair LOWER_RIGHT_CORNER = new IntPair(Main.WIDTH, Main.HEIGHT-50);
 	
 	private static boolean newGame;
+	private static boolean music;
 
 	public Main(String name) {
 		super(name);
+		music = true;
 	}
 
 	public static void main(String[] args) {
@@ -53,6 +55,14 @@ public class Main extends StateBasedGame {
 
 	public static void setNewGame(boolean b) {
 		newGame = b;
+	}
+
+	public static boolean isMusic() {
+		return music;
+	}
+
+	public static void setMusic(boolean b) {
+		music = b;
 	}
 
 }
