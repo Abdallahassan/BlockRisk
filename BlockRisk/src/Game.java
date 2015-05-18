@@ -167,7 +167,7 @@ public class Game extends BasicGameState {
 			terr[i].setUnits(2,1);			
 		}
 		res=2000; //can be changed later
-		resAI=2000;
+		resAI=4000;
 		AIsturn=false;
 		gameOver=false;
 		AIwon=false;
@@ -677,7 +677,8 @@ public class Game extends BasicGameState {
 				int[] attUnitsLeft=from.getUnits();
 				
 				if(numUnits(from.getUnits())<=1){
-					to.setUnits(0,1);					
+					to.setUnits(0,1);	
+					from.setUnits(0,1);
 				}
 				else{
 					System.out.println("units left:"+numUnits(from.getUnits()));
@@ -843,7 +844,7 @@ public class Game extends BasicGameState {
 		 */
 		private void beginAIturn(){
 			AIsturn=true;
-			System.out.println("Computer: my turn now!");			
+			System.out.println("Computer: my turn now!");	
 			int allocatedRes=resAI;				
 			int amountPurchase=allocatedRes/(cost[0]+cost[1]+cost[2]);
 			buyUnitsAI(0,amountPurchase);
@@ -855,11 +856,27 @@ public class Game extends BasicGameState {
 			while(!map.getAllTerritories()[a].ownedbyAI()){
 				a=random.nextInt(map.getAllTerritories().length);
 			}
-			Territory terr=map.getAllTerritories()[a];			
+			Territory terr=map.getAllTerritories()[a];	
+			System.out.println("a is "+a+" "+numUnits(terr.getUnits()));
+			
+			
+			
+			int b=random.nextInt(map.getAllTerritories().length);
+			while(!map.getAllTerritories()[b].ownedbyAI()){
+				b=random.nextInt(map.getAllTerritories().length);
+			}
+			Territory terrB=map.getAllTerritories()[b];	
+			System.out.println("b is "+b+" "+numUnits(terrB.getUnits()));
+			
+			terrB.addUnits(0,unitsNotPlacedAI[0]);
+			terrB.addUnits(1,unitsNotPlacedAI[1]);
+			terrB.addUnits(2,unitsNotPlacedAI[2]);
 						
 			placeUnitsAI(0,unitsNotPlacedAI[0],terr);
 			placeUnitsAI(1,unitsNotPlacedAI[1],terr);
 			placeUnitsAI(2,unitsNotPlacedAI[2],terr);
+			System.out.println("Now a is "+a+" "+numUnits(terr.getUnits()));
+			System.out.println("Now b is "+b+" "+numUnits(terrB.getUnits()));
 		}
 		
 		/**
@@ -867,14 +884,18 @@ public class Game extends BasicGameState {
 		 */
 		private void combatAI(){
 			//gets suggestions for territories to attack, chooses best plan.
-			
-			int[] fromTo=fromToAI();			
-			
+			int[] fromTo=fromToAI();
 			Territory from=map.getAllTerritories()[fromTo[0]];
 			Territory to=map.getAllTerritories()[fromTo[1]];	
-			combat(from,to); 
+			combat(from,to);
 		}
 		private void endAIturn(){
+			Territory[] terr=map.getAllTerritories();
+			for(int i=0;i<terr.length;i++){
+				if(terr[i].ownedbyAI()&&numUnits(terr[i].getUnits())<=1){
+					terr[i].addUnits(0,4);
+				}
+			}
 			AIsturn=false;
 			numofAttacksAI = 0;
 		}
@@ -889,14 +910,6 @@ public class Game extends BasicGameState {
 			}
 			int largestSum=0;
 			int fromIndex=-1;
-			
-			
-			
-					
-			
-			
-			
-			
 			for(int j=0;j<n;j++){
 				if(numUnits(terr[j].getUnits())>largestSum){
 					largestSum=numUnits(terr[j].getUnits());
@@ -912,8 +925,6 @@ public class Game extends BasicGameState {
 					fromIndex=j;
 				}
 			}
-			
-			
 		}
 		
 		/**
@@ -936,13 +947,24 @@ public class Game extends BasicGameState {
 			while(!map.getAllTerritories()[a].ownedbyAI()){
 				a=random.nextInt(map.getAllTerritories().length);
 			}
-			System.out.println("WORKS 1");
 			Territory terr=map.getAllTerritories()[a];
 			
+			
+			int b=random.nextInt(map.getAllTerritories().length);
+			while(!map.getAllTerritories()[b].ownedbyAI()){
+				b=random.nextInt(map.getAllTerritories().length);
+			}
+			Territory terrB=map.getAllTerritories()[b];		
+			
+			terrB.addUnits(0,unitsNotPlacedAI[0]);
+			terrB.addUnits(1,unitsNotPlacedAI[1]);
+			terrB.addUnits(2,unitsNotPlacedAI[2]);
 						
 			placeUnitsAI(0,unitsNotPlacedAI[0],terr);
 			placeUnitsAI(1,unitsNotPlacedAI[1],terr);
 			placeUnitsAI(2,unitsNotPlacedAI[2],terr);
+			
+			
 						
 			System.out.println("unitsNotPlacedAI "+unitsNotPlacedAI[0]+" "+unitsNotPlacedAI[1]+" "+unitsNotPlacedAI[2]);
 			
