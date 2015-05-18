@@ -23,11 +23,13 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.ResourceLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Random;
 
 public class Game extends BasicGameState {
@@ -122,7 +124,7 @@ public class Game extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		try {
-			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/headerNew.jpg")));
+			this.texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/headerNew.jpg"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -392,8 +394,13 @@ public class Game extends BasicGameState {
 				 attackOn = map.getTerritory(mouseinput.getCoordinates());
 			 }
 		}
-		else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo))
-			map.save();
+		/*else if (mouseinput.insideRect(saveButtonFrom, saveButtonTo))
+			try {
+				map.save();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 		else if (mouseinput.insideRect(mainMenuButtonFrom, mainMenuButtonTo)) {
 			//map.save();
 			uninitialized = true;
