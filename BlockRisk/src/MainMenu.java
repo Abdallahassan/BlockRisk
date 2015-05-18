@@ -25,6 +25,7 @@ public class MainMenu extends BasicGameState {
 	MouseInput mouseinput;
 	private boolean showHelp;
 	private Music music;
+	private Picbox about;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -38,9 +39,10 @@ public class MainMenu extends BasicGameState {
 		}
 		glEnable(GL_TEXTURE_2D);
 		mouseinput = new MouseInput();
+		about = new Picbox(new IntPair(200,50), new IntPair(600,450), "res/about.jpg", new IntPair[]{});
+		
 		music = new Music("res/BlockRiskTheme.ogg");
-		music.setVolume(0.5f);
-		music.loop();
+		music.loop(1.0f, 0.1f);
 		music.pause();
 	}
 
@@ -49,6 +51,10 @@ public class MainMenu extends BasicGameState {
 			throws SlickException {
 		texture.bind();
 		drawTexture();
+		
+		if (showHelp) {
+			about.draw(new String[]{}, Color.white);
+		}
 	}
 	
 	private void drawTexture() {
@@ -72,6 +78,10 @@ public class MainMenu extends BasicGameState {
 			Main.setMusic(false);
 		}
 		mouseinput.update();
+		if (showHelp) {
+			if (!mouseinput.insideRect(new IntPair(200,50), new IntPair(600,450)))
+				showHelp = false;
+		} else {
 		if (mouseinput.leftClick())
 			if (mouseinput.insideRect(new IntPair(250, 215), new IntPair(560, 260))) {
 				Main.setNewGame(true);
@@ -84,8 +94,9 @@ public class MainMenu extends BasicGameState {
 				music.pause();
 			} 
 			else if (mouseinput.insideRect(new IntPair(250, 395), new IntPair(560, 440)) && !showHelp) {
-				showHelp = true; // Deal with the help dialogbox later.
+				showHelp = true;
 			}
+		}
 	}
 
 	@Override
