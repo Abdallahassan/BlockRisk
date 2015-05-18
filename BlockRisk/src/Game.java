@@ -865,7 +865,10 @@ public class Game extends BasicGameState {
 		 * Gives the AI a target
 		 */
 		private void combatAI(){
-			int[] fromTo=fromToAI(); //provides array containing "from" and "to" territories
+			//gets suggestions for territories to attack, chooses best plan.
+			
+			int[] fromTo=fromToAI();			
+			
 			Territory from=map.getAllTerritories()[fromTo[0]];
 			Territory to=map.getAllTerritories()[fromTo[1]];	
 			combat(from,to); 
@@ -875,7 +878,44 @@ public class Game extends BasicGameState {
 			numofAttacksAI = 0;
 		}
 				
-		
+		private void chooseTarget(int n){
+			Territory[] terr=map.getAllTerritories();
+			int[] fromTerr=new int[n];
+			int[] toTerr=new int[n];
+			for(int i=0;i<n;i++){
+				fromTerr[i]=fromToAI()[0];
+				toTerr[i]=fromToAI()[1];
+			}
+			int largestSum=0;
+			int fromIndex=-1;
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			for(int j=0;j<n;j++){
+				if(numUnits(terr[j].getUnits())>largestSum){
+					largestSum=numUnits(terr[j].getUnits());
+					fromIndex=j;
+				}
+			}
+			
+			int lowestSum=100000;
+			int toIndex=-1;
+			for(int j=0;j<n;j++){
+				if(numUnits(terr[j].getUnits())<lowestSum){
+					largestSum=numUnits(terr[j].getUnits());
+					fromIndex=j;
+				}
+			}
+			
+			
+		}
 		
 		/**
 		 * Simple AI, will make more complex later.
@@ -930,17 +970,14 @@ public class Game extends BasicGameState {
 				combat(from,to);
 			}
 			if(resumeCombat&&!AIwon){ //won this round
-				System.out.println("WORKS 2.5 b");
-				fromTo=fromToAI();
-				System.out.println("WORKS 2.5 B");
+				fromTo=fromToAI();				
 				from=map.getAllTerritories()[fromTo[0]];
 				to=map.getAllTerritories()[fromTo[1]];	
 				resumeCombat=combat(from,to);
 			}
 			else{
 				combat(from,to);
-			}			
-			System.out.println("WORKS 3");
+			}	
 		}
 		
 		/**
