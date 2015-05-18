@@ -1,4 +1,3 @@
-
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -18,6 +17,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class MainMenu extends BasicGameState {
 	
@@ -31,7 +31,7 @@ public class MainMenu extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		try {
-			this.texture = TextureLoader.getTexture("JPG", new FileInputStream(new File("res/mainMenuFit.jpg")));
+			this.texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/mainMenuFit.jpg"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
